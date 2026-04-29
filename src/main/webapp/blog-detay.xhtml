@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/templates/mainTemplate.xhtml">
+
+    <f:metadata>
+        <f:viewParam name="id" value="#{blogDetayController.id}" required="false">
+            <f:convertNumber integerOnly="true" groupingUsed="false"/>
+        </f:viewParam>
+        <f:viewAction action="#{blogDetayController.yukle}"/>
+    </f:metadata>
+
+    <ui:define name="title">
+        #{blogDetayController.blog != null ? blogDetayController.blog.baslik : 'DevLog — Yazı detayı'}
+    </ui:define>
+
+    <ui:define name="content">
+        <main class="devlog-container-max px-3 px-md-4 py-5 w-100">
+            <div class="mb-4">
+                <h:link outcome="index" styleClass="font-monospace small text-secondary text-decoration-none">← Keşfet</h:link>
+            </div>
+
+            <ui:fragment rendered="#{blogDetayController.blog == null}">
+                <article class="devlog-card p-5 text-center text-secondary font-monospace">
+                    Yazı bulunamadı veya geçersiz bağlantı.
+                </article>
+            </ui:fragment>
+
+            <ui:fragment rendered="#{blogDetayController.blog != null}">
+                <article class="devlog-card overflow-hidden mb-4">
+                    <div class="row g-0">
+                        <div class="col-12 col-lg-5 devlog-thumb-cell devlog-thumb-lg devlog-card-img-wrap border-bottom">
+                            <div class="ratio ratio-4x3" style="min-height: 220px;">
+                                <img src="#{blogDetayController.kapakUrl()}" alt="" class="devlog-card-img"/>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-7 p-4 p-lg-5">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <span class="devlog-tag px-2 py-1">#{blogDetayController.kategoriEtiket()}</span>
+                                <span class="devlog-mono-label text-secondary">#{blogDetayController.surumEtiketi()}</span>
+                            </div>
+                            <h1 class="devlog-headline mb-3" style="font-size: 2rem;">#{blogDetayController.blog.baslik}</h1>
+                            <p class="text-secondary font-monospace small mb-4">#{empty blogDetayController.blog.ozet ? '—' : blogDetayController.blog.ozet}</p>
+                            <div class="d-flex flex-wrap align-items-center justify-content-between pt-3 devlog-card-footer">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="devlog-avatar">#{blogDetayController.yazarHarfi()}</div>
+                                    <span class="devlog-mono-label" style="color: var(--dl-text);">#{blogDetayController.yazarAdi()}</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-4">
+                                    <div class="d-flex align-items-center gap-1">
+                                        <span class="material-symbols-outlined fill" style="color: var(--dl-tertiary);">star</span>
+                                        <span class="devlog-mono-label" style="color: var(--dl-text);">#{blogDetayController.yildizMetin()}</span>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-1">
+                                        <span class="material-symbols-outlined text-secondary">schedule</span>
+                                        <span class="devlog-mono-label text-secondary">#{blogDetayController.tahminiOkuma()}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <section class="devlog-card p-4 p-md-5">
+                    <h2 class="devlog-subhead fs-5 mb-3">İçerik</h2>
+                    <div class="devlog-detail-content font-monospace small">
+                        <h:outputText styleClass="devlog-pre-icerik" value="#{blogDetayController.blog.icerik}" escape="true"/>
+                    </div>
+                    <p class="text-secondary font-monospace small mt-4 mb-0">
+                        İleride kapak görseli için harici görsel bağlantısı bu detay sayfasına eklenecek.
+                    </p>
+                </section>
+            </ui:fragment>
+        </main>
+    </ui:define>
+</ui:composition>

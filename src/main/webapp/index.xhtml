@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/templates/mainTemplate.xhtml">
+
+    <ui:define name="title">DevLog — Keşfet</ui:define>
+
+    <ui:define name="content">
+        <main class="devlog-container-max px-3 px-md-4 py-5 w-100">
+            <div class="devlog-explore-bar mb-5">
+                <h1 class="devlog-headline mb-2">Depoyu keşfet</h1>
+                <p class="text-secondary font-monospace small mb-0">Dizin: /makaleler/en-yeni</p>
+            </div>
+
+            <div class="d-flex flex-wrap align-items-center gap-3 gap-md-4 mb-4 pb-4 border-bottom border-secondary">
+                <span class="devlog-mono-label text-secondary">Etikete göre filtrele:</span>
+                <div class="d-flex flex-wrap gap-2">
+                    <button type="button" class="btn btn-sm devlog-filter-chip rounded-0">Backend</button>
+                    <button type="button" class="btn btn-sm devlog-filter-chip rounded-0">Frontend</button>
+                    <button type="button" class="btn btn-sm devlog-filter-chip rounded-0">DevOps</button>
+                    <button type="button" class="btn btn-sm devlog-filter-chip rounded-0">AI</button>
+                    <button type="button" class="btn btn-sm devlog-filter-clear rounded-0">Tümünü temizle</button>
+                </div>
+            </div>
+
+            <div class="d-flex flex-column gap-4">
+                <ui:fragment rendered="#{empty kesfetController.yayinlananBloglar}">
+                    <article class="devlog-card p-5 text-center text-secondary font-monospace small">
+                        Henüz yayınlanan blog yazısı yok. Veritabanına <strong>YAYINLANDI</strong> durumunda kayıt ekleyerek listeleyebilirsiniz.
+                    </article>
+                </ui:fragment>
+
+                <ui:repeat value="#{kesfetController.yayinlananBloglar}" var="blog" varStatus="st">
+                    <article class="devlog-card overflow-hidden">
+                        <div class="row g-0">
+                            <div class="col-12 col-md-4 devlog-thumb-cell devlog-thumb-md devlog-card-img-wrap border-bottom">
+                                <div class="ratio ratio-4x3" style="max-height: 14rem;">
+                                    <img src="#{kesfetController.kapakUrl(st.index)}"
+                                         alt=""
+                                         class="devlog-card-img"/>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-8 p-4 d-flex flex-column justify-content-between">
+                                <div>
+                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                        <span class="devlog-tag px-2 py-1">#{kesfetController.kategoriEtiket(blog)}</span>
+                                        <span class="devlog-mono-label text-secondary">#{kesfetController.surumEtiketi(blog)}</span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <h:link outcome="blog-detay" styleClass="devlog-subhead devlog-card-title text-decoration-none d-inline-block" value="#{empty blog.baslik ? 'Başlıksız' : blog.baslik}">
+                                            <f:param name="id" value="#{blog.id}"/>
+                                        </h:link>
+                                    </div>
+                                    <p class="text-secondary small font-monospace devlog-line-clamp mb-0">
+                                        #{empty blog.ozet ? '—' : blog.ozet}
+                                    </p>
+                                </div>
+                                <div class="d-flex flex-wrap align-items-center justify-content-between mt-4 pt-3 devlog-card-footer">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="devlog-avatar">#{kesfetController.yazarHarfi(blog)}</div>
+                                        <span class="devlog-mono-label" style="color: var(--dl-text);">#{kesfetController.yazarAdi(blog)}</span>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-4">
+                                        <div class="d-flex align-items-center gap-1">
+                                            <span class="material-symbols-outlined fill" style="color: var(--dl-tertiary);">star</span>
+                                            <span class="devlog-mono-label" style="color: var(--dl-text);">#{kesfetController.yildizMetin(blog)}</span>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-1">
+                                            <span class="material-symbols-outlined text-secondary">schedule</span>
+                                            <span class="devlog-mono-label text-secondary">#{kesfetController.tahminiOkuma(blog)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </ui:repeat>
+            </div>
+
+            <nav class="mt-5 d-flex justify-content-center" aria-label="Sayfalama">
+                <ul class="pagination devlog-pagination mb-0 gap-1">
+                    <li class="page-item">
+                        <a class="page-link rounded-0" href="#" aria-label="Önceki"><span class="material-symbols-outlined">chevron_left</span></a>
+                    </li>
+                    <li class="page-item active"><span class="page-link rounded-0">1</span></li>
+                    <li class="page-item"><a class="page-link rounded-0" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link rounded-0" href="#">3</a></li>
+                    <li class="page-item disabled"><span class="page-link border-0 bg-transparent text-secondary">…</span></li>
+                    <li class="page-item"><a class="page-link rounded-0" href="#">12</a></li>
+                    <li class="page-item">
+                        <a class="page-link rounded-0" href="#" aria-label="Sonraki"><span class="material-symbols-outlined">chevron_right</span></a>
+                    </li>
+                </ul>
+            </nav>
+        </main>
+    </ui:define>
+</ui:composition>
