@@ -42,19 +42,49 @@ public class KullaniciFacade {
         return q.getResultList();
     }
 
+    /**
+     * E-posta ile giriş (geriye dönük).
+     */
     public Kullanici girisYap(String eposta, String sifre) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Kullanici> cq = cb.createQuery(Kullanici.class);
-        Root<Kullanici> root = cq.from(Kullanici.class);
+        return girisYapEpostaVeyaKullaniciAdi(eposta, sifre);
+    }
 
-        cq.where(cb.equal(root.get("eposta"), eposta), cb.equal(root.get("sifre"), sifre));
-        CriteriaQuery<Kullanici> all = cq.select(root);
-        TypedQuery<Kullanici> q = em.createQuery(all);
-
-        List<Kullanici> bulunan = q.getResultList();
+    /**
+     * E-posta veya kullanıcı adı + şifre ile tek sorgu.
+     */
+    public Kullanici girisYapEpostaVeyaKullaniciAdi(String epostaVeyaKullaniciAdi, String sifre) {
+        if (epostaVeyaKullaniciAdi == null || epostaVeyaKullaniciAdi.isBlank() || sifre == null) {
+            return null;
+        }
+        String login = epostaVeyaKullaniciAdi.trim();
+        String jpql = "SELECT k FROM Kullanici k WHERE (LOWER(k.eposta) = LOWER(:login) OR LOWER(k.kullaniciAdi) = LOWER(:login)) AND k.sifre = :sifre";
+        List<Kullanici> bulunan = em.createQuery(jpql, Kullanici.class)
+                .setParameter("login", login)
+                .setParameter("sifre", sifre)
+                .getResultList();
         if (bulunan.isEmpty()) {
             return null;
         }
         return bulunan.getFirst();
+    }
+
+    public boolean epostaKullaniliyorMu(String eposta) {
+        if (eposta == null || eposta.isBlank()) {
+            return false;
+        }
+        Number c = em.createQuery("SELECT COUNT(k) FROM Kullanici k WHERE LOWER(k.eposta) = LOWER(:e)", Number.class)
+                .setParameter("e", eposta.trim())
+                .getSingleResult();
+        return c != null && c.longValue() > 0;
+    }
+
+    public boolean kullaniciAdiKullaniliyorMu(String kullaniciAdi) {
+        if (kullaniciAdi == null || kullaniciAdi.isBlank()) {
+            return false;
+        }
+        Number c = em.createQuery("SELECT COUNT(k) FROM Kullanici k WHERE LOWER(k.kullaniciAdi) = LOWER(:u)", Number.class)
+                .setParameter("u", kullaniciAdi.trim())
+                .getSingleResult();
+        return c != null && c.longValue() > 0;
     }
 }

@@ -21,13 +21,18 @@ Veri katmanı: **JPA (EclipseLink)** + **PostgreSQL** (`@DataSourceDefinition` i
 | `src/main/webapp/WEB-INF/web.xml` | Servlet 6.0, **FacesServlet** (`*.xhtml`), karşılama `index.xhtml`. |
 | `src/main/webapp/WEB-INF/faces-config.xml` | JSF 4. |
 | `src/main/webapp/index.xhtml` | Ana sayfa (Bootstrap). |
+| `src/main/webapp/giris.xhtml` | Giriş formu → `KullaniciFacade`, `OturumBean`. |
+| `src/main/webapp/kayit.xhtml` | Kayıt formu → yeni `Kullanici` (`RolTip.OKUR`). |
+| `src/main/webapp/WEB-INF/templates/authTemplate.xhtml` | Giriş/kayıt ortak şablonu. |
 | `src/main/webapp/blog-detay.xhtml` | Yazı detayı (`?id=`). |
 | `src/main/webapp/WEB-INF/templates/` … | Şablon ve parçalar; `resources/css`, `resources/img/Logo.png`. |
 
 ## Facade ve controller
 
 - **`BlogFacade`**, **`KullaniciFacade`**, **`KategoriFacade`**, **`DegerlendirmeFacade`**: CRUD ve sorgular.
-- **`KesfetController`**, **`BlogDetayController`**: JSF sayfalarına veri.
+- **`KesfetController`**, **`BlogDetayController`**: Ana sayfa ve yazı detayı.
+- **`GiriController`**, **`KayitController`**: `giris.xhtml` / `kayit.xhtml` formları.
+- **`OturumBean`** (`@SessionScoped`): Giriş sonrası `Kullanici`; üst menüde kullanıcı adı ve çıkış.
 
 ## Derleme (Maven)
 

@@ -23,9 +23,21 @@
                                placeholder="Dosya veya yazı ara..." aria-label="Ara"/>
                         <span class="material-symbols-outlined position-absolute end-0 top-50 translate-middle-y me-2 text-secondary">search</span>
                     </div>
-                    <div class="d-flex align-items-center gap-2">
-                        <button type="button" class="btn devlog-btn-login rounded-0 px-3 py-1">Giriş yap</button>
-                        <button type="button" class="btn devlog-btn-signup rounded-0 px-3 py-1">Kayıt ol</button>
+                    <div class="d-flex align-items-center gap-2 flex-wrap justify-content-end">
+                        <h:panelGroup rendered="#{not oturum.girisYapildi}" layout="block" styleClass="d-flex align-items-center gap-2">
+                            <h:link outcome="giris" styleClass="btn devlog-btn-login rounded-0 px-3 py-1 text-decoration-none">Giriş yap</h:link>
+                            <h:link outcome="kayit" styleClass="btn devlog-btn-signup rounded-0 px-3 py-1 text-decoration-none">Kayıt ol</h:link>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{oturum.girisYapildi}" layout="block" styleClass="d-flex align-items-center gap-2">
+                            <span class="font-monospace small text-secondary text-truncate" style="max-width: 8rem;" title="#{oturum.aktifKullanici.kullaniciAdi}">
+                                #{oturum.aktifKullanici.kullaniciAdi}
+                            </span>
+                            <h:form styleClass="d-inline mb-0">
+                                <h:commandLink action="#{oturum.cikisYap}" styleClass="btn devlog-btn-login rounded-0 px-3 py-1 border-0 text-decoration-none d-inline-block">
+                                    Çıkış
+                                </h:commandLink>
+                            </h:form>
+                        </h:panelGroup>
                     </div>
                 </div>
             </div>

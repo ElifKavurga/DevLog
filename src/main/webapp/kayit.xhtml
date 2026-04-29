@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/templates/authTemplate.xhtml">
+
+    <ui:define name="title">DevLog — Kayıt</ui:define>
+
+    <ui:define name="content">
+        <main class="w-100" style="max-width: 520px;">
+            <section class="devlog-auth-card p-4 p-md-5 devlog-kayit-code-bg">
+                <div class="mb-3">
+                    <span class="devlog-kayit-dots"><span class="devlog-kayit-dot-r"/><span class="devlog-kayit-dot-y"/><span class="devlog-kayit-dot-g"/></span>
+                </div>
+                <h1 class="devlog-auth-title mb-2">DevLog topluluğuna katılın</h1>
+                <p class="text-secondary small font-monospace mb-0 opacity-75">Hesabınızı oluşturun ve geliştirici evrenine adım atın.</p>
+
+                <h:form id="kayitForm" styleClass="mt-4 d-flex flex-column gap-4">
+                    <h:panelGroup rendered="#{not empty kayitController.hataMesaji}" styleClass="alert alert-danger border-0 rounded-0 py-2 small font-monospace mb-0" layout="block">
+                        #{kayitController.hataMesaji}
+                    </h:panelGroup>
+
+                    <div>
+                        <h:outputLabel for="adSoyad" styleClass="form-label devlog-auth-sub mb-2 d-block">Ad soyad</h:outputLabel>
+                        <h:inputText id="adSoyad" value="#{kayitController.adSoyad}" styleClass="form-control devlog-auth-input py-3"
+                                     required="true" requiredMessage="Ad soyad gerekli."/>
+                    </div>
+                    <div>
+                        <h:outputLabel for="kullaniciAdi" styleClass="form-label devlog-auth-sub mb-2 d-block">Kullanıcı adı</h:outputLabel>
+                        <div class="position-relative">
+                            <span class="position-absolute top-50 start-0 translate-middle-y ps-3 fw-bold" style="color: var(--dl-primary);">@</span>
+                            <h:inputText id="kullaniciAdi" value="#{kayitController.kullaniciAdi}" styleClass="form-control devlog-auth-input py-3 ps-4"
+                                         required="true" requiredMessage="Kullanıcı adı gerekli."/>
+                        </div>
+                    </div>
+                    <div>
+                        <h:outputLabel for="eposta" styleClass="form-label devlog-auth-sub mb-2 d-block">E-posta</h:outputLabel>
+                        <h:inputText id="eposta" value="#{kayitController.eposta}" styleClass="form-control devlog-auth-input py-3"
+                                     required="true" requiredMessage="E-posta gerekli."/>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <h:outputLabel for="sifre" styleClass="form-label devlog-auth-sub mb-2 d-block">Şifre</h:outputLabel>
+                            <h:inputSecret id="sifre" value="#{kayitController.sifre}" styleClass="form-control devlog-auth-input py-3"
+                                           required="true" requiredMessage="Şifre gerekli."/>
+                        </div>
+                        <div class="col-md-6">
+                            <h:outputLabel for="sifreTekrar" styleClass="form-label devlog-auth-sub mb-2 d-block">Şifre tekrar</h:outputLabel>
+                            <h:inputSecret id="sifreTekrar" value="#{kayitController.sifreTekrar}" styleClass="form-control devlog-auth-input py-3"
+                                           required="true" requiredMessage="Şifre tekrarı gerekli."/>
+                        </div>
+                    </div>
+                    <div class="form-check">
+                        <h:selectBooleanCheckbox id="kosul" value="#{kayitController.kosullariKabul}" styleClass="form-check-input rounded-0 border-secondary"/>
+                        <h:outputLabel for="kosul" styleClass="form-check-label text-secondary small">
+                            <a href="#" class="link-primary text-decoration-none">Kullanım şartlarını</a> ve
+                            <a href="#" class="link-primary text-decoration-none">gizlilik politikasını</a> okudum, kabul ediyorum.
+                        </h:outputLabel>
+                    </div>
+
+                    <h:commandButton value="Kayıt ol" action="#{kayitController.kayitOl}"
+                                     styleClass="btn w-100 py-3 devlog-btn-signup rounded-0 text-uppercase fw-bold font-monospace small d-flex align-items-center justify-content-center gap-2"/>
+                </h:form>
+
+                <div class="mt-4 pt-4 border-top border-secondary text-center">
+                    <p class="small text-secondary font-monospace mb-0">
+                        Zaten hesabınız var mı?
+                        <h:link outcome="giris" styleClass="fw-bold text-decoration-none ms-1" style="color: var(--dl-primary);">Giriş yapın</h:link>
+                    </p>
+                </div>
+            </section>
+        </main>
+    </ui:define>
+</ui:composition>
