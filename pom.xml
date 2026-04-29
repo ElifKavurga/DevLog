@@ -58,16 +58,6 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.4.0</version>
             </plugin>
-            <plugin>
-                <groupId>org.apache.tomee.maven</groupId>
-                <artifactId>tomee-maven-plugin</artifactId>
-                <version>10.1.0</version>
-                <configuration>
-                    <tomeeVersion>10.1.0</tomeeVersion>
-                    <tomeeClassifier>plus</tomeeClassifier>
-                    <tomeeHttpPort>8080</tomeeHttpPort>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 </project>

@@ -5,9 +5,9 @@ import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
 
 /**
- * GlassFish / IntelliJ exploded deploy sırasında {@code glassfish-resources.xml}
- * her zaman işlenmeyebilir; bu sınıf JNDI veri kaynağını WAR içinden tanımlar.
- * PostgreSQL sürücüsü {@code WEB-INF/lib} içinde olmalıdır (pom’da runtime).
+ * Hedef uygulama sunucusu: GlassFish 7.1.0 (Jakarta EE 10).
+ * JNDI veri kaynağı WAR içinden tanımlanır; PostgreSQL sürücüsü {@code WEB-INF/lib}
+ * üzerinden gelir (pom'da {@code postgresql} runtime).
  */
 @Startup
 @Singleton
