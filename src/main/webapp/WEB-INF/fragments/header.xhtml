@@ -8,11 +8,11 @@
         <div class="devlog-container-max px-3 px-md-4">
             <div class="d-flex justify-content-between align-items-center py-2 py-md-0" style="min-height: 4rem;">
                 <div class="d-flex align-items-center gap-4">
-                    <h:link outcome="index" styleClass="d-flex align-items-center text-decoration-none" title="Ana sayfa">
+                    <h:link outcome="/public/index" styleClass="d-flex align-items-center text-decoration-none" title="Ana sayfa">
                         <h:graphicImage library="img" name="Logo.png" alt="DevLog" styleClass="devlog-logo"/>
                     </h:link>
                     <nav class="d-none d-md-flex align-items-center gap-4">
-                        <h:link outcome="index" styleClass="devlog-nav-link active">Keşfet</h:link>
+                        <h:link outcome="/public/index" styleClass="devlog-nav-link active">Keşfet</h:link>
                         <a class="devlog-nav-link" href="#">Kategoriler</a>
                         <a class="devlog-nav-link" href="#">Hakkımızda</a>
                     </nav>
@@ -25,8 +25,8 @@
                     </div>
                     <div class="d-flex align-items-center gap-2 flex-wrap justify-content-end">
                         <h:panelGroup rendered="#{not oturum.girisYapildi}" layout="block" styleClass="d-flex align-items-center gap-2">
-                            <h:link outcome="giris" styleClass="btn devlog-btn-login rounded-0 px-3 py-1 text-decoration-none">Giriş yap</h:link>
-                            <h:link outcome="kayit" styleClass="btn devlog-btn-signup rounded-0 px-3 py-1 text-decoration-none">Kayıt ol</h:link>
+                            <h:link outcome="/auth/giris" styleClass="btn devlog-btn-login rounded-0 px-3 py-1 text-decoration-none">Giriş yap</h:link>
+                            <h:link outcome="/auth/kayit" styleClass="btn devlog-btn-signup rounded-0 px-3 py-1 text-decoration-none">Kayıt ol</h:link>
                         </h:panelGroup>
                         <h:panelGroup rendered="#{oturum.girisYapildi}" layout="block" styleClass="d-flex align-items-center gap-2">
                             <span class="font-monospace small text-secondary text-truncate" style="max-width: 8rem;" title="#{oturum.aktifKullanici.kullaniciAdi}">

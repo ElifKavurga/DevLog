@@ -22,7 +22,6 @@ public class KayitController {
     private String eposta;
     private String sifre;
     private String sifreTekrar;
-    private boolean kosullariKabul;
     private String hataMesaji;
 
     public String kayitOl() {
@@ -52,10 +51,6 @@ public class KayitController {
             hataMesaji = "Şifreler eşleşmiyor.";
             return null;
         }
-        if (!kosullariKabul) {
-            hataMesaji = "Kullanım şartlarını kabul etmelisiniz.";
-            return null;
-        }
         String trimUser = kullaniciAdi.trim();
         if (kullaniciFacade.epostaKullaniliyorMu(trimMail)) {
             hataMesaji = "Bu e-posta ile zaten kayıt var.";
@@ -81,7 +76,7 @@ public class KayitController {
         kullaniciFacade.olustur(yeni);
         oturumBean.girisYap(yeni);
         temizleForm();
-        return "index?faces-redirect=true";
+        return "/public/index?faces-redirect=true";
     }
 
     private void temizleForm() {
@@ -90,7 +85,6 @@ public class KayitController {
         eposta = null;
         sifre = null;
         sifreTekrar = null;
-        kosullariKabul = false;
     }
 
     public String getAdSoyad() {
@@ -131,14 +125,6 @@ public class KayitController {
 
     public void setSifreTekrar(String sifreTekrar) {
         this.sifreTekrar = sifreTekrar;
-    }
-
-    public boolean isKosullariKabul() {
-        return kosullariKabul;
-    }
-
-    public void setKosullariKabul(boolean kosullariKabul) {
-        this.kosullariKabul = kosullariKabul;
     }
 
     public String getHataMesaji() {

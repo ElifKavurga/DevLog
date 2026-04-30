@@ -50,7 +50,7 @@
                                         <span class="devlog-mono-label text-secondary">#{kesfetController.surumEtiketi(blog)}</span>
                                     </div>
                                     <div class="mb-3">
-                                        <h:link outcome="blog-detay" styleClass="devlog-subhead devlog-card-title text-decoration-none d-inline-block" value="#{empty blog.baslik ? 'Başlıksız' : blog.baslik}">
+                                        <h:link outcome="/public/blog-detay" styleClass="devlog-subhead devlog-card-title text-decoration-none d-inline-block" value="#{empty blog.baslik ? 'Başlıksız' : blog.baslik}">
                                             <f:param name="id" value="#{blog.id}"/>
                                         </h:link>
                                     </div>

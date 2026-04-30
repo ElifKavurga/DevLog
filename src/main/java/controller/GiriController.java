@@ -33,7 +33,7 @@ public class GiriController {
             return null;
         }
         oturumBean.girisYap(k);
-        return "index?faces-redirect=true";
+        return "/public/index?faces-redirect=true";
     }
 
     public String getEpostaVeyaKullaniciAdi() {

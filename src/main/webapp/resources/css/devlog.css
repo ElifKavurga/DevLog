@@ -309,11 +309,25 @@ body.devlog-body {
     word-break: break-word;
 }
 
-/* Giriş / kayıt (giris.html & kayit.html referansı) */
+/* Giriş / kayıt (giris.xhtml & kayit.xhtml) */
 .devlog-auth-body {
     background-color: var(--dl-bg);
     color: var(--dl-text);
     min-height: 100vh;
+    min-height: 100dvh;
+    overflow: hidden;
+}
+
+.devlog-auth-shell {
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+/* Taşma olursa yalnızca içerik kolonu kayar; gövde kaydırma çubuğu oluşmaz */
+.devlog-auth-stage {
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
 }
 
 .devlog-terminal-pattern {
@@ -335,12 +349,12 @@ body.devlog-body {
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
+    height: 3px;
     background-color: var(--dl-btn-signup-bg);
 }
 
 .devlog-auth-main {
-    max-width: 480px;
+    max-width: 420px;
 }
 
 .devlog-auth-input {
@@ -393,7 +407,8 @@ body.devlog-body {
 .devlog-auth-title {
     font-family: "Space Grotesk", system-ui, sans-serif;
     font-weight: 600;
-    font-size: 1.75rem;
+    font-size: clamp(1.35rem, 3.8vw, 1.6rem);
+    line-height: 1.2;
     color: var(--dl-text);
 }
 
@@ -408,15 +423,44 @@ body.devlog-body {
 .devlog-auth-hero-img {
     width: auto;
     height: auto;
-    max-width: min(11rem, 42vw);
-    max-height: 5.5rem;
+    max-width: min(9.5rem, 40vw);
+    max-height: 4.25rem;
     object-fit: contain;
 }
 
 .devlog-auth-terminal-note {
     border-left: 2px solid var(--dl-btn-signup-bg);
     background-color: rgba(24, 28, 35, 0.5);
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
+    line-height: 1.45;
     font-family: "JetBrains Mono", ui-monospace, monospace;
     color: var(--dl-outline);
+}
+
+.devlog-auth-body .devlog-auth-card .form-label.devlog-auth-sub {
+    margin-bottom: 0.35rem;
+}
+
+.devlog-auth-body .devlog-auth-card .devlog-auth-input.form-control {
+    padding-top: 0.55rem;
+    padding-bottom: 0.55rem;
+    min-height: 2.5rem;
+}
+
+.devlog-auth-body .devlog-auth-card .btn.devlog-btn-signup {
+    padding-top: 0.55rem;
+    padding-bottom: 0.55rem;
+}
+
+@media (min-width: 768px) {
+    .devlog-auth-body .devlog-auth-card .devlog-auth-input.form-control {
+        padding-top: 0.65rem;
+        padding-bottom: 0.65rem;
+        min-height: 2.65rem;
+    }
+
+    .devlog-auth-body .devlog-auth-card .btn.devlog-btn-signup {
+        padding-top: 0.65rem;
+        padding-bottom: 0.65rem;
+    }
 }

@@ -29,6 +29,6 @@ public class OturumBean implements Serializable {
 
     public String cikisYap() {
         aktifKullanici = null;
-        return "index?faces-redirect=true";
+        return "/public/index?faces-redirect=true";
     }
 }

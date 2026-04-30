@@ -17,16 +17,16 @@
     <ui:insert name="headExtra"/>
 </h:head>
 <h:body styleClass="devlog-auth-body devlog-scrollbar">
-    <div class="devlog-terminal-pattern min-vh-100 d-flex flex-column">
-        <header class="devlog-header border-bottom py-2">
+    <div class="devlog-terminal-pattern devlog-auth-shell d-flex flex-column">
+        <header class="devlog-header border-bottom py-1 flex-shrink-0">
             <div class="devlog-container-max px-3 d-flex align-items-center justify-content-between">
-                <h:link outcome="index" styleClass="d-flex align-items-center text-decoration-none" title="Ana sayfa">
+                <h:link outcome="/public/index" styleClass="d-flex align-items-center text-decoration-none" title="Ana sayfa">
                     <h:graphicImage library="img" name="Logo.png" alt="DevLog" styleClass="devlog-logo"/>
                 </h:link>
-                <h:link outcome="index" styleClass="font-monospace small text-secondary text-decoration-none">← Ana sayfa</h:link>
+                <h:link outcome="/public/index" styleClass="font-monospace small text-secondary text-decoration-none">← Ana sayfa</h:link>
             </div>
         </header>
-        <div class="flex-grow-1 d-flex align-items-center justify-content-center p-4">
+        <div class="devlog-auth-stage flex-grow-1 d-flex align-items-center justify-content-center px-3 py-2 min-h-0">
             <ui:insert name="content"/>
         </div>
     </div>

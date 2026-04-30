@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/templates/authTemplate.xhtml">
+
+    <ui:define name="title">DevLog — Giriş</ui:define>
+
+    <ui:define name="content">
+        <main class="devlog-auth-main w-100">
+            <div class="text-center mb-3">
+                <h:graphicImage library="img" name="Logo.png" alt="DevLog" styleClass="devlog-auth-hero-img mx-auto mb-2 d-block"/>
+                <h1 class="devlog-auth-title mb-1">DevLog'a hoş geldiniz</h1>
+                <p class="devlog-auth-sub mb-0">Kimlik doğrulama terminali</p>
+                <p class="text-secondary small font-monospace mt-1 mb-0 opacity-75">E-posta veya kullanıcı adınızla oturum açın.</p>
+            </div>
+
+            <section class="devlog-auth-card p-3 p-md-4">
+                <h:form id="girisForm" styleClass="d-flex flex-column gap-3">
+                    <h:panelGroup rendered="#{not empty giriController.hataMesaji}" styleClass="alert alert-danger border-0 rounded-0 py-2 small font-monospace mb-0" layout="block">
+                        #{giriController.hataMesaji}
+                    </h:panelGroup>
+
+                    <div>
+                        <h:outputLabel for="loginField" styleClass="form-label devlog-auth-sub d-block">E-posta veya kullanıcı adı</h:outputLabel>
+                        <h:inputText id="loginField" value="#{giriController.epostaVeyaKullaniciAdi}" styleClass="form-control devlog-auth-input"
+                                     required="true" requiredMessage="E-posta veya kullanıcı adı gerekli."/>
+                    </div>
+                    <div>
+                        <h:outputLabel for="sifreField" styleClass="form-label devlog-auth-sub d-block">Şifre</h:outputLabel>
+                        <h:inputSecret id="sifreField" value="#{giriController.sifre}" styleClass="form-control devlog-auth-input"
+                                       required="true" requiredMessage="Şifre gerekli."/>
+                    </div>
+
+                    <h:commandButton value="Giriş yap" action="#{giriController.girisYap}"
+                                     styleClass="btn w-100 devlog-btn-signup rounded-0 text-uppercase fw-bold font-monospace small"/>
+                </h:form>
+            </section>
+
+            <p class="text-center mt-3 small text-secondary font-monospace mb-0">
+                Hesabınız yok mu?
+                <h:link outcome="/auth/kayit" styleClass="text-decoration-none fw-bold ms-1" style="color: var(--dl-primary);">Kayıt olun</h:link>
+            </p>
+        </main>
+    </ui:define>
+</ui:composition>
