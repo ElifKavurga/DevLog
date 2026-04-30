@@ -339,6 +339,10 @@ body.devlog-body {
     background-color: var(--dl-btn-signup-bg);
 }
 
+.devlog-auth-main {
+    max-width: 480px;
+}
+
 .devlog-auth-input {
     background-color: var(--dl-bg-footer);
     border: 1px solid var(--dl-border);
@@ -346,11 +350,44 @@ body.devlog-body {
     border-radius: 0;
 }
 
-.devlog-auth-input:focus {
-    border-color: var(--dl-btn-signup-bg);
-    box-shadow: none;
-    outline: none;
+.devlog-auth-body .form-control.devlog-auth-input:focus,
+.devlog-auth-body .form-control.devlog-auth-input:focus-visible {
+    background-color: var(--dl-surface-high);
+    border-color: var(--dl-primary-strong);
     color: var(--dl-text);
+    box-shadow: 0 0 0 0.15rem rgba(74, 142, 255, 0.22);
+    outline: none;
+}
+
+.devlog-auth-body .form-control.devlog-auth-input:-webkit-autofill,
+.devlog-auth-body .form-control.devlog-auth-input:-webkit-autofill:hover,
+.devlog-auth-body .form-control.devlog-auth-input:-webkit-autofill:focus,
+.devlog-auth-body .form-control.devlog-auth-input:-webkit-autofill:active {
+    -webkit-text-fill-color: var(--dl-text) !important;
+    caret-color: var(--dl-text);
+    transition: background-color 99999s ease-out 0s;
+    box-shadow: 0 0 0 1000px var(--dl-bg-footer) inset !important;
+    border: 1px solid var(--dl-border);
+}
+
+.devlog-auth-body .form-control.devlog-auth-input:-webkit-autofill:focus {
+    box-shadow: 0 0 0 1000px var(--dl-surface-high) inset, 0 0 0 0.15rem rgba(74, 142, 255, 0.22) !important;
+    border-color: var(--dl-primary-strong);
+}
+
+.devlog-auth-check {
+    background-color: var(--dl-bg-footer);
+    border-color: var(--dl-border);
+}
+
+.devlog-auth-check:checked {
+    background-color: var(--dl-btn-signup-bg);
+    border-color: var(--dl-btn-signup-bg);
+}
+
+.devlog-auth-check:focus {
+    box-shadow: 0 0 0 0.15rem rgba(74, 142, 255, 0.22);
+    border-color: var(--dl-primary-strong);
 }
 
 .devlog-auth-title {
@@ -368,18 +405,11 @@ body.devlog-body {
     font-weight: 600;
 }
 
-.devlog-auth-logo-box {
-    width: 4rem;
-    height: 4rem;
-    background-color: var(--dl-surface);
-    border: 1px solid var(--dl-border);
-    border-radius: 0.5rem;
-    padding: 0.75rem;
-}
-
-.devlog-auth-logo-box img {
-    width: 100%;
-    height: 100%;
+.devlog-auth-hero-img {
+    width: auto;
+    height: auto;
+    max-width: min(11rem, 42vw);
+    max-height: 5.5rem;
     object-fit: contain;
 }
 
@@ -390,33 +420,3 @@ body.devlog-body {
     font-family: "JetBrains Mono", ui-monospace, monospace;
     color: var(--dl-outline);
 }
-
-.devlog-kayit-dots span {
-    width: 0.75rem;
-    height: 0.75rem;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 0.35rem;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-}
-
-.devlog-kayit-dot-r {
-    background-color: rgba(239, 68, 68, 0.2);
-    border-color: rgba(239, 68, 68, 0.5) !important;
-}
-
-.devlog-kayit-dot-y {
-    background-color: rgba(234, 179, 8, 0.2);
-    border-color: rgba(234, 179, 8, 0.5) !important;
-}
-
-.devlog-kayit-dot-g {
-    background-color: rgba(34, 197, 94, 0.2);
-    border-color: rgba(34, 197, 94, 0.5) !important;
-}
-
-.devlog-kayit-code-bg {
-    background-image: radial-gradient(#1c2027 0.5px, transparent 0.5px);
-    background-size: 24px 24px;
-}
-

@@ -8,13 +8,12 @@
     <ui:define name="title">DevLog — Giriş</ui:define>
 
     <ui:define name="content">
-        <main class="w-100" style="max-width: 440px;">
+        <main class="devlog-auth-main w-100">
             <div class="text-center mb-4">
-                <div class="devlog-auth-logo-box mx-auto mb-3">
-                    <h:graphicImage library="img" name="Logo.png" alt="DevLog"/>
-                </div>
+                <h:graphicImage library="img" name="Logo.png" alt="DevLog" styleClass="devlog-auth-hero-img mx-auto mb-4 d-block"/>
                 <h1 class="devlog-auth-title mb-2">DevLog'a hoş geldiniz</h1>
                 <p class="devlog-auth-sub mb-0">Kimlik doğrulama terminali</p>
+                <p class="text-secondary small font-monospace mt-2 mb-0 opacity-75">E-posta veya kullanıcı adınızla oturum açın.</p>
             </div>
 
             <section class="devlog-auth-card p-4 p-md-5">
@@ -36,7 +35,7 @@
 
                     <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 small">
                         <div class="form-check">
-                            <input class="form-check-input rounded-0 border-secondary" type="checkbox" id="beniHatirla" disabled="disabled"/>
+                            <input class="form-check-input devlog-auth-check rounded-0" type="checkbox" id="beniHatirla" disabled="disabled"/>
                             <label class="form-check-label text-secondary font-monospace" for="beniHatirla">Beni hatırla</label>
                         </div>
                         <a href="#" class="text-decoration-none font-monospace small" style="color: var(--dl-secondary-border);">Şifremi unuttum</a>
@@ -47,9 +46,9 @@
                 </h:form>
 
                 <div class="d-flex align-items-center gap-3 my-4">
-                    <div class="flex-grow-1 border-top border-secondary"/>
+                    <div class="flex-grow-1 border-top border-secondary border-opacity-25"/>
                     <span class="devlog-auth-sub mb-0" style="letter-spacing: 0.2em;">veya</span>
-                    <div class="flex-grow-1 border-top border-secondary"/>
+                    <div class="flex-grow-1 border-top border-secondary border-opacity-25"/>
                 </div>
                 <div class="d-flex gap-2">
                     <button type="button" class="btn flex-fill border border-secondary devlog-auth-input py-2 rounded-0" disabled="disabled" title="Yakında">
