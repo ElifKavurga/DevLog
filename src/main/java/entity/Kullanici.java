@@ -4,6 +4,7 @@ import enums.RolTip;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,11 +22,17 @@ public class Kullanici implements Serializable {
     @Enumerated(EnumType.STRING)
     private RolTip rol;
 
-    @OneToMany(mappedBy = "yazar", cascade = CascadeType.ALL)
-    private List<Blog> bloglar;
+    /**
+     * Yazarın blog yazıları; kullanıcı silindiğinde yazıları da kaldırılır (içerik sahibi).
+     */
+    @OneToMany(mappedBy = "yazar", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Blog> bloglar = new ArrayList<>();
 
-    @OneToMany(mappedBy = "kullanici", cascade = CascadeType.ALL)
-    private List<Degerlendirme> degerlendirmeler;
+    /**
+     * Kullanıcının yaptığı puanlamalar; hesap silindiğinde değerlendirmeler de silinir.
+     */
+    @OneToMany(mappedBy = "kullanici", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Degerlendirme> degerlendirmeler = new ArrayList<>();
 
     public Kullanici() {}
 

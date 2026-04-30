@@ -1,6 +1,9 @@
 package entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
 
@@ -10,12 +13,18 @@ public class Degerlendirme implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int puan;
+    @NotNull
+    @Min(1)
+    @Max(5)
+    @Column(nullable = false)
+    private Integer puan;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "kullanici_id", nullable = false)
     private Kullanici kullanici;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "blog_id", nullable = false)
     private Blog blog;
 
     public Degerlendirme() {}
@@ -28,11 +37,11 @@ public class Degerlendirme implements Serializable {
         this.id = id;
     }
 
-    public int getPuan() {
+    public Integer getPuan() {
         return puan;
     }
 
-    public void setPuan(int puan) {
+    public void setPuan(Integer puan) {
         this.puan = puan;
     }
 

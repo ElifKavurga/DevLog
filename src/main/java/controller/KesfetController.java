@@ -11,10 +11,14 @@ import jakarta.inject.Named;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Named("kesfetController")
 @RequestScoped
 public class KesfetController {
+
+    private static final Logger LOG = Logger.getLogger(KesfetController.class.getName());
 
     private static final List<String> UNSPLASH_KAPAK_URLS = List.of(
             "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80",
@@ -32,8 +36,13 @@ public class KesfetController {
 
     @PostConstruct
     public void init() {
-        List<Blog> liste = blogFacade.durumaGoreListele(DurumTip.YAYINLANDI);
-        yayinlananBloglar = liste != null ? liste : new ArrayList<>();
+        try {
+            List<Blog> liste = blogFacade.durumaGoreListele(DurumTip.YAYINLANDI);
+            yayinlananBloglar = liste != null ? liste : new ArrayList<>();
+        } catch (RuntimeException e) {
+            LOG.log(Level.WARNING, "Yayınlanan blog listesi yüklenemedi (şema/veri veya persistence).", e);
+            yayinlananBloglar = new ArrayList<>();
+        }
     }
 
     public List<Blog> getYayinlananBloglar() {

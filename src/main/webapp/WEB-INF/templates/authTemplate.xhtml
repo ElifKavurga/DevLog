@@ -7,6 +7,7 @@
 <h:head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="icon" href="#{resource['img:Logo_Amblem.png']}" type="image/png"/>
     <title><ui:insert name="title">DevLog</ui:insert></title>
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
@@ -21,7 +22,7 @@
         <header class="devlog-header border-bottom py-1 flex-shrink-0">
             <div class="devlog-container-max px-3 d-flex align-items-center justify-content-between">
                 <h:link outcome="/public/index" styleClass="d-flex align-items-center text-decoration-none" title="Ana sayfa">
-                    <h:graphicImage library="img" name="Logo.png" alt="DevLog" styleClass="devlog-logo"/>
+                    <h:graphicImage library="img" name="Logo_Amblem.png" alt="DevLog" styleClass="devlog-logo devlog-logo--emblem"/>
                 </h:link>
                 <h:link outcome="/public/index" styleClass="font-monospace small text-secondary text-decoration-none">← Ana sayfa</h:link>
             </div>

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,27 +15,42 @@ public class Blog implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 500)
     private String baslik;
 
     @Column(length = 500)
     private String ozet;
 
+    /** Markdown veya düz metin gövde. */
     @Column(columnDefinition = "TEXT")
     private String icerik;
+
+    @Column(name = "kapak_gorseli_url", length = 2048)
+    private String kapakGorseliUrl;
+
+    @Column(name = "tahmini_okuma_suresi")
+    private Integer tahminiOkumaSuresi;
+
+    /** Virgülle ayrılmış etiketler (örn. "jakarta,jsf,postgres"). */
+    @Column(length = 2000)
+    private String etiketler;
 
     private LocalDateTime olusturulmaTarihi;
 
     @Enumerated(EnumType.STRING)
+    @Column(length = 32)
     private DurumTip durum;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "yazar_id", nullable = false)
     private Kullanici yazar;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "kategori_id")
     private Kategori kategori;
 
-    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL)
-    private List<Degerlendirme> degerlendirmeler;
+    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Degerlendirme> degerlendirmeler = new ArrayList<>();
 
     public Blog() {}
 
@@ -68,6 +84,30 @@ public class Blog implements Serializable {
 
     public void setIcerik(String icerik) {
         this.icerik = icerik;
+    }
+
+    public String getKapakGorseliUrl() {
+        return kapakGorseliUrl;
+    }
+
+    public void setKapakGorseliUrl(String kapakGorseliUrl) {
+        this.kapakGorseliUrl = kapakGorseliUrl;
+    }
+
+    public Integer getTahminiOkumaSuresi() {
+        return tahminiOkumaSuresi;
+    }
+
+    public void setTahminiOkumaSuresi(Integer tahminiOkumaSuresi) {
+        this.tahminiOkumaSuresi = tahminiOkumaSuresi;
+    }
+
+    public String getEtiketler() {
+        return etiketler;
+    }
+
+    public void setEtiketler(String etiketler) {
+        this.etiketler = etiketler;
     }
 
     public LocalDateTime getOlusturulmaTarihi() {
