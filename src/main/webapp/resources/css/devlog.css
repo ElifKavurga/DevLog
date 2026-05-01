@@ -18,6 +18,32 @@
     --dl-secondary-border: #edb1ff;
     --dl-tertiary: #e9c400;
     --dl-btn-signup-bg: #4a8eff;
+    /* blog detay.html / yazar_panel.html (Tailwind theme) referansı — Bootstrap ile kullanım */
+    --dl-ref-background: #10131b;
+    --dl-ref-surface-dim: #10131b;
+    --dl-ref-surface-container: #1c2027;
+    --dl-ref-surface-container-low: #181c23;
+    --dl-ref-surface-container-high: #272a32;
+    --dl-ref-surface-container-highest: #31353d;
+    --dl-ref-surface-lowest: #0b0e16;
+    --dl-ref-on-surface: #e0e2ed;
+    --dl-ref-on-surface-variant: #c1c6d7;
+    --dl-ref-outline: #8b90a0;
+    --dl-ref-outline-variant: #414754;
+    --dl-ref-border-ide: #2d323b;
+    --dl-ref-primary: #adc7ff;
+    --dl-ref-primary-container: #4a8eff;
+    --dl-ref-on-primary: #002e68;
+    --dl-ref-accent-blue: #007bff;
+    --dl-ref-accent-blue-hover: #0069d9;
+    --dl-ref-terminal-bg: #05070a;
+    --dl-ref-panel-bg: #0d1117;
+    --dl-ref-panel-elevated: #161b22;
+    --dl-ref-slate-500: #64748b;
+    --dl-ref-slate-600: #475569;
+    --dl-ref-secondary: #edb1ff;
+    --dl-ref-tertiary: #e9c400;
+    --dl-ref-error: #ffb4ab;
 }
 
 html,
@@ -486,4 +512,377 @@ body.devlog-body {
         padding-top: 0.65rem;
         padding-bottom: 0.65rem;
     }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Public site — blog detay.html (navbar + footer) Bootstrap karşılığı       */
+/* -------------------------------------------------------------------------- */
+
+body.devlog-public-body {
+    background-color: var(--dl-ref-background);
+    color: var(--dl-ref-on-surface);
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.devlog-public-header {
+    background-color: var(--dl-ref-terminal-bg);
+    border-color: var(--dl-ref-border-ide) !important;
+}
+
+.devlog-public-header .devlog-public-brand-text {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: -0.04em;
+    color: var(--dl-ref-accent-blue);
+}
+
+.devlog-public-nav-link {
+    color: var(--dl-ref-slate-500);
+    text-decoration: none;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: color 0.15s ease;
+}
+
+.devlog-public-nav-link:hover {
+    color: #f1f5f9;
+}
+
+.devlog-public-nav-link.active {
+    color: #f1f5f9;
+}
+
+.devlog-public-btn-outline {
+    color: var(--dl-ref-slate-500);
+    border: 1px solid transparent;
+    background: transparent;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.devlog-public-btn-outline:hover {
+    color: #f1f5f9;
+    background-color: rgba(30, 41, 59, 0.6);
+}
+
+.devlog-public-btn-primary {
+    background-color: var(--dl-ref-accent-blue);
+    color: #fff;
+    border: none;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.devlog-public-btn-primary:hover {
+    background-color: var(--dl-ref-accent-blue-hover);
+    color: #fff;
+}
+
+.devlog-public-search {
+    background-color: var(--dl-ref-surface-container);
+    border: 1px solid var(--dl-ref-border-ide);
+    color: var(--dl-ref-on-surface);
+    border-radius: 0;
+}
+
+.devlog-public-search:focus {
+    border-color: var(--dl-ref-primary);
+    box-shadow: 0 0 0 1px var(--dl-ref-primary);
+    outline: none;
+}
+
+.devlog-public-footer {
+    background-color: var(--dl-ref-terminal-bg);
+    border-color: var(--dl-ref-border-ide) !important;
+    margin-top: auto;
+}
+
+.devlog-public-footer-link {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.75rem;
+    color: var(--dl-ref-slate-600);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.devlog-public-footer-link:hover {
+    color: var(--dl-ref-accent-blue);
+}
+
+.devlog-public-footer-icon {
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid var(--dl-ref-border-ide);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--dl-ref-slate-500);
+    transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.devlog-public-footer-icon:hover {
+    color: var(--dl-ref-primary);
+    border-color: var(--dl-ref-outline-variant);
+    cursor: pointer;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Yazar paneli — yazar_panel.html (sidebar + üst bar)                         */
+/* -------------------------------------------------------------------------- */
+
+body.devlog-panel-body {
+    background-color: var(--dl-ref-panel-bg);
+    color: var(--dl-ref-on-surface);
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    min-height: 100vh;
+}
+
+.devlog-panel-sidebar {
+    width: 16rem;
+    background-color: var(--dl-ref-panel-bg);
+    border-right: 1px solid var(--dl-ref-border-ide);
+    z-index: 1040;
+}
+
+.devlog-panel-sidebar__brand {
+    font-weight: 900;
+    font-size: 1.25rem;
+    letter-spacing: -0.04em;
+    color: var(--dl-ref-accent-blue);
+    font-family: "Space Grotesk", system-ui, sans-serif;
+}
+
+.devlog-panel-sidebar__version {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--dl-ref-slate-500);
+}
+
+.devlog-panel-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: var(--dl-ref-slate-500);
+    text-decoration: none;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    border-left: 4px solid transparent;
+    transition: background-color 0.1s ease, color 0.1s ease;
+}
+
+.devlog-panel-nav-link:hover {
+    background-color: #1c2128;
+    color: #fff;
+}
+
+.devlog-panel-nav-link.active {
+    background-color: var(--dl-ref-panel-elevated);
+    color: var(--dl-ref-accent-blue);
+    border-left-color: var(--dl-ref-accent-blue);
+}
+
+.devlog-panel-nav-link .material-symbols-outlined {
+    font-size: 1.25rem;
+}
+
+.devlog-panel-offcanvas {
+    background-color: var(--dl-ref-panel-bg);
+    border-right: 1px solid var(--dl-ref-border-ide);
+    width: min(18rem, 88vw);
+}
+
+.devlog-panel-wrap {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 992px) {
+    .devlog-panel-wrap {
+        margin-left: 16rem;
+        width: calc(100% - 16rem);
+    }
+}
+
+.devlog-panel-header {
+    background-color: var(--dl-ref-panel-bg);
+    border-bottom: 1px solid var(--dl-ref-border-ide);
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+}
+
+.devlog-panel-header .devlog-panel-breadcrumb {
+    color: var(--dl-ref-slate-500);
+    font-size: 0.875rem;
+}
+
+.devlog-panel-header .devlog-panel-search-wrap {
+    background-color: var(--dl-ref-panel-elevated);
+    border: 1px solid var(--dl-ref-border-ide);
+    border-radius: 0.125rem;
+}
+
+.devlog-panel-header .devlog-panel-search-input {
+    background: transparent;
+    border: none;
+    color: var(--dl-ref-on-surface);
+    font-size: 0.75rem;
+    width: 12rem;
+}
+
+.devlog-panel-header .devlog-panel-search-input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.devlog-panel-content {
+    flex: 1 1 auto;
+    background-color: var(--dl-ref-panel-bg);
+}
+
+.devlog-panel-welcome-name {
+    color: var(--dl-ref-primary);
+    font-weight: 600;
+}
+
+.devlog-panel-body.devlog-scrollbar::-webkit-scrollbar-track {
+    background: var(--dl-ref-terminal-bg);
+}
+
+.devlog-panel-body.devlog-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--dl-ref-border-ide);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Panel CMS — yeni blog / bloglarım (Bootstrap + tema değişkenleri)          */
+/* -------------------------------------------------------------------------- */
+
+.devlog-cms-card {
+    background-color: var(--dl-ref-surface-container-low);
+    border: 1px solid var(--dl-ref-border-ide);
+}
+
+.devlog-cms-input.form-control,
+.devlog-cms-input.form-select {
+    background-color: var(--dl-ref-terminal-bg);
+    border-color: var(--dl-ref-border-ide);
+    color: var(--dl-ref-on-surface);
+}
+
+.devlog-cms-input:focus,
+.devlog-cms-input .form-control:focus,
+.devlog-cms-input.form-select:focus {
+    background-color: var(--dl-ref-terminal-bg);
+    border-color: var(--dl-ref-accent-blue);
+    color: var(--dl-ref-on-surface);
+    box-shadow: 0 0 0 1px var(--dl-ref-accent-blue);
+}
+
+.devlog-cms-input-group .devlog-cms-input-addon {
+    background-color: var(--dl-ref-terminal-bg);
+    border-color: var(--dl-ref-border-ide);
+    color: var(--dl-ref-slate-500);
+}
+
+.devlog-cms-editor-toolbar {
+    background-color: var(--dl-ref-panel-elevated);
+}
+
+.devlog-cms-editor-body {
+    background-color: var(--dl-ref-terminal-bg);
+}
+
+.devlog-cms-textarea {
+    background-color: transparent !important;
+    min-height: 22rem;
+    resize: vertical;
+}
+
+.devlog-cms-textarea:focus {
+    box-shadow: none !important;
+}
+
+.devlog-cms-badge-code {
+    background-color: rgba(0, 123, 255, 0.12);
+    border: 1px solid rgba(0, 123, 255, 0.35);
+    color: var(--dl-ref-primary);
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+}
+
+.devlog-cms-stat {
+    background-color: var(--dl-ref-panel-elevated);
+    border: 1px solid var(--dl-ref-border-ide);
+}
+
+.devlog-cms-table-wrap {
+    background-color: var(--dl-ref-terminal-bg);
+}
+
+.devlog-cms-table {
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--dl-ref-on-surface);
+    --bs-table-hover-bg: var(--dl-ref-panel-elevated);
+    border-color: var(--dl-ref-border-ide);
+}
+
+.devlog-cms-table thead th {
+    border-bottom-color: var(--dl-ref-border-ide);
+}
+
+.devlog-cms-table tbody td {
+    border-color: var(--dl-ref-border-ide);
+}
+
+.devlog-cms-table-head th {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+}
+
+.devlog-cms-kategori-badge {
+    background-color: rgba(110, 32, 140, 0.2);
+    border: 1px solid rgba(237, 177, 255, 0.35);
+    color: var(--dl-ref-secondary);
+    font-size: 0.65rem;
+    font-weight: 700;
+}
+
+.devlog-cms-status-dot {
+    width: 0.4rem;
+    height: 0.4rem;
+    flex-shrink: 0;
+}
+
+.devlog-cms-submit-btn {
+    letter-spacing: 0.12em;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Blog detay — içerik gövdesi + yıldız puanlama                              */
+/* -------------------------------------------------------------------------- */
+
+.devlog-blog-detail-body {
+    background-color: var(--dl-ref-surface-container-low);
+    border: 1px solid var(--dl-ref-border-ide);
+}
+
+.devlog-rating-stars .btn-link:hover {
+    color: var(--dl-tertiary) !important;
+}
+
+.devlog-rating-stars .material-symbols-outlined.fill {
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }

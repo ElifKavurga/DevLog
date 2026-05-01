@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+                template="/WEB-INF/templates/panelTemplate.xhtml">
+
+    <f:metadata>
+        <f:viewAction action="#{blogEkleController.hazirla}"/>
+    </f:metadata>
+
+    <ui:define name="title">DevLog — Yeni blog ekle</ui:define>
+
+    <ui:define name="content">
+        <div class="mx-auto" style="max-width: 1140px;">
+            <header class="mb-4 pb-4 border-bottom border-secondary border-opacity-25">
+                <h1 class="devlog-headline mb-2" style="font-size: 2rem;">Yeni blog ekle</h1>
+                <p class="devlog-mono-label text-secondary mb-0">/dev/log/content/drafts/new_entry.md</p>
+            </header>
+
+            <h:messages globalOnly="true" styleClass="list-unstyled mb-3" errorClass="alert alert-danger rounded-0 small"
+                        infoClass="alert alert-info rounded-0 small"/>
+
+            <h:form id="blogEkleForm" styleClass="mb-0">
+                <div class="row g-4">
+                    <div class="col-12 col-lg-8 d-flex flex-column gap-4">
+                        <section class="devlog-cms-card p-4">
+                            <div class="mb-3">
+                                <label class="form-label devlog-mono-label text-secondary mb-2" for="baslik">Başlık</label>
+                                <h:inputText id="baslik" value="#{blogEkleController.baslik}" maxlength="500"
+                                             styleClass="form-control devlog-cms-input rounded-0 font-monospace"
+                                             pt:placeholder="Örn. Jakarta EE ile güvenli API tasarımı"/>
+                            </div>
+                            <div class="row g-3">
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label devlog-mono-label text-secondary mb-2" for="kategori">Kategori</label>
+                                    <h:selectOneMenu id="kategori" value="#{blogEkleController.kategoriId}"
+                                                     styleClass="form-select devlog-cms-input rounded-0 font-monospace">
+                                        <f:selectItem itemLabel="Kategori seçin" itemValue="#{null}" noSelectionOption="true"/>
+                                        <f:selectItems value="#{blogEkleController.kategoriler}" var="kat"
+                                                       itemValue="#{kat.id}" itemLabel="#{kat.isim}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label devlog-mono-label text-secondary mb-2" for="okuma">Okuma süresi (dk)</label>
+                                    <div class="input-group">
+                                        <h:inputText id="okuma" value="#{blogEkleController.tahminiOkumaSuresi}"
+                                                     styleClass="form-control devlog-cms-input rounded-0 font-monospace"
+                                                     pt:type="number" pt:min="1" pt:placeholder="5"/>
+                                        <span class="input-group-text devlog-cms-input-addon rounded-0 small text-secondary border-start-0">dk</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="devlog-cms-card p-4">
+                            <label class="form-label devlog-mono-label text-secondary mb-2" for="ozet">Özet</label>
+                            <h:inputTextarea id="ozet" value="#{blogEkleController.ozet}" rows="3"
+                                             styleClass="form-control devlog-cms-input rounded-0 font-monospace"
+                                             pt:placeholder="Arama ve liste görünümleri için kısa özet..."/>
+                        </section>
+
+                        <section class="devlog-cms-editor border border-secondary border-opacity-25">
+                            <div class="devlog-cms-editor-toolbar d-flex align-items-center justify-content-between px-3 py-2 border-bottom border-secondary border-opacity-25">
+                                <div class="d-flex align-items-center gap-1 flex-wrap">
+                                    <span class="material-symbols-outlined text-secondary p-2" title="Kalın">format_bold</span>
+                                    <span class="material-symbols-outlined text-secondary p-2" title="İtalik">format_italic</span>
+                                    <span class="vr text-secondary opacity-25 my-1 mx-1"/>
+                                    <span class="material-symbols-outlined text-secondary p-2" title="Bağlantı">link</span>
+                                    <span class="material-symbols-outlined text-secondary p-2" title="Görsel">image</span>
+                                    <span class="vr text-secondary opacity-25 my-1 mx-1"/>
+                                    <span class="badge rounded-0 devlog-cms-badge-code d-inline-flex align-items-center gap-1 py-2 px-2">
+                                        <span class="material-symbols-outlined" style="font-size: 1rem;">code_blocks</span>
+                                        <span class="small fw-bold">MARKDOWN</span>
+                                    </span>
+                                </div>
+                                <span class="devlog-mono-label text-secondary" style="font-size: 0.65rem;">MARKDOWN DESTEKLİ</span>
+                            </div>
+                            <div class="devlog-cms-editor-body p-0">
+                                <h:inputTextarea id="icerik" value="#{blogEkleController.icerik}" rows="18"
+                                                 styleClass="form-control devlog-cms-textarea border-0 rounded-0 font-monospace small p-4"
+                                                 pt:placeholder="# Blog gövdesini buraya yazın..."/>
+                            </div>
+                        </section>
+                    </div>
+
+                    <div class="col-12 col-lg-4 d-flex flex-column gap-4">
+                        <section class="devlog-cms-card p-4">
+                            <label class="form-label devlog-mono-label text-secondary mb-2" for="kapak">Kapak görseli URL</label>
+                            <h:inputText id="kapak" value="#{blogEkleController.kapakGorseliUrl}" maxlength="2048"
+                                         styleClass="form-control devlog-cms-input rounded-0 font-monospace small"
+                                         pt:placeholder="https://..."/>
+                            <p class="text-secondary font-monospace mt-2 mb-0" style="font-size: 0.65rem;">Önerilen oran 1200×630; boş bırakılabilir.</p>
+                        </section>
+
+                        <section class="devlog-cms-card p-4">
+                            <label class="form-label devlog-mono-label text-secondary mb-2" for="etiketler">Etiketler (virgülle)</label>
+                            <h:inputText id="etiketler" value="#{blogEkleController.etiketler}" maxlength="2000"
+                                         styleClass="form-control devlog-cms-input rounded-0 font-monospace small"
+                                         pt:placeholder="jakarta, jsf, postgres"/>
+                        </section>
+
+                        <section class="devlog-cms-card p-4">
+                            <p class="devlog-mono-label text-secondary mb-2">Yayın</p>
+                            <p class="small text-secondary font-monospace mb-0">Kaydettiğinizde blog <strong class="text-warning">onay bekliyor</strong> durumunda yöneticiye iletilir.</p>
+                        </section>
+
+                        <div class="d-grid gap-2 pt-2">
+                            <h:commandButton id="gonder" value="Onaya gönder" action="#{blogEkleController.kaydet}"
+                                             styleClass="btn btn-primary rounded-0 py-3 font-monospace small fw-bold text-uppercase devlog-cms-submit-btn"/>
+                        </div>
+
+                        <h:panelGroup rendered="#{not empty blogEkleController.hataMesaji}" layout="block"
+                                      styleClass="alert alert-danger rounded-0 small font-monospace mb-0">
+                            #{blogEkleController.hataMesaji}
+                        </h:panelGroup>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

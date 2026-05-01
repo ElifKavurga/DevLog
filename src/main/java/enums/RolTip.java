@@ -1,5 +1,9 @@
 package enums;
 
 public enum RolTip {
-    YONETICI, YAZAR, OKUR
+    /** Tam yetkili sistem yöneticisi (varsayılan seed hesap). */
+    ADMIN,
+    YONETICI,
+    YAZAR,
+    OKUR
 }

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Locale;
 
 @Entity
+@Table(name = "kategori")
 public class Kategori implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

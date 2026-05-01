@@ -1,13 +1,12 @@
-package controller;
+package controller.publicweb;
 
 import entity.Blog;
-import enums.DurumTip;
 import facade.BlogFacade;
-import jakarta.annotation.PostConstruct;
-import jakarta.enterprise.context.RequestScoped;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +14,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Named("kesfetController")
-@RequestScoped
-public class KesfetController {
+@ViewScoped
+public class KesfetController implements Serializable {
 
     private static final Logger LOG = Logger.getLogger(KesfetController.class.getName());
 
@@ -32,15 +31,14 @@ public class KesfetController {
     @Inject
     private BlogFacade blogFacade;
 
-    private List<Blog> yayinlananBloglar;
+    private List<Blog> yayinlananBloglar = new ArrayList<>();
 
-    @PostConstruct
-    public void init() {
+    public void hazirla() {
         try {
-            List<Blog> liste = blogFacade.durumaGoreListele(DurumTip.YAYINLANDI);
-            yayinlananBloglar = liste != null ? liste : new ArrayList<>();
+            List<Blog> liste = blogFacade.yayinlananlariListele();
+            yayinlananBloglar = liste != null ? new ArrayList<>(liste) : new ArrayList<>();
         } catch (RuntimeException e) {
-            LOG.log(Level.WARNING, "Yayınlanan blog listesi yüklenemedi (şema/veri veya persistence).", e);
+            LOG.log(Level.WARNING, "Yayınlanan blog listesi yüklenemedi.", e);
             yayinlananBloglar = new ArrayList<>();
         }
     }
@@ -49,11 +47,10 @@ public class KesfetController {
         return yayinlananBloglar;
     }
 
-    /**
-     * Kapak görselleri veritabanında tutulmadığı için, tasarım gereği dış Unsplash adresleri
-     * döngü indeksine göre seçilir.
-     */
-    public String kapakUrl(int index) {
+    public String kapakUrl(Blog blog, int index) {
+        if (blog != null && blog.getKapakGorseliUrl() != null && !blog.getKapakGorseliUrl().isBlank()) {
+            return blog.getKapakGorseliUrl().trim();
+        }
         return UNSPLASH_KAPAK_URLS.get(Math.floorMod(index, UNSPLASH_KAPAK_URLS.size()));
     }
 
@@ -98,6 +95,9 @@ public class KesfetController {
     }
 
     public String tahminiOkuma(Blog blog) {
+        if (blog != null && blog.getTahminiOkumaSuresi() != null && blog.getTahminiOkumaSuresi() > 0) {
+            return blog.getTahminiOkumaSuresi() + " dk";
+        }
         if (blog == null || blog.getIcerik() == null || blog.getIcerik().isBlank()) {
             return "1 dk";
         }

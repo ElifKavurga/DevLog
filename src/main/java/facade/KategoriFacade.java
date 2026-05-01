@@ -41,4 +41,33 @@ public class KategoriFacade {
         TypedQuery<Kategori> q = em.createQuery(all);
         return q.getResultList();
     }
+
+    public List<Kategori> listeleIdArtan() {
+        return em.createQuery("SELECT k FROM Kategori k ORDER BY k.id ASC", Kategori.class).getResultList();
+    }
+
+    public long blogSayisi(Long kategoriId) {
+        if (kategoriId == null) {
+            return 0L;
+        }
+        Long c = em.createQuery("SELECT COUNT(b) FROM Blog b WHERE b.kategori.id = :kid", Long.class)
+                .setParameter("kid", kategoriId)
+                .getSingleResult();
+        return c == null ? 0L : c;
+    }
+
+    /**
+     * Eski PostgreSQL şemalarında {@code slug} yoksa ekler; {@code @Startup} singleton'ından önce
+     * EclipseLink DDL çalışmayabildiği için uygulama açılışında çağrılır.
+     */
+    public void ensureSlugColumnExists() {
+        em.createNativeQuery("ALTER TABLE kategori ADD COLUMN IF NOT EXISTS slug VARCHAR(200)").executeUpdate();
+    }
+
+    public Kategori bul(Long id) {
+        if (id == null) {
+            return null;
+        }
+        return em.find(Kategori.class, id);
+    }
 }

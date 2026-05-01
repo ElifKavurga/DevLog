@@ -52,6 +52,46 @@ public class BlogFacade {
                 .getResultList();
     }
 
+    /**
+     * Keşfet ana sayfa: yalnızca yayında olan bloglar, en yeni önce.
+     */
+    public List<Blog> yayinlananlariListele() {
+        return em.createQuery(
+                        "SELECT DISTINCT b FROM Blog b "
+                                + "LEFT JOIN FETCH b.yazar LEFT JOIN FETCH b.kategori "
+                                + "WHERE b.durum = :durum ORDER BY b.id DESC",
+                        Blog.class)
+                .setParameter("durum", DurumTip.YAYINLANDI)
+                .getResultList();
+    }
+
+    /**
+     * Admin onay kuyruğu: yalnızca {@link DurumTip#ONAY_BEKLIYOR}, en yeni önce.
+     */
+    public List<Blog> onayBekleyenleriListele() {
+        return em.createQuery(
+                        "SELECT DISTINCT b FROM Blog b "
+                                + "LEFT JOIN FETCH b.yazar LEFT JOIN FETCH b.kategori "
+                                + "WHERE b.durum = :durum ORDER BY b.id DESC",
+                        Blog.class)
+                .setParameter("durum", DurumTip.ONAY_BEKLIYOR)
+                .getResultList();
+    }
+
+    /**
+     * Belirli yazarın tüm blog kayıtları (panel listesi); en yeni önce.
+     */
+    public List<Blog> yazaraGoreListele(Long yazarId) {
+        if (yazarId == null) {
+            return List.of();
+        }
+        return em.createQuery(
+                        "SELECT b FROM Blog b LEFT JOIN FETCH b.kategori WHERE b.yazar.id = :yid ORDER BY b.id DESC",
+                        Blog.class)
+                .setParameter("yid", yazarId)
+                .getResultList();
+    }
+
     public Blog bul(Long id) {
         if (id == null) {
             return null;

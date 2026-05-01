@@ -1,6 +1,7 @@
 package controller;
 
 import entity.Kullanici;
+import enums.RolTip;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
 
@@ -21,6 +22,13 @@ public class OturumBean implements Serializable {
 
     public boolean isGirisYapildi() {
         return aktifKullanici != null;
+    }
+
+    /**
+     * CMS admin menüsü ve sayfaları için; yalnızca {@link RolTip#ADMIN}.
+     */
+    public boolean isAdmin() {
+        return aktifKullanici != null && aktifKullanici.getRol() == RolTip.ADMIN;
     }
 
     public void girisYap(Kullanici kullanici) {
