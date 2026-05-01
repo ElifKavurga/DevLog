@@ -13,76 +13,82 @@
     <ui:define name="title">DevLog — Keşfet</ui:define>
 
     <ui:define name="content">
-        <main class="devlog-container-max px-3 px-md-4 py-5 w-100">
-            <div class="devlog-explore-bar mb-5 d-flex flex-column flex-md-row flex-md-wrap justify-content-md-between align-items-md-start gap-3">
-                <div>
-                    <h1 class="devlog-headline mb-2">Depoyu keşfet</h1>
-                    <p class="text-secondary font-monospace small mb-0">Dizin: /bloglar/en-yeni</p>
-                </div>
-                <h:link outcome="/panel/yeni-blog" styleClass="btn devlog-public-btn-primary rounded-0 px-4 py-2 font-monospace small text-decoration-none text-uppercase align-self-md-center">
-                    Yeni Blog Ekle
-                </h:link>
-            </div>
-
-            <div class="d-flex flex-wrap align-items-center gap-3 gap-md-4 mb-4 pb-4 border-bottom border-secondary">
-                <span class="devlog-mono-label text-secondary">Etikete göre filtrele:</span>
-                <div class="d-flex flex-wrap gap-2">
-                    <button type="button" class="btn btn-sm devlog-filter-chip rounded-0">Backend</button>
-                    <button type="button" class="btn btn-sm devlog-filter-chip rounded-0">Frontend</button>
-                    <button type="button" class="btn btn-sm devlog-filter-chip rounded-0">DevOps</button>
-                    <button type="button" class="btn btn-sm devlog-filter-chip rounded-0">AI</button>
-                    <button type="button" class="btn btn-sm devlog-filter-clear rounded-0">Tümünü temizle</button>
-                </div>
-            </div>
-
-            <ui:fragment rendered="#{empty kesfetController.yayinlananBloglar}">
-                <article class="devlog-card p-5 text-center text-secondary font-monospace small">
-                    Henüz yayınlanan blog yok. Onaylanmış içerikler burada listelenir.
-                </article>
-            </ui:fragment>
-
-            <div class="row g-4">
-                <ui:repeat value="#{kesfetController.yayinlananBloglar}" var="blog" varStatus="st">
-                    <div class="col-12 col-md-6 col-xl-4 d-flex">
-                        <article class="devlog-card overflow-hidden w-100 d-flex flex-column">
-                            <div class="ratio ratio-16x9 devlog-card-img-wrap border-bottom border-secondary border-opacity-25">
-                                <img src="#{kesfetController.kapakUrl(blog, st.index)}"
-                                     alt=""
-                                     class="devlog-card-img object-fit-cover"/>
-                            </div>
-                            <div class="p-4 d-flex flex-column flex-grow-1">
-                                <div class="d-flex justify-content-between align-items-start mb-2 gap-2">
-                                    <span class="devlog-tag px-2 py-1 text-truncate">#{kesfetController.kategoriEtiket(blog)}</span>
-                                    <span class="devlog-mono-label text-secondary flex-shrink-0">#{kesfetController.surumEtiketi(blog)}</span>
-                                </div>
-                                <h2 class="fs-5 mb-2">
-                                    <h:link outcome="/public/blog-detay" styleClass="devlog-card-title text-decoration-none text-white" value="#{empty blog.baslik ? 'Başlıksız' : blog.baslik}">
-                                        <f:param name="id" value="#{blog.id}"/>
-                                    </h:link>
-                                </h2>
-                                <p class="text-secondary small font-monospace devlog-line-clamp flex-grow-1 mb-3">
-                                    #{empty blog.ozet ? '—' : blog.ozet}
-                                </p>
-                                <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 pt-2 mt-auto border-top border-secondary border-opacity-25">
-                                    <div class="d-flex align-items-center gap-2 min-w-0">
-                                        <div class="devlog-avatar flex-shrink-0">#{kesfetController.yazarHarfi(blog)}</div>
-                                        <span class="devlog-mono-label text-truncate" style="color: var(--dl-text);">#{kesfetController.yazarAdi(blog)}</span>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-3 flex-shrink-0">
-                                        <div class="d-flex align-items-center gap-1" title="Ortalama puan">
-                                            <span class="material-symbols-outlined fill" style="color: var(--dl-tertiary); font-size: 1.1rem;">star</span>
-                                            <span class="devlog-mono-label" style="color: var(--dl-text);">#{kesfetController.yildizMetin(blog)}</span>
-                                        </div>
-                                        <div class="d-flex align-items-center gap-1">
-                                            <span class="material-symbols-outlined text-secondary" style="font-size: 1.1rem;">schedule</span>
-                                            <span class="devlog-mono-label text-secondary">#{kesfetController.tahminiOkuma(blog)}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
+        <main class="devlog-home-main w-100 flex-grow-1">
+            <div class="mx-auto px-3 px-md-4 py-4" style="max-width: 1140px;">
+                <header class="mb-4 pb-4 border-bottom border-secondary border-opacity-25 d-flex flex-column flex-md-row flex-md-wrap justify-content-md-between align-items-md-start gap-3">
+                    <div>
+                        <h1 class="devlog-headline mb-2" style="font-size: 2rem;">Keşfet</h1>
+                        <p class="devlog-mono-label text-secondary mb-0">/dev/log/public/index</p>
                     </div>
-                </ui:repeat>
+                    <h:link outcome="/panel/yeni-blog" styleClass="btn btn-primary rounded-0 py-2 px-4 font-monospace small fw-bold text-uppercase devlog-cms-submit-btn text-decoration-none align-self-md-center">
+                        Yeni blog ekle
+                    </h:link>
+                </header>
+
+                <section class="devlog-cms-card p-4 mb-4" aria-labelledby="devlog-home-filter-heading">
+                    <h2 id="devlog-home-filter-heading" class="form-label devlog-mono-label text-secondary mb-3">Etikete göre</h2>
+                    <div class="d-flex flex-wrap gap-2">
+                        <button type="button" class="btn btn-sm rounded-0 font-monospace devlog-home-filter-chip">Backend</button>
+                        <button type="button" class="btn btn-sm rounded-0 font-monospace devlog-home-filter-chip">Frontend</button>
+                        <button type="button" class="btn btn-sm rounded-0 font-monospace devlog-home-filter-chip">DevOps</button>
+                        <button type="button" class="btn btn-sm rounded-0 font-monospace devlog-home-filter-chip">AI</button>
+                        <button type="button" class="btn btn-sm rounded-0 font-monospace devlog-home-filter-chip devlog-home-filter-chip--muted">Tümünü temizle</button>
+                    </div>
+                </section>
+
+                <ui:fragment rendered="#{empty kesfetController.yayinlananBloglar}">
+                    <div class="devlog-cms-card p-5 text-center font-monospace small text-secondary">
+                        Henüz yayınlanan blog yok. Onaylanmış içerikler burada listelenir.
+                    </div>
+                </ui:fragment>
+
+                <div class="row g-4">
+                    <ui:repeat value="#{kesfetController.yayinlananBloglar}" var="blog" varStatus="st">
+                        <div class="col-12 col-lg-6 d-flex">
+                            <article class="devlog-cms-card overflow-hidden w-100 d-flex flex-column p-0">
+                                <div class="devlog-cms-editor-toolbar d-flex align-items-center justify-content-between px-3 py-2 border-bottom border-secondary border-opacity-25">
+                                    <span class="devlog-mono-label text-secondary mb-0">Kayıt</span>
+                                    <span class="font-monospace small text-secondary">#<h:outputText value="#{blog.id}"/></span>
+                                </div>
+                                <div class="ratio ratio-16x9 border-bottom border-secondary border-opacity-25 bg-dark">
+                                    <img src="#{kesfetController.kapakUrl(blog, st.index)}"
+                                         alt=""
+                                         class="object-fit-cover w-100 h-100"/>
+                                </div>
+                                <div class="p-4 d-flex flex-column flex-grow-1">
+                                    <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                                        <span class="devlog-home-kategori-pill font-monospace text-truncate">#{kesfetController.kategoriEtiket(blog)}</span>
+                                        <span class="devlog-mono-label text-secondary flex-shrink-0">#{kesfetController.surumEtiketi(blog)}</span>
+                                    </div>
+                                    <h2 class="fs-5 mb-2 font-monospace">
+                                        <h:link outcome="/public/blog-detay" styleClass="text-white text-decoration-none devlog-home-post-title" value="#{empty blog.baslik ? 'Başlıksız' : blog.baslik}">
+                                            <f:param name="id" value="#{blog.id}"/>
+                                        </h:link>
+                                    </h2>
+                                    <p class="text-secondary small font-monospace devlog-home-post-excerpt flex-grow-1 mb-3">
+                                        #{empty blog.ozet ? '—' : blog.ozet}
+                                    </p>
+                                    <div class="pt-3 mt-auto border-top border-secondary border-opacity-25 d-flex flex-wrap align-items-center justify-content-between gap-2">
+                                        <div class="d-flex align-items-center gap-2 min-w-0">
+                                            <span class="devlog-home-post-avatar font-monospace flex-shrink-0" aria-hidden="true">#{kesfetController.yazarHarfi(blog)}</span>
+                                            <span class="devlog-mono-label text-secondary text-truncate text-uppercase" style="color: var(--dl-ref-on-surface);">#{kesfetController.yazarAdi(blog)}</span>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-3 flex-shrink-0 font-monospace small text-secondary">
+                                            <span class="d-flex align-items-center gap-1" title="Ortalama puan">
+                                                <span class="material-symbols-outlined devlog-home-post-star" style="font-size: 1rem;">star</span>
+                                                <span class="text-white">#{kesfetController.yildizMetin(blog)}</span>
+                                            </span>
+                                            <span class="d-flex align-items-center gap-1">
+                                                <span class="material-symbols-outlined" style="font-size: 1rem;">schedule</span>
+                                                #{kesfetController.tahminiOkuma(blog)}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    </ui:repeat>
+                </div>
             </div>
         </main>
     </ui:define>

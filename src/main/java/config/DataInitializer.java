@@ -3,8 +3,8 @@ package config;
 import entity.Kategori;
 import entity.Kullanici;
 import enums.RolTip;
-import facade.KategoriFacade;
-import facade.KullaniciFacade;
+import facadeLocal.KategoriFacadeLocal;
+import facadeLocal.KullaniciFacadeLocal;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Singleton;
 
@@ -18,10 +18,10 @@ import java.util.List;
 public class DataInitializer {
 
     @EJB
-    private KullaniciFacade kullaniciFacade;
+    private KullaniciFacadeLocal kullaniciFacade;
 
     @EJB
-    private KategoriFacade kategoriFacade;
+    private KategoriFacadeLocal kategoriFacade;
 
     public void seedDefaults() {
         seedAdminIfAbsent();

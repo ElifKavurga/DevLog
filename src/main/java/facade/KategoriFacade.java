@@ -1,6 +1,7 @@
 package facade;
 
 import entity.Kategori;
+import facadeLocal.KategoriFacadeLocal;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -12,7 +13,7 @@ import jakarta.persistence.criteria.Root;
 import java.util.List;
 
 @Stateless
-public class KategoriFacade {
+public class KategoriFacade implements KategoriFacadeLocal {
 
     @PersistenceContext(unitName = "default")
     private EntityManager em;

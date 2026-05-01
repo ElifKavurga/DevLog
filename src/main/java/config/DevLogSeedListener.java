@@ -1,6 +1,6 @@
 package config;
 
-import facade.KategoriFacade;
+import facadeLocal.KategoriFacadeLocal;
 import jakarta.ejb.EJB;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
@@ -14,7 +14,7 @@ import jakarta.servlet.annotation.WebListener;
 public class DevLogSeedListener implements ServletContextListener {
 
     @EJB
-    private KategoriFacade kategoriFacade;
+    private KategoriFacadeLocal kategoriFacade;
 
     @EJB
     private DataInitializer dataInitializer;

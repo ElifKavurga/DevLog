@@ -5,8 +5,8 @@ import entity.Blog;
 import entity.Kategori;
 import entity.Kullanici;
 import enums.DurumTip;
-import facade.BlogFacade;
-import facade.KategoriFacade;
+import facadeLocal.BlogFacadeLocal;
+import facadeLocal.KategoriFacadeLocal;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
@@ -22,10 +22,10 @@ import java.util.List;
 public class BlogEkleController implements Serializable {
 
     @Inject
-    private BlogFacade blogFacade;
+    private BlogFacadeLocal blogFacade;
 
     @Inject
-    private KategoriFacade kategoriFacade;
+    private KategoriFacadeLocal kategoriFacade;
 
     @Inject
     private OturumBean oturum;

@@ -2,6 +2,7 @@ package facade;
 
 import entity.Blog;
 import enums.DurumTip;
+import facadeLocal.BlogFacadeLocal;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -13,7 +14,7 @@ import jakarta.persistence.criteria.Root;
 import java.util.List;
 
 @Stateless
-public class BlogFacade {
+public class BlogFacade implements BlogFacadeLocal {
 
     @PersistenceContext(unitName = "default")
     private EntityManager em;

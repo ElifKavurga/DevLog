@@ -1,7 +1,7 @@
 package controller;
 
 import entity.Kullanici;
-import facade.KullaniciFacade;
+import facadeLocal.KullaniciFacadeLocal;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -11,7 +11,7 @@ import jakarta.inject.Named;
 public class GiriController {
 
     @Inject
-    private KullaniciFacade kullaniciFacade;
+    private KullaniciFacadeLocal kullaniciFacade;
 
     @Inject
     private OturumBean oturumBean;

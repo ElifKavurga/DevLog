@@ -4,7 +4,7 @@ import controller.OturumBean;
 import entity.Blog;
 import entity.Kullanici;
 import enums.DurumTip;
-import facade.BlogFacade;
+import facadeLocal.BlogFacadeLocal;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -21,7 +21,7 @@ public class AdminOnayController implements Serializable {
     private static final DateTimeFormatter TARIH_FMT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     @Inject
-    private BlogFacade blogFacade;
+    private BlogFacadeLocal blogFacade;
 
     @Inject
     private OturumBean oturum;

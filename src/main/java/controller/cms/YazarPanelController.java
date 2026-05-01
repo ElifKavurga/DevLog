@@ -3,7 +3,7 @@ package controller.cms;
 import controller.OturumBean;
 import entity.Blog;
 import enums.DurumTip;
-import facade.BlogFacade;
+import facadeLocal.BlogFacadeLocal;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -20,7 +20,7 @@ public class YazarPanelController implements Serializable {
     private static final DateTimeFormatter OLUSTURMA_FMT = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
     @Inject
-    private BlogFacade blogFacade;
+    private BlogFacadeLocal blogFacade;
 
     @Inject
     private OturumBean oturum;

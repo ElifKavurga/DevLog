@@ -2,7 +2,7 @@ package controller.admin;
 
 import controller.OturumBean;
 import entity.Kategori;
-import facade.KategoriFacade;
+import facadeLocal.KategoriFacadeLocal;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -17,7 +17,7 @@ import java.util.Locale;
 public class KategoriController implements Serializable {
 
     @Inject
-    private KategoriFacade kategoriFacade;
+    private KategoriFacadeLocal kategoriFacade;
 
     @Inject
     private OturumBean oturum;

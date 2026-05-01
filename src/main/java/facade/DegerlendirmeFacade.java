@@ -3,6 +3,7 @@ package facade;
 import entity.Blog;
 import entity.Degerlendirme;
 import entity.Kullanici;
+import facadeLocal.DegerlendirmeFacadeLocal;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -14,7 +15,7 @@ import jakarta.persistence.criteria.Root;
 import java.util.List;
 
 @Stateless
-public class DegerlendirmeFacade {
+public class DegerlendirmeFacade implements DegerlendirmeFacadeLocal {
 
     @PersistenceContext(unitName = "default")
     private EntityManager em;

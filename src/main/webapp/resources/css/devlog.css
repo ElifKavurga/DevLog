@@ -662,6 +662,19 @@ body.devlog-panel-body {
     font-family: "Space Grotesk", system-ui, sans-serif;
 }
 
+.devlog-panel-sidebar__logo {
+    height: 28px;
+    width: auto;
+    max-width: 132px;
+    object-fit: contain;
+    display: block;
+}
+
+.devlog-panel-sidebar a:hover .devlog-panel-sidebar__logo,
+.devlog-panel-offcanvas a:hover .devlog-panel-sidebar__logo {
+    opacity: 0.92;
+}
+
 .devlog-panel-sidebar__version {
     font-size: 0.65rem;
     text-transform: uppercase;
@@ -885,4 +898,160 @@ body.devlog-panel-body {
 
 .devlog-rating-stars .material-symbols-outlined.fill {
     font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Public üst çubuk + Keşfet — panel/CMS ile aynı ref paleti                    */
+/* -------------------------------------------------------------------------- */
+
+.devlog-public-header--ide {
+    background-color: var(--dl-ref-panel-bg) !important;
+    border-color: var(--dl-ref-border-ide) !important;
+}
+
+.devlog-public-header--ide__inner {
+    max-width: 1200px;
+}
+
+.devlog-public-header--ide__row {
+    min-height: 3.5rem;
+}
+
+.devlog-public-header--ide__logo {
+    height: 30px;
+    width: auto;
+    max-width: 140px;
+    object-fit: contain;
+    display: block;
+}
+
+.devlog-public-header--ide__brand:hover .devlog-public-header--ide__logo {
+    opacity: 0.92;
+}
+
+.devlog-public-header--ide__nav {
+    color: var(--dl-ref-slate-500) !important;
+}
+
+.devlog-public-header--ide__nav:hover {
+    color: var(--dl-ref-on-surface) !important;
+}
+
+.devlog-public-header--ide__nav.active {
+    color: var(--dl-ref-accent-blue) !important;
+}
+
+.devlog-public-header--ide__search {
+    background-color: var(--dl-ref-terminal-bg) !important;
+    border-color: var(--dl-ref-border-ide) !important;
+    color: var(--dl-ref-on-surface) !important;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.8rem;
+}
+
+.devlog-public-header--ide__search:focus {
+    border-color: var(--dl-ref-accent-blue) !important;
+    box-shadow: 0 0 0 1px var(--dl-ref-accent-blue) !important;
+}
+
+.devlog-public-header--ide__search-icon {
+    color: var(--dl-ref-slate-500);
+    font-size: 1.15rem;
+}
+
+.devlog-public-header--ide__btn {
+    border-color: var(--dl-ref-border-ide) !important;
+    color: var(--dl-ref-slate-500) !important;
+}
+
+.devlog-public-header--ide__btn:hover {
+    color: var(--dl-ref-on-surface) !important;
+    background-color: rgba(0, 123, 255, 0.08) !important;
+}
+
+.devlog-public-header--ide__btn-primary {
+    background-color: var(--dl-ref-accent-blue) !important;
+    color: #fff !important;
+}
+
+.devlog-public-header--ide__btn-primary:hover {
+    background-color: var(--dl-ref-accent-blue-hover) !important;
+    color: #fff !important;
+}
+
+.devlog-public-header--ide__username {
+    color: var(--dl-ref-slate-500);
+}
+
+body.devlog-public-body:has(.devlog-home-main) {
+    background-color: var(--dl-ref-panel-bg);
+    color: var(--dl-ref-on-surface);
+}
+
+.devlog-home-main {
+    background-color: transparent;
+}
+
+.devlog-home-filter-chip {
+    background-color: var(--dl-ref-terminal-bg);
+    color: var(--dl-ref-on-surface);
+    border: 1px solid var(--dl-ref-border-ide);
+    font-size: 0.7rem;
+}
+
+.devlog-home-filter-chip:hover {
+    border-color: var(--dl-ref-accent-blue);
+    color: var(--dl-ref-accent-blue);
+}
+
+.devlog-home-filter-chip--muted {
+    background-color: var(--dl-ref-panel-elevated);
+    color: var(--dl-ref-slate-500);
+}
+
+.devlog-home-filter-chip--muted:hover {
+    color: var(--dl-ref-on-surface);
+    border-color: var(--dl-ref-outline-variant);
+}
+
+.devlog-home-kategori-pill {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #fff;
+    background-color: var(--dl-ref-accent-blue);
+    max-width: 100%;
+}
+
+.devlog-home-post-title:hover {
+    color: var(--dl-ref-accent-blue) !important;
+}
+
+.devlog-home-post-excerpt {
+    line-height: 1.55;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.devlog-home-post-avatar {
+    width: 1.75rem;
+    height: 1.75rem;
+    border: 1px solid var(--dl-ref-border-ide);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--dl-ref-on-surface);
+    background-color: var(--dl-ref-panel-elevated);
+}
+
+.devlog-home-post-star {
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    color: var(--dl-ref-accent-blue);
 }

@@ -1,7 +1,7 @@
 package controller.publicweb;
 
 import entity.Blog;
-import facade.BlogFacade;
+import facadeLocal.BlogFacadeLocal;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -29,7 +29,7 @@ public class KesfetController implements Serializable {
     );
 
     @Inject
-    private BlogFacade blogFacade;
+    private BlogFacadeLocal blogFacade;
 
     private List<Blog> yayinlananBloglar = new ArrayList<>();
 

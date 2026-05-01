@@ -2,7 +2,7 @@ package controller;
 
 import entity.Kullanici;
 import enums.RolTip;
-import facade.KullaniciFacade;
+import facadeLocal.KullaniciFacadeLocal;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -12,7 +12,7 @@ import jakarta.inject.Named;
 public class KayitController {
 
     @Inject
-    private KullaniciFacade kullaniciFacade;
+    private KullaniciFacadeLocal kullaniciFacade;
 
     @Inject
     private OturumBean oturumBean;

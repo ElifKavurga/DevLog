@@ -5,8 +5,8 @@ import entity.Blog;
 import entity.Degerlendirme;
 import entity.Kullanici;
 import enums.DurumTip;
-import facade.BlogFacade;
-import facade.DegerlendirmeFacade;
+import facadeLocal.BlogFacadeLocal;
+import facadeLocal.DegerlendirmeFacadeLocal;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -32,10 +32,10 @@ public class BlogDetayController implements Serializable {
     );
 
     @Inject
-    private BlogFacade blogFacade;
+    private BlogFacadeLocal blogFacade;
 
     @Inject
-    private DegerlendirmeFacade degerlendirmeFacade;
+    private DegerlendirmeFacadeLocal degerlendirmeFacade;
 
     @Inject
     private OturumBean oturum;
