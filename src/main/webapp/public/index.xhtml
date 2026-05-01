@@ -14,15 +14,17 @@
 
     <ui:define name="content">
         <main class="devlog-home-main w-100 flex-grow-1">
-            <div class="mx-auto px-3 px-md-4 py-4" style="max-width: 1140px;">
+            <div class="container py-4">
                 <header class="mb-4 pb-4 border-bottom border-secondary border-opacity-25 d-flex flex-column flex-md-row flex-md-wrap justify-content-md-between align-items-md-start gap-3">
                     <div>
                         <h1 class="devlog-headline mb-2" style="font-size: 2rem;">Keşfet</h1>
                         <p class="devlog-mono-label text-secondary mb-0">/dev/log/public/index</p>
                     </div>
-                    <h:link outcome="/panel/yeni-blog" styleClass="btn btn-primary rounded-0 py-2 px-4 font-monospace small fw-bold text-uppercase devlog-cms-submit-btn text-decoration-none align-self-md-center">
-                        Yeni blog ekle
-                    </h:link>
+                    <h:form styleClass="mb-0 align-self-md-center">
+                        <h:commandLink action="#{oturum.menuGitYeniBlog}" styleClass="btn btn-primary rounded-0 py-2 px-4 font-monospace small fw-bold text-uppercase devlog-cms-submit-btn text-decoration-none">
+                            Yeni blog ekle
+                        </h:commandLink>
+                    </h:form>
                 </header>
 
                 <section class="devlog-cms-card p-4 mb-4" aria-labelledby="devlog-home-filter-heading">

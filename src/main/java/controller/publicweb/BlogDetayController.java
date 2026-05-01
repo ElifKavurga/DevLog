@@ -7,6 +7,8 @@ import entity.Kullanici;
 import enums.DurumTip;
 import facadeLocal.BlogFacadeLocal;
 import facadeLocal.DegerlendirmeFacadeLocal;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -14,6 +16,8 @@ import jakarta.inject.Named;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Named("blogDetayController")
@@ -43,8 +47,11 @@ public class BlogDetayController implements Serializable {
     private Long id;
     private Blog blog;
     private Integer kullaniciPuani;
+    /** UI: yorum alanı (kalıcı kayıt yok; gönderimde bilgilendirme). */
+    private String yorumMetni;
 
     public void yukle() {
+        yorumMetni = null;
         kullaniciPuani = null;
         if (id == null) {
             blog = null;
@@ -184,5 +191,39 @@ public class BlogDetayController implements Serializable {
             return "—";
         }
         return String.format("v%d.%02d.%02d", t.getYear(), t.getMonthValue(), t.getDayOfMonth());
+    }
+
+    /**
+     * Blog gövdesini satır satır editör görünümü için döndürür (boş satırlar korunur).
+     */
+    public List<String> getIcerikSatirlari() {
+        if (blog == null || blog.getIcerik() == null) {
+            return Collections.emptyList();
+        }
+        return Arrays.asList(blog.getIcerik().split("\\r?\\n", -1));
+    }
+
+    public String getYorumMetni() {
+        return yorumMetni;
+    }
+
+    public void setYorumMetni(String yorumMetni) {
+        this.yorumMetni = yorumMetni;
+    }
+
+    public String yorumGonder() {
+        if (blog == null) {
+            return null;
+        }
+        String t = yorumMetni != null ? yorumMetni.trim() : "";
+        FacesContext ctx = FacesContext.getCurrentInstance();
+        if (t.isEmpty()) {
+            ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Uyarı", "Yorum boş olamaz."));
+            return null;
+        }
+        yorumMetni = "";
+        ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Bilgi",
+                "Bu sürümde yorumlar henüz kalıcı olarak kaydedilmiyor; metniniz yalnızca arayüzde işlendi."));
+        return null;
     }
 }

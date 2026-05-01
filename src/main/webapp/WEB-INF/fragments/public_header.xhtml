@@ -5,41 +5,52 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
     <header class="devlog-public-header devlog-public-header--ide border-bottom sticky-top z-3">
-        <div class="devlog-container-max devlog-public-header--ide__inner px-3 px-md-4">
-            <div class="devlog-public-header--ide__row d-flex justify-content-between align-items-center py-2">
-                <div class="d-flex align-items-center gap-3 gap-md-4 min-w-0">
-                    <h:link outcome="/public/index" styleClass="devlog-public-header--ide__brand text-decoration-none flex-shrink-0" title="Ana sayfa">
-                        <h:graphicImage library="img" name="Logo.png" alt="Ana sayfa" styleClass="devlog-public-header--ide__logo"/>
-                    </h:link>
-                    <nav class="d-none d-md-flex align-items-center gap-4">
-                        <h:link outcome="/public/index" styleClass="devlog-public-nav-link devlog-public-header--ide__nav active">Keşfet</h:link>
-                        <a class="devlog-public-nav-link devlog-public-header--ide__nav" href="#">Kategoriler</a>
-                        <a class="devlog-public-nav-link devlog-public-header--ide__nav" href="#">Hakkımızda</a>
-                    </nav>
-                </div>
-                <div class="d-flex align-items-center gap-2 gap-md-3 flex-shrink-0">
-                    <div class="position-relative d-none d-lg-block">
-                        <input type="search" class="form-control devlog-public-search devlog-public-header--ide__search py-1 ps-3 pe-5 rounded-0"
-                               style="width: 14rem;"
-                               placeholder="Blog veya dosya ara..." aria-label="Ara"/>
-                        <span class="material-symbols-outlined position-absolute end-0 top-50 translate-middle-y me-2 devlog-public-header--ide__search-icon">search</span>
+        <div class="container-fluid px-0">
+            <div class="container py-2">
+                <div class="devlog-public-header--ide__row d-flex flex-wrap align-items-center justify-content-between gap-2">
+                    <div class="d-flex align-items-center gap-2 gap-md-4 min-w-0">
+                        <button type="button" class="btn btn-link text-secondary p-1 border-0 flex-shrink-0 devlog-global-menu-btn" data-bs-toggle="offcanvas"
+                                data-bs-target="#devlogGlobalOffcanvas" aria-controls="devlogGlobalOffcanvas" aria-label="Menüyü aç">
+                            <span class="material-symbols-outlined" aria-hidden="true">terminal</span>
+                        </button>
+                        <h:link outcome="/public/index" styleClass="devlog-public-header--ide__brand text-decoration-none flex-shrink-0" title="Ana sayfa">
+                            <h:graphicImage library="img" name="Logo.png" alt="Ana sayfa" styleClass="devlog-public-header--ide__logo"/>
+                        </h:link>
+                        <nav class="d-none d-md-flex align-items-center gap-3 gap-lg-4">
+                            <h:link outcome="/public/index" styleClass="devlog-public-nav-link devlog-public-header--ide__nav text-uppercase #{view.viewId.endsWith('/public/index.xhtml') ? 'active' : ''}">Keşfet</h:link>
+                            <a class="devlog-public-nav-link devlog-public-header--ide__nav text-uppercase" href="#">Kategoriler</a>
+                            <a class="devlog-public-nav-link devlog-public-header--ide__nav text-uppercase" href="#">Hakkımızda</a>
+                        </nav>
                     </div>
-                    <h:panelGroup rendered="#{not oturum.girisYapildi}" layout="block" styleClass="d-flex align-items-center gap-2">
-                        <h:link outcome="/auth/giris" styleClass="btn devlog-public-btn-outline devlog-public-header--ide__btn rounded-0 px-3 py-2 text-decoration-none">Giriş yap</h:link>
-                        <h:link outcome="/auth/kayit" styleClass="btn devlog-public-btn-primary devlog-public-header--ide__btn-primary rounded-0 px-3 py-2 text-decoration-none">Kayıt ol</h:link>
-                    </h:panelGroup>
-                    <h:panelGroup rendered="#{oturum.girisYapildi}" layout="block" styleClass="d-flex align-items-center gap-2">
-                        <h:link outcome="/panel/bloglarim" styleClass="btn devlog-public-btn-outline devlog-public-header--ide__btn rounded-0 px-2 px-md-3 py-2 small text-decoration-none d-none d-md-inline-block">Bloglarım</h:link>
-                        <h:link outcome="/panel/yeni-blog" styleClass="btn devlog-public-btn-primary devlog-public-header--ide__btn-primary rounded-0 px-2 px-md-3 py-2 small text-decoration-none d-none d-lg-inline-block">Yeni Blog Ekle</h:link>
-                        <span class="font-monospace small devlog-public-header--ide__username text-truncate d-none d-sm-inline" style="max-width: 7rem;" title="#{oturum.aktifKullanici.kullaniciAdi}">
-                            #{oturum.aktifKullanici.kullaniciAdi}
-                        </span>
-                        <h:form styleClass="d-inline mb-0">
-                            <h:commandLink action="#{oturum.cikisYap}" styleClass="btn devlog-public-btn-outline devlog-public-header--ide__btn rounded-0 px-2 py-2 border-0 text-decoration-none small">
-                                Çıkış
-                            </h:commandLink>
-                        </h:form>
-                    </h:panelGroup>
+                    <div class="d-none d-lg-flex align-items-center flex-grow-1 justify-content-center px-2" style="min-width: 0; max-width: 22rem;">
+                        <div class="position-relative w-100">
+                            <input type="search" class="form-control devlog-public-search devlog-public-header--ide__search py-1 ps-3 pe-5 rounded-0 w-100"
+                                   placeholder="Blog veya dosya ara..." aria-label="Ara"/>
+                            <span class="material-symbols-outlined position-absolute end-0 top-50 translate-middle-y me-2 devlog-public-header--ide__search-icon">search</span>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 gap-md-3 flex-shrink-0 ms-md-auto">
+                        <h:panelGroup rendered="#{not oturum.girisYapildi}" layout="block" styleClass="d-flex align-items-center gap-2 flex-wrap justify-content-end">
+                            <h:link outcome="/auth/giris" styleClass="btn devlog-public-btn-outline devlog-public-header--ide__btn rounded-0 px-3 py-2 text-decoration-none text-uppercase small">Giriş yap</h:link>
+                            <h:link outcome="/auth/kayit" styleClass="btn devlog-public-btn-primary devlog-public-header--ide__btn-primary rounded-0 px-3 py-2 text-decoration-none text-uppercase small">Kayıt ol</h:link>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{oturum.girisYapildi}" layout="block" styleClass="d-flex align-items-center gap-2 flex-wrap justify-content-end">
+                            <h:form styleClass="d-flex align-items-center gap-2 flex-wrap mb-0">
+                                <h:commandLink action="#{oturum.menuGitBloglarim}" styleClass="btn devlog-public-btn-outline devlog-public-header--ide__btn rounded-0 px-2 px-md-3 py-2 small text-decoration-none d-none d-md-inline-block text-uppercase">
+                                    Bloglarım
+                                </h:commandLink>
+                                <h:commandLink action="#{oturum.menuGitYeniBlog}" styleClass="btn devlog-public-btn-primary devlog-public-header--ide__btn-primary rounded-0 px-2 px-md-3 py-2 small text-decoration-none d-none d-lg-inline-block text-uppercase">
+                                    Yeni Blog Ekle
+                                </h:commandLink>
+                                <span class="font-monospace small devlog-public-header--ide__username text-truncate d-none d-sm-inline" style="max-width: 7rem;" title="#{oturum.aktifKullanici.kullaniciAdi}">
+                                    #{oturum.aktifKullanici.kullaniciAdi}
+                                </span>
+                                <h:commandLink action="#{oturum.cikisYap}" styleClass="btn devlog-public-btn-outline devlog-public-header--ide__btn rounded-0 px-2 py-2 border-0 text-decoration-none small text-uppercase">
+                                    Çıkış
+                                </h:commandLink>
+                            </h:form>
+                        </h:panelGroup>
+                    </div>
                 </div>
             </div>
         </div>

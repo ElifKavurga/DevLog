@@ -18,15 +18,27 @@
     <ui:insert name="headExtra"/>
 </h:head>
 <h:body styleClass="devlog-auth-body devlog-scrollbar">
+    <ui:include src="/WEB-INF/fragments/panel_sidebar.xhtml"/>
     <div class="devlog-terminal-pattern devlog-auth-shell d-flex flex-column">
         <header class="devlog-header border-bottom py-1 flex-shrink-0">
             <div class="devlog-container-max px-3 d-flex align-items-center justify-content-between">
-                <h:link outcome="/public/index" styleClass="d-flex align-items-center text-decoration-none" title="Ana sayfa">
-                    <h:graphicImage library="img" name="Logo_Amblem.png" alt="DevLog" styleClass="devlog-logo devlog-logo--emblem"/>
-                </h:link>
+                <div class="d-flex align-items-center gap-2">
+                    <button type="button" class="btn btn-link text-secondary p-1 border-0 devlog-global-menu-btn" data-bs-toggle="offcanvas"
+                            data-bs-target="#devlogGlobalOffcanvas" aria-controls="devlogGlobalOffcanvas" aria-label="Menüyü aç">
+                        <span class="material-symbols-outlined" aria-hidden="true">menu</span>
+                    </button>
+                    <h:link outcome="/public/index" styleClass="d-flex align-items-center text-decoration-none" title="Ana sayfa">
+                        <h:graphicImage library="img" name="Logo_Amblem.png" alt="DevLog" styleClass="devlog-logo devlog-logo--emblem"/>
+                    </h:link>
+                </div>
                 <h:link outcome="/public/index" styleClass="font-monospace small text-secondary text-decoration-none">← Ana sayfa</h:link>
             </div>
         </header>
+        <div class="container px-3 pt-2">
+            <h:messages globalOnly="true" layout="block" styleClass="list-unstyled mb-0" warnClass="alert alert-warning rounded-0 small font-monospace border-0 mb-2"
+                        infoClass="alert alert-info rounded-0 small font-monospace border-0 mb-2"
+                        errorClass="alert alert-danger rounded-0 small font-monospace border-0 mb-2"/>
+        </div>
         <div class="devlog-auth-stage flex-grow-1 d-flex align-items-center justify-content-center px-3 py-2 min-h-0">
             <ui:insert name="content"/>
         </div>

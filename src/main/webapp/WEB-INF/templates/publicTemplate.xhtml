@@ -18,8 +18,16 @@
     <ui:insert name="headExtra"/>
 </h:head>
 <h:body styleClass="devlog-public-body devlog-scrollbar min-vh-100 d-flex flex-column">
+    <ui:include src="/WEB-INF/fragments/panel_sidebar.xhtml"/>
     <ui:include src="/WEB-INF/fragments/public_header.xhtml"/>
-    <div class="flex-grow-1 w-100">
+    <div class="container-fluid px-0 flex-shrink-0">
+        <div class="container pt-2 pb-0">
+            <h:messages globalOnly="true" layout="block" styleClass="list-unstyled mb-0" warnClass="alert alert-warning rounded-0 small font-monospace border-0 mb-2"
+                        infoClass="alert alert-info rounded-0 small font-monospace border-0 mb-2"
+                        errorClass="alert alert-danger rounded-0 small font-monospace border-0 mb-2"/>
+        </div>
+    </div>
+    <div class="flex-grow-1 w-100 min-vh-0">
         <ui:insert name="content"/>
     </div>
     <ui:include src="/WEB-INF/fragments/public_footer.xhtml"/>

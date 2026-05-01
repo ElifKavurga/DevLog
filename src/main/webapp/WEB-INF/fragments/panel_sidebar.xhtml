@@ -2,14 +2,18 @@
 <!DOCTYPE html>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
-    <div class="offcanvas offcanvas-start devlog-panel-offcanvas d-lg-none" tabindex="-1" id="panelOffcanvas"
-         aria-labelledby="panelOffcanvasLabel">
-        <div class="offcanvas-header border-bottom border-secondary border-opacity-25">
-            <div>
-                <span id="panelOffcanvasLabel" class="visually-hidden">Panel menüsü</span>
+    <!--
+      DİKKAT: h:commandLink üzerinde pt:onclick veya data-bs-dismiss kullanmayın —
+      JSF'nin form gönderim onclick'i ile çakışır veya Bootstrap preventDefault ile GET/POST kırılır.
+      Tam sayfa yönlendirmede offcanvas zaten sıfırlanır.
+    -->
+    <div class="offcanvas offcanvas-start devlog-global-offcanvas" tabindex="-1" id="devlogGlobalOffcanvas"
+         aria-labelledby="devlogGlobalOffcanvasLabel" data-bs-scroll="false">
+        <div class="offcanvas-header border-bottom devlog-global-offcanvas__border align-items-center">
+            <div class="min-w-0">
+                <span id="devlogGlobalOffcanvasLabel" class="visually-hidden">DevLog menü</span>
                 <h:link outcome="/public/index" styleClass="d-inline-block text-decoration-none" title="Ana sayfa">
                     <h:graphicImage library="img" name="Logo.png" alt="DevLog" styleClass="devlog-panel-sidebar__logo"/>
                 </h:link>
@@ -17,87 +21,64 @@
             </div>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Kapat"></button>
         </div>
-        <div class="offcanvas-body p-0 d-flex flex-column">
-            <div class="flex-grow-1 py-2">
-                <h:link outcome="/panel/bloglarim" styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/panel/bloglarim.xhtml') ? 'active' : ''}" pt:data-bs-dismiss="offcanvas">
-                    <span class="material-symbols-outlined">article</span>
-                    <span>Bloglarım</span>
-                </h:link>
-                <h:link outcome="/panel/yeni-blog" styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/panel/yeni-blog.xhtml') ? 'active' : ''}" pt:data-bs-dismiss="offcanvas">
-                    <span class="material-symbols-outlined">add_box</span>
-                    <span>Yeni blog ekle</span>
-                </h:link>
-                <h:link outcome="/admin/admin-onay" rendered="#{oturum.admin}" styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/admin/admin-onay.xhtml') ? 'active' : ''}" pt:data-bs-dismiss="offcanvas">
-                    <span class="material-symbols-outlined">check_circle</span>
-                    <span>Onay bekleyenler</span>
-                </h:link>
-                <h:link outcome="/admin/kategoriler" rendered="#{oturum.admin}" styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/admin/kategoriler.xhtml') ? 'active' : ''}" pt:data-bs-dismiss="offcanvas">
-                    <span class="material-symbols-outlined">category</span>
-                    <span>Kategoriler</span>
-                </h:link>
-                <h:link outcome="/public/index" styleClass="devlog-panel-nav-link" pt:data-bs-dismiss="offcanvas">
-                    <span class="material-symbols-outlined">home</span>
-                    <span>Siteye dön</span>
-                </h:link>
-            </div>
-            <div class="border-top border-secondary border-opacity-25 p-3 mt-auto">
-                <h:form styleClass="mb-0">
-                    <h:commandLink action="#{oturum.cikisYap}" styleClass="devlog-panel-nav-link border-0 bg-transparent w-100 text-start"
-                                   pt:data-bs-dismiss="offcanvas">
-                        <span class="material-symbols-outlined">logout</span>
-                        <span>Çıkış</span>
+        <div class="offcanvas-body p-0 d-flex flex-column devlog-global-offcanvas__body">
+            <h:form id="sidebarNavForm" styleClass="d-flex flex-column flex-grow-1 mb-0">
+                <nav class="flex-grow-1 py-2" aria-label="Ana menü">
+                    <h:commandLink action="#{oturum.menuGitBloglarim}"
+                                   styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/panel/bloglarim.xhtml') ? 'active' : ''}">
+                        <span class="material-symbols-outlined" aria-hidden="true">article</span>
+                        <span>Bloglarım</span>
                     </h:commandLink>
-                </h:form>
-            </div>
-        </div>
-    </div>
+                    <h:commandLink action="#{oturum.menuGitYeniBlog}"
+                                   styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/panel/yeni-blog.xhtml') ? 'active' : ''}">
+                        <span class="material-symbols-outlined" aria-hidden="true">add_box</span>
+                        <span>Yeni blog ekle</span>
+                    </h:commandLink>
+                    <h:link outcome="/admin/admin-onay" rendered="#{oturum.admin}"
+                            styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/admin/admin-onay.xhtml') ? 'active' : ''}">
+                        <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
+                        <span>Onay bekleyenler</span>
+                    </h:link>
+                    <h:link outcome="/admin/kategoriler" rendered="#{oturum.admin}"
+                            styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/admin/kategoriler.xhtml') ? 'active' : ''}">
+                        <span class="material-symbols-outlined" aria-hidden="true">category</span>
+                        <span>Kategoriler</span>
+                    </h:link>
+                    <h:link outcome="/public/index" styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/public/index.xhtml') ? 'active' : ''}">
+                        <span class="material-symbols-outlined" aria-hidden="true">home</span>
+                        <span>Siteye dön</span>
+                    </h:link>
+                </nav>
 
-    <nav class="devlog-panel-sidebar position-fixed top-0 start-0 d-none d-lg-flex flex-column vh-100">
-        <div class="p-4 border-bottom border-secondary border-opacity-25">
-            <h:link outcome="/public/index" styleClass="d-inline-block text-decoration-none" title="Ana sayfa">
-                <h:graphicImage library="img" name="Logo.png" alt="DevLog" styleClass="devlog-panel-sidebar__logo"/>
-            </h:link>
-            <div class="devlog-panel-sidebar__version mt-2">v1.0.4-stable</div>
-        </div>
-        <div class="flex-grow-1 py-2">
-            <h:link outcome="/panel/bloglarim" styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/panel/bloglarim.xhtml') ? 'active' : ''}">
-                <span class="material-symbols-outlined">article</span>
-                <span>Bloglarım</span>
-            </h:link>
-            <h:link outcome="/panel/yeni-blog" styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/panel/yeni-blog.xhtml') ? 'active' : ''}">
-                <span class="material-symbols-outlined">add_box</span>
-                <span>Yeni blog ekle</span>
-            </h:link>
-            <h:link outcome="/admin/admin-onay" rendered="#{oturum.admin}" styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/admin/admin-onay.xhtml') ? 'active' : ''}">
-                <span class="material-symbols-outlined">check_circle</span>
-                <span>Onay bekleyenler</span>
-            </h:link>
-            <h:link outcome="/admin/kategoriler" rendered="#{oturum.admin}" styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/admin/kategoriler.xhtml') ? 'active' : ''}">
-                <span class="material-symbols-outlined">category</span>
-                <span>Kategoriler</span>
-            </h:link>
-            <h:link outcome="/public/index" styleClass="devlog-panel-nav-link">
-                <span class="material-symbols-outlined">home</span>
-                <span>Siteye dön</span>
-            </h:link>
-        </div>
-        <div class="border-top border-secondary border-opacity-25 p-3 mt-auto">
-            <h:panelGroup rendered="#{oturum.girisYapildi}" layout="block" styleClass="d-flex align-items-center gap-2 px-2 mb-3">
-                <div class="rounded d-flex align-items-center justify-content-center fw-bold small text-white text-uppercase"
-                     style="width: 2rem; height: 2rem; background-color: var(--dl-ref-primary-container); color: var(--dl-ref-on-primary);">
-                    #{empty oturum.aktifKullanici.kullaniciAdi ? '?' : oturum.aktifKullanici.kullaniciAdi.substring(0,1)}
+                <div class="border-top devlog-global-offcanvas__border p-3 mt-auto">
+                    <h:panelGroup rendered="#{oturum.girisYapildi}" layout="block">
+                        <div class="d-flex align-items-center gap-2 px-2 mb-3">
+                            <div class="rounded d-flex align-items-center justify-content-center fw-bold small text-white text-uppercase devlog-global-offcanvas__avatar"
+                                 aria-hidden="true">
+                                #{empty oturum.aktifKullanici.kullaniciAdi ? '?' : oturum.aktifKullanici.kullaniciAdi.substring(0,1)}
+                            </div>
+                            <div class="d-flex flex-column text-truncate" style="max-width: 10rem;">
+                                <span class="small fw-bold text-white text-truncate">#{oturum.aktifKullanici.kullaniciAdi}</span>
+                                <span class="text-secondary devlog-global-offcanvas__role">#{oturum.admin ? 'Admin' : 'Yazar'}</span>
+                            </div>
+                        </div>
+                        <h:commandLink action="#{oturum.cikisYap}" styleClass="devlog-panel-nav-link border-0 bg-transparent w-100 text-start">
+                            <span class="material-symbols-outlined" aria-hidden="true">logout</span>
+                            <span>Çıkış</span>
+                        </h:commandLink>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{not oturum.girisYapildi}" layout="block">
+                        <h:link outcome="/auth/giris" styleClass="devlog-panel-nav-link mb-1 d-block">
+                            <span class="material-symbols-outlined" aria-hidden="true">login</span>
+                            <span>Giriş yap</span>
+                        </h:link>
+                        <h:link outcome="/auth/kayit" styleClass="devlog-panel-nav-link d-block">
+                            <span class="material-symbols-outlined" aria-hidden="true">person_add</span>
+                            <span>Kayıt ol</span>
+                        </h:link>
+                    </h:panelGroup>
                 </div>
-                <div class="d-flex flex-column text-truncate" style="max-width: 7rem;">
-                    <span class="small fw-bold text-white text-truncate">#{oturum.aktifKullanici.kullaniciAdi}</span>
-                    <span class="text-secondary" style="font-size: 0.65rem;">#{oturum.admin ? 'Admin' : 'Yazar'}</span>
-                </div>
-            </h:panelGroup>
-            <h:form styleClass="mb-0">
-                <h:commandLink action="#{oturum.cikisYap}" styleClass="devlog-panel-nav-link border-0 bg-transparent w-100 text-start">
-                    <span class="material-symbols-outlined">logout</span>
-                    <span>Çıkış</span>
-                </h:commandLink>
             </h:form>
         </div>
-    </nav>
+    </div>
 </ui:composition>

@@ -3,6 +3,8 @@ package controller;
 import entity.Kullanici;
 import enums.RolTip;
 import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
 
 import java.io.Serializable;
@@ -38,5 +40,27 @@ public class OturumBean implements Serializable {
     public String cikisYap() {
         aktifKullanici = null;
         return "/public/index?faces-redirect=true";
+    }
+
+    private void uyariGirisGerekli() {
+        FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_WARN,
+                        "Bunu yapabilmek için lütfen giriş yapın.", ""));
+    }
+
+    public String menuGitBloglarim() {
+        if (!isGirisYapildi()) {
+            uyariGirisGerekli();
+            return null;
+        }
+        return "/panel/bloglarim?faces-redirect=true";
+    }
+
+    public String menuGitYeniBlog() {
+        if (!isGirisYapildi()) {
+            uyariGirisGerekli();
+            return null;
+        }
+        return "/panel/yeni-blog?faces-redirect=true";
     }
 }

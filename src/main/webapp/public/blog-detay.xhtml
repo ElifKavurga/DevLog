@@ -4,6 +4,7 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
                 template="/WEB-INF/templates/publicTemplate.xhtml">
 
     <f:metadata>
@@ -18,119 +19,145 @@
     </ui:define>
 
     <ui:define name="content">
-        <main class="devlog-container-max px-3 px-md-4 py-5 w-100">
-            <div class="mb-4">
-                <h:link outcome="/public/index" styleClass="font-monospace small text-secondary text-decoration-none">← Keşfet</h:link>
-            </div>
-
-            <ui:fragment rendered="#{blogDetayController.blog == null}">
-                <article class="devlog-card p-5 text-center text-secondary font-monospace">
-                    Blog bulunamadı veya yayında değil.
-                </article>
-            </ui:fragment>
-
-            <ui:fragment rendered="#{blogDetayController.blog != null}">
-                <header class="mb-5 pb-4 border-bottom border-secondary border-opacity-25">
-                    <div class="mb-3">
-                        <span class="devlog-tag px-3 py-1 d-inline-block">#{blogDetayController.kategoriEtiket()}</span>
-                    </div>
-                    <h1 class="devlog-headline mb-4" style="font-size: clamp(1.75rem, 4vw, 2.5rem); max-width: 48rem;">
-                        #{blogDetayController.blog.baslik}
-                    </h1>
-                    <p class="text-secondary font-monospace lead mb-0" style="font-size: 1rem;">
-                        #{empty blogDetayController.blog.ozet ? '—' : blogDetayController.blog.ozet}
-                    </p>
-                    <div class="d-flex flex-wrap align-items-center gap-4 mt-4 pt-3">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="devlog-avatar" style="width: 3rem; height: 3rem; font-size: 1.1rem;">#{blogDetayController.yazarHarfi()}</div>
-                            <div>
-                                <div class="fw-bold text-white font-monospace small">#{blogDetayController.yazarAdi()}</div>
-                                <div class="devlog-mono-label text-secondary" style="font-size: 0.65rem;">Yazar</div>
-                            </div>
-                        </div>
-                        <div class="vr text-secondary opacity-25 d-none d-sm-block"/>
-                        <div>
-                            <div class="devlog-mono-label text-secondary mb-1" style="font-size: 0.65rem;">Yayın</div>
-                            <div class="fw-bold text-white font-monospace small">#{blogDetayController.yayinTarihiMetni()}</div>
-                        </div>
-                        <div class="vr text-secondary opacity-25 d-none d-sm-block"/>
-                        <div>
-                            <div class="devlog-mono-label text-secondary mb-1" style="font-size: 0.65rem;">Okuma</div>
-                            <div class="fw-bold text-white font-monospace small">#{blogDetayController.tahminiOkuma()}</div>
-                        </div>
-                        <div class="vr text-secondary opacity-25 d-none d-sm-block"/>
-                        <div class="d-flex align-items-center gap-2">
-                            <span class="material-symbols-outlined fill text-warning">star</span>
-                            <span class="fw-bold text-white font-monospace">#{blogDetayController.yildizMetin()}</span>
-                            <span class="devlog-mono-label text-secondary" style="font-size: 0.65rem;">ortalama</span>
-                        </div>
-                    </div>
-                </header>
-
-                <div class="row g-4 align-items-start">
-                    <div class="col-12 col-lg-8">
-                        <div class="ratio ratio-21x9 border border-secondary border-opacity-25 mb-4 bg-black bg-opacity-25">
-                            <img src="#{blogDetayController.kapakUrl()}" alt="" class="object-fit-cover w-100 h-100"/>
-                        </div>
-                        <section class="devlog-blog-detail-body devlog-card p-4 p-md-5">
-                            <div class="d-flex align-items-center justify-content-between border-bottom border-secondary border-opacity-25 pb-2 mb-4">
-                                <span class="font-monospace small text-secondary text-uppercase">İçerik</span>
-                                <span class="devlog-mono-label text-secondary">#{blogDetayController.surumEtiketi()}</span>
-                            </div>
-                            <div class="devlog-detail-content font-monospace small">
-                                <h:outputText styleClass="devlog-pre-icerik" value="#{blogDetayController.blog.icerik}" escape="true"/>
-                            </div>
-                        </section>
-                    </div>
-                    <div class="col-12 col-lg-4">
-                        <aside class="devlog-cms-card p-4 mb-4">
-                            <h2 class="devlog-mono-label text-secondary mb-3">Puanla</h2>
-                            <ui:fragment rendered="#{not oturum.girisYapildi}">
-                                <p class="text-secondary font-monospace small mb-0">
-                                    Puan vermek için <h:link outcome="/auth/giris" styleClass="text-primary">giriş yapın</h:link>.
-                                </p>
-                            </ui:fragment>
-                            <h:panelGroup rendered="#{oturum.girisYapildi}" layout="block">
-                                <p class="text-secondary font-monospace small mb-3">1–5 yıldız; tekrar seçerek güncelleyebilirsiniz.</p>
-                                <h:form id="puanForm" styleClass="mb-0">
-                                    <div class="d-flex flex-wrap align-items-center gap-1 devlog-rating-stars" role="group" aria-label="Blog puanı">
-                                        <h:commandLink action="#{blogDetayController.puanVer(1)}" styleClass="btn btn-link p-1 text-decoration-none border-0 #{blogDetayController.yildizDolu(1) ? 'text-warning' : 'text-secondary'}" title="1 yıldız">
-                                            <span class="material-symbols-outlined #{blogDetayController.yildizDolu(1) ? 'fill' : ''}" style="font-size: 1.75rem;">star</span>
-                                        </h:commandLink>
-                                        <h:commandLink action="#{blogDetayController.puanVer(2)}" styleClass="btn btn-link p-1 text-decoration-none border-0 #{blogDetayController.yildizDolu(2) ? 'text-warning' : 'text-secondary'}" title="2 yıldız">
-                                            <span class="material-symbols-outlined #{blogDetayController.yildizDolu(2) ? 'fill' : ''}" style="font-size: 1.75rem;">star</span>
-                                        </h:commandLink>
-                                        <h:commandLink action="#{blogDetayController.puanVer(3)}" styleClass="btn btn-link p-1 text-decoration-none border-0 #{blogDetayController.yildizDolu(3) ? 'text-warning' : 'text-secondary'}" title="3 yıldız">
-                                            <span class="material-symbols-outlined #{blogDetayController.yildizDolu(3) ? 'fill' : ''}" style="font-size: 1.75rem;">star</span>
-                                        </h:commandLink>
-                                        <h:commandLink action="#{blogDetayController.puanVer(4)}" styleClass="btn btn-link p-1 text-decoration-none border-0 #{blogDetayController.yildizDolu(4) ? 'text-warning' : 'text-secondary'}" title="4 yıldız">
-                                            <span class="material-symbols-outlined #{blogDetayController.yildizDolu(4) ? 'fill' : ''}" style="font-size: 1.75rem;">star</span>
-                                        </h:commandLink>
-                                        <h:commandLink action="#{blogDetayController.puanVer(5)}" styleClass="btn btn-link p-1 text-decoration-none border-0 #{blogDetayController.yildizDolu(5) ? 'text-warning' : 'text-secondary'}" title="5 yıldız">
-                                            <span class="material-symbols-outlined #{blogDetayController.yildizDolu(5) ? 'fill' : ''}" style="font-size: 1.75rem;">star</span>
-                                        </h:commandLink>
-                                    </div>
-                                    <p class="text-secondary font-monospace mt-3 mb-0" style="font-size: 0.7rem;">
-                                        Sizin puanınız:
-                                        <span class="text-white fw-bold">#{blogDetayController.kullaniciPuani != null ? blogDetayController.kullaniciPuani : '—'}</span>
-                                        · Ortalama: <span class="text-white fw-bold">#{blogDetayController.yildizMetin()}</span>
-                                    </p>
-                                </h:form>
-                            </h:panelGroup>
-                        </aside>
-                        <div class="devlog-cms-card p-4">
-                            <h2 class="devlog-mono-label text-secondary mb-2 d-flex align-items-center gap-2">
-                                <span class="material-symbols-outlined" style="font-size: 1rem;">terminal</span> Meta
-                            </h2>
-                            <ul class="list-unstyled font-monospace small text-secondary mb-0" style="font-size: 0.75rem;">
-                                <li class="mb-2">ID: <span class="text-white">#{blogDetayController.blog.id}</span></li>
-                                <li class="mb-2">Kategori: <span class="text-white">#{blogDetayController.kategoriEtiket()}</span></li>
-                                <li class="mb-0">Etiketler: <span class="text-white">#{empty blogDetayController.blog.etiketler ? '—' : blogDetayController.blog.etiketler}</span></li>
-                            </ul>
-                        </div>
+        <main class="devlog-read w-100 flex-grow-1">
+            <div class="container py-4 py-md-5">
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <h:link outcome="/public/index" styleClass="devlog-read-back font-monospace small text-decoration-none">← ~/public/index</h:link>
                     </div>
                 </div>
-            </ui:fragment>
+
+                <ui:fragment rendered="#{blogDetayController.blog == null}">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="devlog-read-empty border devlog-read-border p-5 text-center font-monospace small text-secondary">
+                                Blog bulunamadı veya yayında değil.
+                            </div>
+                        </div>
+                    </div>
+                </ui:fragment>
+
+                <ui:fragment rendered="#{blogDetayController.blog != null}">
+                    <div class="row g-4">
+                        <div class="col-12">
+                            <section class="devlog-read-meta border devlog-read-border font-monospace small" aria-label="Yayın bilgisi">
+                                <div class="devlog-read-meta__gutter px-2 py-1 border-bottom devlog-read-border text-secondary">/**</div>
+                                <div class="p-3 p-md-4 text-secondary">
+                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@title</span> <span class="devlog-read-meta__val text-white">#{blogDetayController.blog.baslik}</span></p>
+                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@author</span> <span class="devlog-read-meta__val">#{blogDetayController.yazarAdi()}</span></p>
+                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@category</span> <span class="devlog-read-meta__val">#{blogDetayController.kategoriEtiket()}</span></p>
+                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@readTime</span> <span class="devlog-read-meta__val">#{blogDetayController.tahminiOkuma()}</span></p>
+                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@version</span> <span class="devlog-read-meta__val">#{blogDetayController.surumEtiketi()}</span></p>
+                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@rating</span> <span class="devlog-read-meta__val">#{blogDetayController.yildizMetin()}</span> <span class="text-secondary">avg</span></p>
+                                    <p class="mb-0 devlog-read-meta__line"><span class="devlog-read-meta__kw">@published</span> <span class="devlog-read-meta__val">#{blogDetayController.yayinTarihiMetni()}</span></p>
+                                </div>
+                                <div class="devlog-read-meta__gutter px-2 py-1 border-top devlog-read-border text-secondary">*/</div>
+                            </section>
+                        </div>
+                    </div>
+
+                    <div class="row g-4 align-items-start mt-0">
+                        <div class="col-12 col-lg-8">
+                            <div class="ratio ratio-21x9 border devlog-read-border mb-4 devlog-read-cover">
+                                <img src="#{blogDetayController.kapakUrl()}" alt="" class="object-fit-cover w-100 h-100"/>
+                            </div>
+
+                            <ui:fragment rendered="#{not empty blogDetayController.blog.ozet}">
+                                <p class="font-monospace small text-secondary border-start border-3 devlog-read-accent-border ps-3 mb-4">
+                                    #{blogDetayController.blog.ozet}
+                                </p>
+                            </ui:fragment>
+
+                            <section class="devlog-read-editor border devlog-read-border mb-4" aria-label="İçerik">
+                                <div class="devlog-read-editor__toolbar px-3 py-2 border-bottom devlog-read-border d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                    <span class="devlog-mono-label text-secondary mb-0">İçerik</span>
+                                    <span class="font-monospace text-secondary" style="font-size: 0.7rem;">#{blogDetayController.blog.id}.md</span>
+                                </div>
+                                <div class="devlog-read-editor__body font-monospace small">
+                                    <ui:repeat value="#{blogDetayController.icerikSatirlari}" var="satir" varStatus="st">
+                                        <div class="devlog-read-line d-flex">
+                                            <span class="devlog-read-line__no flex-shrink-0 user-select-none" aria-hidden="true">#{st.index + 1}</span>
+                                            <div class="devlog-read-line__code flex-grow-1 min-w-0">
+                                                <h:outputText value="#{satir}" escape="true"/>
+                                            </div>
+                                        </div>
+                                    </ui:repeat>
+                                </div>
+                            </section>
+
+                            <!-- Terminal tarzı yorum alanı -->
+                            <section class="devlog-read-terminal border devlog-read-border" aria-label="Yorum yaz">
+                                <div class="devlog-read-terminal__titlebar px-3 py-2 border-bottom devlog-read-border d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                    <span class="devlog-mono-label text-secondary mb-0">Yorum — stdin</span>
+                                    <span class="font-monospace text-secondary" style="font-size: 0.65rem;">UTF-8 · yorum</span>
+                                </div>
+                                <div class="devlog-read-terminal__body p-3 p-md-4">
+                                    <div class="devlog-read-terminal__prompt font-monospace small text-secondary mb-2">
+                                        <span class="devlog-read-terminal__user">guest@devlog</span><span class="text-white">:</span><span class="devlog-read-terminal__path">~/blog/#{blogDetayController.blog.id}</span><span class="text-white">$</span>
+                                    </div>
+                                    <h:form id="yorumForm" styleClass="mb-0">
+                                        <label class="form-label devlog-mono-label text-secondary mb-2" for="yorumMetni">Girdi</label>
+                                        <h:inputTextarea id="yorumMetni" value="#{blogDetayController.yorumMetni}" rows="5"
+                                                         styleClass="form-control devlog-read-terminal__input rounded-0 font-monospace small mb-3"
+                                                         pt:placeholder="Yorumunuzu buraya yazın..."/>
+                                        <h:commandButton id="yorumGonder" value="Gönder" action="#{blogDetayController.yorumGonder}"
+                                                         styleClass="btn btn-primary rounded-0 px-4 py-2 font-monospace small fw-bold text-uppercase devlog-cms-submit-btn"/>
+                                    </h:form>
+                                </div>
+                            </section>
+                        </div>
+
+                        <div class="col-12 col-lg-4">
+                            <aside class="devlog-read-aside border devlog-read-border p-4 mb-4">
+                                <h2 class="devlog-mono-label text-secondary mb-3">Puanla</h2>
+                                <ui:fragment rendered="#{not oturum.girisYapildi}">
+                                    <p class="text-secondary font-monospace small mb-0">
+                                        Puan vermek için <h:link outcome="/auth/giris" styleClass="devlog-read-link">giriş yapın</h:link>.
+                                    </p>
+                                </ui:fragment>
+                                <h:panelGroup rendered="#{oturum.girisYapildi}" layout="block">
+                                    <p class="text-secondary font-monospace small mb-3">1–5 yıldız; tekrar seçerek güncelleyebilirsiniz.</p>
+                                    <h:form id="puanForm" styleClass="mb-0">
+                                        <div class="d-flex flex-wrap align-items-center gap-1 devlog-rating-stars" role="group" aria-label="Blog puanı">
+                                            <h:commandLink action="#{blogDetayController.puanVer(1)}" styleClass="btn btn-link p-1 text-decoration-none border-0 #{blogDetayController.yildizDolu(1) ? 'text-warning' : 'text-secondary'}" title="1 yıldız">
+                                                <span class="material-symbols-outlined #{blogDetayController.yildizDolu(1) ? 'fill' : ''}" style="font-size: 1.75rem;">star</span>
+                                            </h:commandLink>
+                                            <h:commandLink action="#{blogDetayController.puanVer(2)}" styleClass="btn btn-link p-1 text-decoration-none border-0 #{blogDetayController.yildizDolu(2) ? 'text-warning' : 'text-secondary'}" title="2 yıldız">
+                                                <span class="material-symbols-outlined #{blogDetayController.yildizDolu(2) ? 'fill' : ''}" style="font-size: 1.75rem;">star</span>
+                                            </h:commandLink>
+                                            <h:commandLink action="#{blogDetayController.puanVer(3)}" styleClass="btn btn-link p-1 text-decoration-none border-0 #{blogDetayController.yildizDolu(3) ? 'text-warning' : 'text-secondary'}" title="3 yıldız">
+                                                <span class="material-symbols-outlined #{blogDetayController.yildizDolu(3) ? 'fill' : ''}" style="font-size: 1.75rem;">star</span>
+                                            </h:commandLink>
+                                            <h:commandLink action="#{blogDetayController.puanVer(4)}" styleClass="btn btn-link p-1 text-decoration-none border-0 #{blogDetayController.yildizDolu(4) ? 'text-warning' : 'text-secondary'}" title="4 yıldız">
+                                                <span class="material-symbols-outlined #{blogDetayController.yildizDolu(4) ? 'fill' : ''}" style="font-size: 1.75rem;">star</span>
+                                            </h:commandLink>
+                                            <h:commandLink action="#{blogDetayController.puanVer(5)}" styleClass="btn btn-link p-1 text-decoration-none border-0 #{blogDetayController.yildizDolu(5) ? 'text-warning' : 'text-secondary'}" title="5 yıldız">
+                                                <span class="material-symbols-outlined #{blogDetayController.yildizDolu(5) ? 'fill' : ''}" style="font-size: 1.75rem;">star</span>
+                                            </h:commandLink>
+                                        </div>
+                                        <p class="text-secondary font-monospace mt-3 mb-0" style="font-size: 0.7rem;">
+                                            Sizin puanınız:
+                                            <span class="text-white fw-bold">#{blogDetayController.kullaniciPuani != null ? blogDetayController.kullaniciPuani : '—'}</span>
+                                            · Ortalama: <span class="text-white fw-bold">#{blogDetayController.yildizMetin()}</span>
+                                        </p>
+                                    </h:form>
+                                </h:panelGroup>
+                            </aside>
+
+                            <div class="devlog-read-aside border devlog-read-border p-4">
+                                <h2 class="devlog-mono-label text-secondary mb-3 d-flex align-items-center gap-2">
+                                    <span class="material-symbols-outlined" style="font-size: 1rem;">data_object</span> Meta
+                                </h2>
+                                <ul class="list-unstyled font-monospace text-secondary mb-0 devlog-read-meta-list">
+                                    <li class="mb-2"><span class="text-secondary">id</span> <span class="text-white">#{blogDetayController.blog.id}</span></li>
+                                    <li class="mb-2"><span class="text-secondary">kategori</span> <span class="text-white">#{blogDetayController.kategoriEtiket()}</span></li>
+                                    <li class="mb-0"><span class="text-secondary">etiketler</span> <span class="text-white">#{empty blogDetayController.blog.etiketler ? '—' : blogDetayController.blog.etiketler}</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </ui:fragment>
+            </div>
         </main>
     </ui:define>
 </ui:composition>

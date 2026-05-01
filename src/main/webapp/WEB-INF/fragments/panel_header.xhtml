@@ -4,26 +4,57 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
-    <header class="devlog-panel-header d-flex align-items-center justify-content-between px-3 px-lg-4 py-2">
-        <div class="d-flex align-items-center gap-2 gap-md-3 flex-grow-1 min-w-0">
-            <button type="button" class="btn btn-link text-secondary d-lg-none p-1 me-1 border-0" data-bs-toggle="offcanvas"
-                    data-bs-target="#panelOffcanvas" aria-controls="panelOffcanvas" aria-label="Menü">
-                <span class="material-symbols-outlined">menu</span>
-            </button>
-            <span class="devlog-panel-breadcrumb font-monospace small text-truncate d-none d-sm-inline">~/panel/bloglarim</span>
-            <div class="devlog-panel-search-wrap d-none d-md-flex align-items-center px-2 py-1 ms-md-2">
-                <span class="material-symbols-outlined text-secondary me-1" style="font-size: 1rem;">search</span>
-                <input type="search" class="devlog-panel-search-input" placeholder="Blog ara..." aria-label="Blog ara"/>
-            </div>
-        </div>
-        <div class="d-flex align-items-center gap-2 gap-md-4 flex-shrink-0">
-            <span class="small d-none d-md-inline text-white">
-                Hoş geldin, <span class="devlog-panel-welcome-name">#{oturum.girisYapildi and oturum.aktifKullanici != null ? oturum.aktifKullanici.kullaniciAdi : 'Misafir'}</span>
-            </span>
-            <div class="d-flex align-items-center gap-2 text-secondary">
-                <span class="material-symbols-outlined" style="cursor: pointer;" title="Bildirimler">notifications</span>
-                <span class="material-symbols-outlined d-none d-sm-inline" style="cursor: pointer;" title="Terminal">terminal</span>
-                <span class="material-symbols-outlined" style="cursor: pointer;" title="Ayarlar">settings</span>
+    <header class="devlog-public-header devlog-public-header--ide border-bottom sticky-top z-3">
+        <div class="container-fluid px-0">
+            <div class="container py-2">
+                <div class="devlog-public-header--ide__row d-flex flex-wrap align-items-center justify-content-between gap-2">
+                    <div class="d-flex align-items-center gap-2 gap-md-4 min-w-0 flex-grow-1 flex-lg-grow-0">
+                        <button type="button" class="btn btn-link text-secondary p-1 border-0 flex-shrink-0 devlog-global-menu-btn" data-bs-toggle="offcanvas"
+                                data-bs-target="#devlogGlobalOffcanvas" aria-controls="devlogGlobalOffcanvas" aria-label="Menüyü aç">
+                            <span class="material-symbols-outlined" aria-hidden="true">terminal</span>
+                        </button>
+                        <h:link outcome="/public/index" styleClass="devlog-public-header--ide__brand text-decoration-none flex-shrink-0" title="Ana sayfa">
+                            <h:graphicImage library="img" name="Logo.png" alt="Ana sayfa" styleClass="devlog-public-header--ide__logo"/>
+                        </h:link>
+                        <nav class="d-none d-md-flex align-items-center gap-3 gap-lg-4">
+                            <h:link outcome="/public/index" styleClass="devlog-public-nav-link devlog-public-header--ide__nav text-uppercase #{view.viewId.endsWith('/public/index.xhtml') ? 'active' : ''}">Keşfet</h:link>
+                            <a class="devlog-public-nav-link devlog-public-header--ide__nav text-uppercase" href="#">Kategoriler</a>
+                            <a class="devlog-public-nav-link devlog-public-header--ide__nav text-uppercase" href="#">Hakkımızda</a>
+                        </nav>
+                    </div>
+                    <div class="order-3 order-lg-2 flex-grow-1 w-100 w-lg-auto d-none d-md-flex justify-content-lg-center px-lg-2" style="min-width: 0;">
+                        <div class="position-relative w-100" style="max-width: 18rem;">
+                            <input type="search" class="form-control devlog-public-search devlog-public-header--ide__search py-1 ps-3 pe-5 rounded-0 w-100"
+                                   placeholder="Blog veya dosya ara..." aria-label="Ara"/>
+                            <span class="material-symbols-outlined position-absolute end-0 top-50 translate-middle-y me-2 devlog-public-header--ide__search-icon">search</span>
+                        </div>
+                    </div>
+                    <div class="order-2 order-lg-3 d-flex align-items-center gap-2 gap-md-3 flex-shrink-0 ms-lg-auto flex-wrap justify-content-end">
+                        <span class="d-none d-xl-inline font-monospace small text-secondary text-truncate devlog-panel-header__path order-lg-0" title="#{panelYol.kisaYol}">
+                            #{panelYol.kisaYol}
+                        </span>
+                        <h:panelGroup rendered="#{not oturum.girisYapildi}" layout="block" styleClass="d-flex align-items-center gap-2">
+                            <h:link outcome="/auth/giris" styleClass="btn devlog-public-btn-outline devlog-public-header--ide__btn rounded-0 px-3 py-2 text-decoration-none text-uppercase small">Giriş yap</h:link>
+                            <h:link outcome="/auth/kayit" styleClass="btn devlog-public-btn-primary devlog-public-header--ide__btn-primary rounded-0 px-3 py-2 text-decoration-none text-uppercase small">Kayıt ol</h:link>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{oturum.girisYapildi}" layout="block" styleClass="d-flex align-items-center gap-2 flex-wrap">
+                            <h:form styleClass="d-flex align-items-center gap-2 flex-wrap mb-0">
+                                <h:commandLink action="#{oturum.menuGitBloglarim}" styleClass="btn devlog-public-btn-outline devlog-public-header--ide__btn rounded-0 px-2 px-md-3 py-2 small text-decoration-none d-none d-md-inline-block text-uppercase">
+                                    Bloglarım
+                                </h:commandLink>
+                                <h:commandLink action="#{oturum.menuGitYeniBlog}" styleClass="btn devlog-public-btn-primary devlog-public-header--ide__btn-primary rounded-0 px-2 px-md-3 py-2 small text-decoration-none d-none d-lg-inline-block text-uppercase">
+                                    Yeni Blog Ekle
+                                </h:commandLink>
+                                <span class="font-monospace small devlog-public-header--ide__username text-truncate d-none d-sm-inline" style="max-width: 7rem;" title="#{oturum.aktifKullanici.kullaniciAdi}">
+                                    #{oturum.aktifKullanici.kullaniciAdi}
+                                </span>
+                                <h:commandLink action="#{oturum.cikisYap}" styleClass="btn devlog-public-btn-outline devlog-public-header--ide__btn rounded-0 px-2 py-2 border-0 text-decoration-none small text-uppercase">
+                                    Çıkış
+                                </h:commandLink>
+                            </h:form>
+                        </h:panelGroup>
+                    </div>
+                </div>
             </div>
         </div>
     </header>

@@ -19,10 +19,19 @@
 </h:head>
 <h:body styleClass="devlog-panel-body devlog-scrollbar">
     <ui:include src="/WEB-INF/fragments/panel_sidebar.xhtml"/>
-    <div class="devlog-panel-wrap d-flex flex-column">
+    <div class="devlog-panel-wrap d-flex flex-column min-w-0">
         <ui:include src="/WEB-INF/fragments/panel_header.xhtml"/>
-        <main class="devlog-panel-content flex-grow-1 w-100 px-3 px-lg-5 py-4">
-            <ui:insert name="content"/>
+        <div class="container-fluid px-0">
+            <div class="container px-3 px-lg-4 pt-2 pb-0">
+                <h:messages globalOnly="true" layout="block" styleClass="list-unstyled mb-0" warnClass="alert alert-warning rounded-0 small font-monospace border-0 mb-2"
+                            infoClass="alert alert-info rounded-0 small font-monospace border-0 mb-2"
+                            errorClass="alert alert-danger rounded-0 small font-monospace border-0 mb-2"/>
+            </div>
+        </div>
+        <main class="devlog-panel-content flex-grow-1 w-100 min-vh-0 py-4">
+            <div class="container px-3 px-lg-4">
+                <ui:insert name="content"/>
+            </div>
         </main>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

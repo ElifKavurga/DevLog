@@ -647,13 +647,6 @@ body.devlog-panel-body {
     min-height: 100vh;
 }
 
-.devlog-panel-sidebar {
-    width: 16rem;
-    background-color: var(--dl-ref-panel-bg);
-    border-right: 1px solid var(--dl-ref-border-ide);
-    z-index: 1040;
-}
-
 .devlog-panel-sidebar__brand {
     font-weight: 900;
     font-size: 1.25rem;
@@ -671,7 +664,7 @@ body.devlog-panel-body {
 }
 
 .devlog-panel-sidebar a:hover .devlog-panel-sidebar__logo,
-.devlog-panel-offcanvas a:hover .devlog-panel-sidebar__logo {
+.devlog-global-offcanvas a:hover .devlog-panel-sidebar__logo {
     opacity: 0.92;
 }
 
@@ -712,23 +705,70 @@ body.devlog-panel-body {
     font-size: 1.25rem;
 }
 
-.devlog-panel-offcanvas {
-    background-color: var(--dl-ref-panel-bg);
-    border-right: 1px solid var(--dl-ref-border-ide);
-    width: min(18rem, 88vw);
-}
-
 .devlog-panel-wrap {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
-@media (min-width: 992px) {
-    .devlog-panel-wrap {
-        margin-left: 16rem;
-        width: calc(100% - 16rem);
-    }
+/* Global menü: tüm kırılımlarda kapalı; tetikleyici ile açılır */
+.devlog-global-offcanvas {
+    background-color: #0d1117;
+    border-right: 1px solid #21262d;
+    width: min(19rem, 92vw);
+    z-index: 1045;
+}
+
+.devlog-global-offcanvas__border {
+    border-color: #21262d !important;
+}
+
+.devlog-global-offcanvas__body {
+    background-color: #0d1117;
+}
+
+.devlog-global-offcanvas__avatar {
+    width: 2rem;
+    height: 2rem;
+    background-color: var(--dl-ref-primary-container);
+    color: var(--dl-ref-on-primary);
+}
+
+.devlog-global-offcanvas__role {
+    font-size: 0.65rem;
+}
+
+.devlog-global-offcanvas .offcanvas-header {
+    background-color: #010409;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+}
+
+.devlog-global-offcanvas .offcanvas-body,
+.devlog-global-offcanvas nav {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+}
+
+.devlog-global-offcanvas .devlog-panel-nav-link {
+    width: 100%;
+    border-radius: 0;
+    text-align: start;
+}
+
+.devlog-global-offcanvas .devlog-panel-nav-link.active {
+    border-left-color: #007bff !important;
+    border-left-width: 4px;
+    background-color: #161b22;
+    color: #58a6ff !important;
+}
+
+.devlog-global-menu-btn:focus {
+    box-shadow: none !important;
+}
+
+.devlog-panel-header__path {
+    max-width: 16rem;
+    letter-spacing: 0.02em;
 }
 
 .devlog-panel-header {
@@ -1054,4 +1094,163 @@ body.devlog-public-body:has(.devlog-home-main) {
 .devlog-home-post-star {
     font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
     color: var(--dl-ref-accent-blue);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Blog okuma — terminal / editör görünümü (#0d1117)                           */
+/* -------------------------------------------------------------------------- */
+
+body.devlog-public-body:has(.devlog-read) {
+    background-color: #0d1117;
+    color: #e6edf3;
+}
+
+.devlog-read__inner {
+    max-width: 1140px;
+}
+
+.devlog-read-back {
+    color: #6e7681;
+}
+
+.devlog-read-back:hover {
+    color: var(--dl-ref-accent-blue);
+}
+
+.devlog-read-border {
+    border-color: #30363d !important;
+}
+
+.devlog-read-empty {
+    background-color: #161b22;
+}
+
+.devlog-read-meta {
+    background-color: #161b22;
+}
+
+.devlog-read-meta__gutter {
+    background-color: #010409;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+}
+
+.devlog-read-meta__line {
+    line-height: 1.65;
+}
+
+.devlog-read-meta__kw {
+    color: #79c0ff;
+    margin-right: 0.35rem;
+}
+
+.devlog-read-meta__val {
+    color: #c9d1d9;
+}
+
+.devlog-read-cover {
+    background-color: #010409;
+}
+
+.devlog-read-editor {
+    background-color: #161b22;
+}
+
+.devlog-read-editor__toolbar {
+    background-color: #0d1117;
+}
+
+.devlog-read-editor__body {
+    background-color: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.75;
+}
+
+.devlog-read-line {
+    border-left: 2px solid transparent;
+}
+
+.devlog-read-line:hover {
+    border-left-color: rgba(56, 139, 253, 0.35);
+    background-color: rgba(110, 118, 129, 0.08);
+}
+
+.devlog-read-line__no {
+    width: 3rem;
+    min-width: 3rem;
+    padding: 0.15rem 0.5rem 0.15rem 0.75rem;
+    text-align: right;
+    color: #484f58;
+    font-size: 0.75rem;
+    border-right: 1px solid #21262d;
+    background-color: #010409;
+}
+
+.devlog-read-line__code {
+    padding: 0.15rem 1rem 0.15rem 0.75rem;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.devlog-read-aside {
+    background-color: #161b22;
+}
+
+.devlog-read-link {
+    color: var(--dl-ref-accent-blue);
+}
+
+.devlog-read-link:hover {
+    color: #58a6ff;
+}
+
+.devlog-read-accent-border {
+    border-color: var(--dl-ref-accent-blue) !important;
+}
+
+.devlog-read-meta-list {
+    font-size: 0.75rem;
+}
+
+/* Blog detay — terminal yorum alanı */
+.devlog-read-terminal {
+    background-color: #010409;
+    border-color: #30363d !important;
+}
+
+.devlog-read-terminal__titlebar {
+    background-color: #0d1117;
+}
+
+.devlog-read-terminal__body {
+    background-color: #010409;
+}
+
+.devlog-read-terminal__user {
+    color: #3fb950;
+}
+
+.devlog-read-terminal__path {
+    color: #58a6ff;
+}
+
+.devlog-read-terminal__input {
+    background-color: #0d1117 !important;
+    border: 1px solid #30363d !important;
+    color: #c9d1d9 !important;
+    resize: vertical;
+    min-height: 8rem;
+}
+
+.devlog-read-terminal__input:focus {
+    border-color: var(--dl-ref-accent-blue) !important;
+    box-shadow: 0 0 0 1px var(--dl-ref-accent-blue) !important;
+    color: #e6edf3 !important;
+}
+
+/* Genel: yatay taşmayı azalt */
+body.devlog-public-body,
+body.devlog-panel-body {
+    overflow-x: clip;
 }
