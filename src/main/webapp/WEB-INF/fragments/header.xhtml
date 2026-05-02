@@ -18,11 +18,6 @@
                     </nav>
                 </div>
                 <div class="d-flex align-items-center gap-3">
-                    <div class="position-relative d-none d-lg-block">
-                        <input type="text" class="form-control devlog-search rounded-0 py-1 ps-3 pe-5" style="width: 16rem;"
-                               placeholder="Dosya veya yazı ara..." aria-label="Ara"/>
-                        <span class="material-symbols-outlined position-absolute end-0 top-50 translate-middle-y me-2 text-secondary">search</span>
-                    </div>
                     <div class="d-flex align-items-center gap-2 flex-wrap justify-content-end">
                         <h:panelGroup rendered="#{not oturumController.girisYapildi}" layout="block" styleClass="d-flex align-items-center gap-2">
                             <h:link outcome="/auth/giris" styleClass="btn devlog-btn-login rounded-0 px-3 py-1 text-decoration-none">Giriş yap</h:link>

@@ -7,6 +7,10 @@ import facadeLocal.YorumFacadeLocal;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Root;
 
 import java.util.List;
 
@@ -34,10 +38,13 @@ public class YorumFacade implements YorumFacadeLocal {
         if (kullaniciId == null) {
             return List.of();
         }
-        return em.createQuery(
-                        "SELECT y FROM Yorum y JOIN FETCH y.blog b WHERE y.kullanici.id = :kid ORDER BY y.olusturulmaTarihi DESC",
-                        Yorum.class)
-                .setParameter("kid", kullaniciId)
-                .getResultList();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Yorum> cq = cb.createQuery(Yorum.class);
+        Root<Yorum> root = cq.from(Yorum.class);
+        root.fetch("blog", JoinType.INNER);
+        cq.select(root);
+        cq.where(cb.equal(root.get("kullanici").get("id"), kullaniciId));
+        cq.orderBy(cb.desc(root.get("olusturulmaTarihi")));
+        return em.createQuery(cq).getResultList();
     }
 }

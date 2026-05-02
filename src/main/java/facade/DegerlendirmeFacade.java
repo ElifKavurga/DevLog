@@ -10,6 +10,8 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Fetch;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Root;
 
 import java.util.List;
@@ -40,27 +42,28 @@ public class DegerlendirmeFacade implements DegerlendirmeFacadeLocal {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Degerlendirme> cq = cb.createQuery(Degerlendirme.class);
         Root<Degerlendirme> root = cq.from(Degerlendirme.class);
-        CriteriaQuery<Degerlendirme> all = cq.select(root);
-        TypedQuery<Degerlendirme> q = em.createQuery(all);
+        cq.select(root);
+        TypedQuery<Degerlendirme> q = em.createQuery(cq);
         return q.getResultList();
     }
 
+    @Override
     public Degerlendirme bulBlogVeKullanici(Long blogId, Long kullaniciId) {
         if (blogId == null || kullaniciId == null) {
             return null;
         }
-        List<Degerlendirme> sonuc = em.createQuery(
-                        "SELECT d FROM Degerlendirme d WHERE d.blog.id = :bid AND d.kullanici.id = :kid",
-                        Degerlendirme.class)
-                .setParameter("bid", blogId)
-                .setParameter("kid", kullaniciId)
-                .getResultList();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Degerlendirme> cq = cb.createQuery(Degerlendirme.class);
+        Root<Degerlendirme> root = cq.from(Degerlendirme.class);
+        cq.select(root);
+        cq.where(
+                cb.equal(root.get("blog").get("id"), blogId),
+                cb.equal(root.get("kullanici").get("id"), kullaniciId));
+        List<Degerlendirme> sonuc = em.createQuery(cq).getResultList();
         return sonuc.isEmpty() ? null : sonuc.get(0);
     }
 
-    /**
-     * Aynı kullanıcı aynı blog için ikinci kez puan verirse güncellenir.
-     */
+    @Override
     public void kaydetVeyaGuncellePuan(Long blogId, Long kullaniciId, int puan) {
         if (blogId == null || kullaniciId == null || puan < 1 || puan > 5) {
             return;
@@ -85,11 +88,15 @@ public class DegerlendirmeFacade implements DegerlendirmeFacadeLocal {
         if (kullaniciId == null) {
             return List.of();
         }
-        return em.createQuery(
-                        "SELECT DISTINCT d FROM Degerlendirme d JOIN FETCH d.blog b LEFT JOIN FETCH b.kategori "
-                                + "JOIN FETCH d.kullanici WHERE d.kullanici.id = :kid ORDER BY d.id DESC",
-                        Degerlendirme.class)
-                .setParameter("kid", kullaniciId)
-                .getResultList();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Degerlendirme> cq = cb.createQuery(Degerlendirme.class);
+        Root<Degerlendirme> root = cq.from(Degerlendirme.class);
+        root.fetch("kullanici", JoinType.INNER);
+        Fetch<Degerlendirme, Blog> bf = root.fetch("blog", JoinType.INNER);
+        bf.fetch("kategori", JoinType.LEFT);
+        cq.select(root).distinct(true);
+        cq.where(cb.equal(root.get("kullanici").get("id"), kullaniciId));
+        cq.orderBy(cb.desc(root.get("id")));
+        return em.createQuery(cq).getResultList();
     }
 }

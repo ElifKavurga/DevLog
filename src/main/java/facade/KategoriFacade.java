@@ -1,5 +1,6 @@
 package facade;
 
+import entity.Blog;
 import entity.Kategori;
 import facadeLocal.KategoriFacadeLocal;
 import jakarta.ejb.Stateless;
@@ -42,30 +43,35 @@ public class KategoriFacade implements KategoriFacadeLocal {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Kategori> cq = cb.createQuery(Kategori.class);
         Root<Kategori> root = cq.from(Kategori.class);
-        CriteriaQuery<Kategori> all = cq.select(root);
-        TypedQuery<Kategori> q = em.createQuery(all);
+        cq.select(root);
+        TypedQuery<Kategori> q = em.createQuery(cq);
         return q.getResultList();
     }
 
+    @Override
     public List<Kategori> listeleIdArtan() {
-        return em.createQuery("SELECT k FROM Kategori k ORDER BY k.id ASC", Kategori.class).getResultList();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Kategori> cq = cb.createQuery(Kategori.class);
+        Root<Kategori> root = cq.from(Kategori.class);
+        cq.select(root);
+        cq.orderBy(cb.asc(root.get("id")));
+        return em.createQuery(cq).getResultList();
     }
 
+    @Override
     public long blogSayisi(Long kategoriId) {
         if (kategoriId == null) {
             return 0L;
         }
-        Long c = em.createQuery("SELECT COUNT(b) FROM Blog b WHERE b.kategori.id = :kid", Long.class)
-                .setParameter("kid", kategoriId)
-                .getSingleResult();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        Root<Blog> root = cq.from(Blog.class);
+        cq.select(cb.count(root));
+        cq.where(cb.equal(root.get("kategori").get("id"), kategoriId));
+        Long c = em.createQuery(cq).getSingleResult();
         return c == null ? 0L : c;
     }
 
-    /**
-     * Eski PostgreSQL şemalarında {@code slug} yoksa ekler.
-     * Boş veritabanında {@code kategori} tablosu henüz yoksa {@code ALTER TABLE} patlayıp WAR deploy'unu
-     * düşürmemesi için önce tablo varlığı kontrol edilir.
-     */
     @Override
     public void ensureSlugColumnExists() {
         try {

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/templates/publicTemplate.xhtml">
+
+    <ui:define name="title">DevLog — Hata</ui:define>
+
+    <ui:define name="content">
+        <main class="devlog-home-main w-100 flex-grow-1">
+            <div class="container py-4 py-md-5">
+                <header class="mb-4 pb-4 border-bottom border-secondary border-opacity-25">
+                    <h1 class="devlog-headline mb-2" style="font-size: 2rem;">Bir şeyler ters gitti</h1>
+                    <p class="devlog-mono-label text-secondary mb-0">/error</p>
+                </header>
+                <p class="text-secondary mb-0">
+                    İstek işlenirken bir sorun oluştu. Lütfen daha sonra tekrar deneyin veya ana sayfaya dönün.
+                </p>
+            </div>
+        </main>
+    </ui:define>
+</ui:composition>

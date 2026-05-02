@@ -6,6 +6,10 @@ import facadeLocal.BildirimFacadeLocal;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.CriteriaUpdate;
+import jakarta.persistence.criteria.Root;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,11 +34,14 @@ public class BildirimFacade implements BildirimFacadeLocal {
         if (kullaniciId == null) {
             return 0L;
         }
-        Long c = em.createQuery(
-                        "SELECT COUNT(b) FROM Bildirim b WHERE b.alici.id = :kid AND b.okunduMu = false",
-                        Long.class)
-                .setParameter("kid", kullaniciId)
-                .getSingleResult();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        Root<Bildirim> root = cq.from(Bildirim.class);
+        cq.select(cb.count(root));
+        cq.where(
+                cb.equal(root.get("alici").get("id"), kullaniciId),
+                cb.isFalse(root.get("okunduMu")));
+        Long c = em.createQuery(cq).getSingleResult();
         return c != null ? c : 0L;
     }
 
@@ -43,12 +50,13 @@ public class BildirimFacade implements BildirimFacadeLocal {
         if (kullaniciId == null) {
             return List.of();
         }
-        return em.createQuery(
-                        "SELECT b FROM Bildirim b WHERE b.alici.id = :kid ORDER BY b.tarih DESC",
-                        Bildirim.class)
-                .setParameter("kid", kullaniciId)
-                .setMaxResults(500)
-                .getResultList();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Bildirim> cq = cb.createQuery(Bildirim.class);
+        Root<Bildirim> root = cq.from(Bildirim.class);
+        cq.select(root);
+        cq.where(cb.equal(root.get("alici").get("id"), kullaniciId));
+        cq.orderBy(cb.desc(root.get("tarih")));
+        return em.createQuery(cq).setMaxResults(500).getResultList();
     }
 
     @Override
@@ -70,10 +78,14 @@ public class BildirimFacade implements BildirimFacadeLocal {
         if (kullaniciId == null) {
             return;
         }
-        em.createQuery(
-                        "UPDATE Bildirim b SET b.okunduMu = true WHERE b.alici.id = :kid AND b.okunduMu = false")
-                .setParameter("kid", kullaniciId)
-                .executeUpdate();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaUpdate<Bildirim> cu = cb.createCriteriaUpdate(Bildirim.class);
+        Root<Bildirim> root = cu.from(Bildirim.class);
+        cu.set("okunduMu", true);
+        cu.where(
+                cb.equal(root.get("alici").get("id"), kullaniciId),
+                cb.isFalse(root.get("okunduMu")));
+        em.createQuery(cu).executeUpdate();
         em.flush();
     }
 }

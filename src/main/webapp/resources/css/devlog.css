@@ -884,6 +884,110 @@ body.devlog-panel-body {
     color: #ffffff;
 }
 
+/* EasyMDE / CodeMirror — özet (devlog-cms-input) ile aynı terminal zemini */
+.devlog-cms-editor--mde .EasyMDEContainer {
+    background-color: var(--dl-ref-terminal-bg);
+}
+
+.devlog-cms-editor--mde .EasyMDEContainer .editor-toolbar {
+    background-color: var(--dl-ref-panel-elevated);
+    border-color: var(--dl-ref-border-ide);
+    opacity: 1;
+}
+
+.devlog-cms-editor--mde .EasyMDEContainer .editor-toolbar button {
+    color: var(--dl-ref-on-surface-variant) !important;
+    border-color: var(--dl-ref-border-ide) !important;
+}
+
+.devlog-cms-editor--mde .EasyMDEContainer .editor-toolbar button:hover,
+.devlog-cms-editor--mde .EasyMDEContainer .editor-toolbar button.active {
+    color: var(--dl-ref-on-surface) !important;
+    background-color: var(--dl-ref-terminal-bg) !important;
+}
+
+.devlog-cms-editor--mde .EasyMDEContainer .editor-toolbar i.separator {
+    border-left-color: var(--dl-ref-border-ide);
+}
+
+.devlog-cms-editor--mde .EasyMDEContainer .CodeMirror {
+    background-color: var(--dl-ref-terminal-bg) !important;
+    color: var(--dl-ref-on-surface) !important;
+    border-color: var(--dl-ref-border-ide) !important;
+}
+
+.devlog-cms-editor--mde .EasyMDEContainer .CodeMirror-scroll {
+    background-color: var(--dl-ref-terminal-bg) !important;
+}
+
+.devlog-cms-editor--mde .EasyMDEContainer .CodeMirror-gutters {
+    background-color: var(--dl-ref-terminal-bg) !important;
+    border-right-color: var(--dl-ref-border-ide) !important;
+}
+
+.devlog-cms-editor--mde .EasyMDEContainer .CodeMirror-linenumber {
+    color: var(--dl-ref-slate-500) !important;
+}
+
+.devlog-cms-editor--mde .EasyMDEContainer .CodeMirror-cursor {
+    border-left-color: var(--dl-ref-on-surface) !important;
+}
+
+.devlog-cms-editor--mde .EasyMDEContainer .CodeMirror-selected {
+    background: rgba(74, 142, 255, 0.25) !important;
+}
+
+.devlog-cms-editor--mde .EasyMDEContainer .CodeMirror-focused .CodeMirror-selected {
+    background: rgba(74, 142, 255, 0.35) !important;
+}
+
+.devlog-cms-editor--mde .EasyMDEContainer .cm-header {
+    color: var(--dl-ref-primary) !important;
+}
+
+.devlog-cms-editor--mde .EasyMDEContainer .cm-quote {
+    color: var(--dl-ref-on-surface-variant) !important;
+}
+
+.devlog-cms-editor--mde .EasyMDEContainer .cm-link,
+.devlog-cms-editor--mde .EasyMDEContainer .cm-url {
+    color: var(--dl-ref-accent-blue) !important;
+}
+
+.devlog-cms-editor--mde .EasyMDEContainer .cm-comment {
+    color: var(--dl-ref-slate-500) !important;
+}
+
+.devlog-cms-editor--mde .EasyMDEContainer .cm-strong {
+    color: var(--dl-ref-on-surface) !important;
+}
+
+.devlog-cms-editor--mde .EasyMDEContainer .cm-em {
+    color: var(--dl-ref-on-surface-variant) !important;
+}
+
+.devlog-cms-editor--mde .EasyMDEContainer .editor-preview,
+.devlog-cms-editor--mde .EasyMDEContainer .editor-preview-side {
+    background-color: var(--dl-ref-terminal-bg) !important;
+    color: var(--dl-ref-on-surface) !important;
+    border-color: var(--dl-ref-border-ide) !important;
+}
+
+.devlog-cms-editor--mde .EasyMDEContainer .editor-statusbar {
+    background-color: var(--dl-ref-panel-elevated);
+    color: var(--dl-ref-slate-500);
+    border-color: var(--dl-ref-border-ide);
+}
+
+.devlog-cms-editor--mde .EasyMDEContainer .CodeMirror.cm-s-default {
+    background-color: var(--dl-ref-terminal-bg) !important;
+    color: var(--dl-ref-on-surface) !important;
+}
+
+.devlog-cms-editor--mde .EasyMDEContainer.editor-fullscreen {
+    background-color: var(--dl-ref-terminal-bg);
+}
+
 .devlog-cms-badge-code {
     background-color: rgba(0, 123, 255, 0.12);
     border: 1px solid rgba(0, 123, 255, 0.35);

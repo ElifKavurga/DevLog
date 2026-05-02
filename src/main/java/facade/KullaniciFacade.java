@@ -9,9 +9,11 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,55 +45,65 @@ public class KullaniciFacade implements KullaniciFacadeLocal {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Kullanici> cq = cb.createQuery(Kullanici.class);
         Root<Kullanici> root = cq.from(Kullanici.class);
-        CriteriaQuery<Kullanici> all = cq.select(root);
-        TypedQuery<Kullanici> q = em.createQuery(all);
-        return q.getResultList();
+        cq.select(root);
+        return em.createQuery(cq).getResultList();
     }
 
-    /**
-     * E-posta ile giriş (geriye dönük).
-     */
+    @Override
     public Kullanici girisYap(String eposta, String sifre) {
         return girisYapEpostaVeyaKullaniciAdi(eposta, sifre);
     }
 
-    /**
-     * E-posta veya kullanıcı adı + şifre ile tek sorgu.
-     */
+    @Override
     public Kullanici girisYapEpostaVeyaKullaniciAdi(String epostaVeyaKullaniciAdi, String sifre) {
         if (epostaVeyaKullaniciAdi == null || epostaVeyaKullaniciAdi.isBlank() || sifre == null) {
             return null;
         }
         String login = epostaVeyaKullaniciAdi.trim();
-        String jpql = "SELECT k FROM Kullanici k WHERE (LOWER(k.eposta) = LOWER(:login) OR LOWER(k.kullaniciAdi) = LOWER(:login)) AND k.sifre = :sifre";
-        List<Kullanici> bulunan = em.createQuery(jpql, Kullanici.class)
-                .setParameter("login", login)
-                .setParameter("sifre", sifre)
-                .getResultList();
+        String loginLower = login.toLowerCase(Locale.ROOT);
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Kullanici> cq = cb.createQuery(Kullanici.class);
+        Root<Kullanici> root = cq.from(Kullanici.class);
+        cq.select(root);
+        Predicate epostaEsit = cb.equal(cb.lower(root.get("eposta")), loginLower);
+        Predicate kullaniciAdiEsit = cb.equal(cb.lower(root.get("kullaniciAdi")), loginLower);
+        cq.where(cb.and(cb.or(epostaEsit, kullaniciAdiEsit), cb.equal(root.get("sifre"), sifre)));
+        TypedQuery<Kullanici> q = em.createQuery(cq);
+        List<Kullanici> bulunan = q.getResultList();
         if (bulunan.isEmpty()) {
             return null;
         }
         return bulunan.getFirst();
     }
 
+    @Override
     public boolean epostaKullaniliyorMu(String eposta) {
         if (eposta == null || eposta.isBlank()) {
             return false;
         }
-        Number c = em.createQuery("SELECT COUNT(k) FROM Kullanici k WHERE LOWER(k.eposta) = LOWER(:e)", Number.class)
-                .setParameter("e", eposta.trim())
-                .getSingleResult();
-        return c != null && c.longValue() > 0;
+        String e = eposta.trim().toLowerCase(Locale.ROOT);
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        Root<Kullanici> root = cq.from(Kullanici.class);
+        cq.select(cb.count(root));
+        cq.where(cb.equal(cb.lower(root.get("eposta")), e));
+        Long c = em.createQuery(cq).getSingleResult();
+        return c != null && c > 0;
     }
 
+    @Override
     public boolean kullaniciAdiKullaniliyorMu(String kullaniciAdi) {
         if (kullaniciAdi == null || kullaniciAdi.isBlank()) {
             return false;
         }
-        Number c = em.createQuery("SELECT COUNT(k) FROM Kullanici k WHERE LOWER(k.kullaniciAdi) = LOWER(:u)", Number.class)
-                .setParameter("u", kullaniciAdi.trim())
-                .getSingleResult();
-        return c != null && c.longValue() > 0;
+        String u = kullaniciAdi.trim().toLowerCase(Locale.ROOT);
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        Root<Kullanici> root = cq.from(Kullanici.class);
+        cq.select(cb.count(root));
+        cq.where(cb.equal(cb.lower(root.get("kullaniciAdi")), u));
+        Long c = em.createQuery(cq).getSingleResult();
+        return c != null && c > 0;
     }
 
     @Override
@@ -104,18 +116,23 @@ public class KullaniciFacade implements KullaniciFacadeLocal {
 
     @Override
     public List<Kullanici> yazarlikTalebiBekleyenleriListele() {
-        return em.createQuery(
-                        "SELECT k FROM Kullanici k WHERE k.yazarlikTalepEtti = true ORDER BY k.id ASC",
-                        Kullanici.class)
-                .getResultList();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Kullanici> cq = cb.createQuery(Kullanici.class);
+        Root<Kullanici> root = cq.from(Kullanici.class);
+        cq.select(root);
+        cq.where(cb.isTrue(root.get("yazarlikTalepEtti")));
+        cq.orderBy(cb.asc(root.get("id")));
+        return em.createQuery(cq).getResultList();
     }
 
     @Override
     public long yazarlikTalebiBekleyenSayisi() {
-        Long c = em.createQuery(
-                        "SELECT COUNT(k) FROM Kullanici k WHERE k.yazarlikTalepEtti = true",
-                        Long.class)
-                .getSingleResult();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        Root<Kullanici> root = cq.from(Kullanici.class);
+        cq.select(cb.count(root));
+        cq.where(cb.isTrue(root.get("yazarlikTalepEtti")));
+        Long c = em.createQuery(cq).getSingleResult();
         return c != null ? c : 0L;
     }
 
@@ -124,11 +141,13 @@ public class KullaniciFacade implements KullaniciFacadeLocal {
         if (rol == null) {
             return List.of();
         }
-        return em.createQuery(
-                        "SELECT k FROM Kullanici k WHERE k.rol = :r ORDER BY k.id ASC",
-                        Kullanici.class)
-                .setParameter("r", rol)
-                .getResultList();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Kullanici> cq = cb.createQuery(Kullanici.class);
+        Root<Kullanici> root = cq.from(Kullanici.class);
+        cq.select(root);
+        cq.where(cb.equal(root.get("rol"), rol));
+        cq.orderBy(cb.asc(root.get("id")));
+        return em.createQuery(cq).getResultList();
     }
 
     @Override

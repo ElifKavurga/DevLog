@@ -7,6 +7,11 @@
                 xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
                 template="/WEB-INF/templates/panelTemplate.xhtml">
 
+    <ui:define name="headExtra">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde@2.18.0/dist/easymde.min.css"/>
+        <script src="https://cdn.jsdelivr.net/npm/easymde@2.18.0/dist/easymde.min.js" defer="defer"></script>
+    </ui:define>
+
     <ui:define name="metadata">
         <f:metadata>
             <f:viewAction action="#{blogEkleController.hazirla}" onPostback="false"/>
@@ -24,7 +29,8 @@
             <h:messages globalOnly="true" styleClass="list-unstyled mb-3" errorClass="alert alert-danger rounded-0 small"
                         infoClass="alert alert-info rounded-0 small"/>
 
-            <h:form id="blogEkleForm" styleClass="mb-0">
+            <h:form id="blogEkleForm" styleClass="mb-0"
+                    pt:onsubmit="if (typeof devlogSyncMarkdownToTextarea === 'function') { devlogSyncMarkdownToTextarea(); } return true;">
                 <div class="row g-4">
                     <div class="col-12 col-lg-8 d-flex flex-column gap-4">
                         <section class="devlog-cms-card p-4">
@@ -63,25 +69,18 @@
                                              pt:placeholder="Arama ve liste görünümleri için kısa özet..."/>
                         </section>
 
-                        <section class="devlog-cms-editor border border-secondary border-opacity-25">
-                            <div class="devlog-cms-editor-toolbar d-flex align-items-center justify-content-between px-3 py-2 border-bottom border-secondary border-opacity-25">
+                        <section class="devlog-cms-editor devlog-cms-editor--mde border border-secondary border-opacity-25">
+                            <div class="devlog-cms-editor-toolbar d-flex align-items-center px-3 py-2 border-bottom border-secondary border-opacity-25">
                                 <div class="d-flex align-items-center gap-1 flex-wrap">
-                                    <span class="material-symbols-outlined text-secondary p-2" title="Kalın">format_bold</span>
-                                    <span class="material-symbols-outlined text-secondary p-2" title="İtalik">format_italic</span>
-                                    <span class="vr text-secondary opacity-25 my-1 mx-1"/>
-                                    <span class="material-symbols-outlined text-secondary p-2" title="Bağlantı">link</span>
-                                    <span class="material-symbols-outlined text-secondary p-2" title="Görsel">image</span>
-                                    <span class="vr text-secondary opacity-25 my-1 mx-1"/>
                                     <span class="badge rounded-0 devlog-cms-badge-code d-inline-flex align-items-center gap-1 py-2 px-2">
                                         <span class="material-symbols-outlined" style="font-size: 1rem;">code_blocks</span>
                                         <span class="small fw-bold">MARKDOWN</span>
                                     </span>
                                 </div>
-                                <span class="devlog-mono-label text-secondary" style="font-size: 0.65rem;">MARKDOWN DESTEKLİ</span>
                             </div>
                             <div class="devlog-cms-editor-body p-0">
-                                <h:inputTextarea id="icerik" value="#{blogEkleController.blogDTO.icerik}" rows="18"
-                                                 styleClass="form-control devlog-cms-textarea border-0 rounded-0 font-monospace small p-4"
+                                <h:inputTextarea id="icerikAlan" value="#{blogEkleController.blogDTO.icerik}" rows="18"
+                                                 styleClass="form-control devlog-cms-textarea border-0 rounded-0 font-monospace small p-4 devlog-blog-icerik-sync-target"
                                                  pt:placeholder="# Blog gövdesini buraya yazın..."/>
                             </div>
                         </section>
@@ -110,7 +109,8 @@
 
                         <div class="d-grid gap-2 pt-2">
                             <h:commandButton id="gonder" value="Onaya gönder" action="#{blogEkleController.kaydet}"
-                                             styleClass="btn btn-primary rounded-0 py-3 font-monospace small fw-bold text-uppercase devlog-cms-submit-btn"/>
+                                             styleClass="btn btn-primary rounded-0 py-3 font-monospace small fw-bold text-uppercase devlog-cms-submit-btn"
+                                             pt:onclick="if (typeof devlogSyncMarkdownToTextarea === 'function') { devlogSyncMarkdownToTextarea(); }"/>
                         </div>
 
                         <h:panelGroup rendered="#{not empty blogEkleController.hataMesaji}" layout="block"
@@ -120,5 +120,64 @@
                     </div>
                 </div>
             </h:form>
+
+            <script type="text/javascript">
+                //<![CDATA[
+                /**
+                 * JSF gönderiminden hemen önce EasyMDE içeriğini gizli textarea'ya yazar
+                 * (blogEkleForm:icerikAlan → blogDTO.icerik model güncellemesi).
+                 */
+                function devlogSyncMarkdownToTextarea() {
+                    var ta = document.getElementById('blogEkleForm:icerikAlan');
+                    if (!ta) {
+                        ta = document.querySelector('textarea.devlog-blog-icerik-sync-target');
+                    }
+                    if (!ta || !window.devlogBlogEasyMDE) {
+                        return;
+                    }
+                    try {
+                        window.devlogBlogEasyMDE.save();
+                    } catch (e1) {
+                    }
+                    try {
+                        if (typeof window.devlogBlogEasyMDE.value === 'function') {
+                            ta.value = window.devlogBlogEasyMDE.value();
+                        }
+                    } catch (e2) {
+                    }
+                }
+
+                (function () {
+                    function devlogInitBlogMarkdown() {
+                        var ta = document.getElementById('blogEkleForm:icerikAlan')
+                            || document.querySelector('textarea.devlog-blog-icerik-sync-target');
+                        if (!ta || typeof EasyMDE === 'undefined') {
+                            return;
+                        }
+                        if (window.devlogBlogEasyMDE) {
+                            try {
+                                window.devlogBlogEasyMDE.toTextArea();
+                            } catch (ignore) {
+                            }
+                            window.devlogBlogEasyMDE = null;
+                        }
+                        window.devlogBlogEasyMDE = new EasyMDE({
+                            element: ta,
+                            spellChecker: false,
+                            status: false,
+                            autofocus: false,
+                            /* Tema renkleri devlog.css (.devlog-cms-editor--mde) ile özet alanıyla uyumlu */
+                            theme: 'base',
+                            toolbar: ['bold', 'italic', 'heading', '|', 'quote', 'unordered-list', 'ordered-list', '|', 'link', 'image', '|', 'guide']
+                        });
+                    }
+                    if (document.readyState === 'loading') {
+                        document.addEventListener('DOMContentLoaded', devlogInitBlogMarkdown);
+                    } else {
+                        devlogInitBlogMarkdown();
+                    }
+                })();
+                //]]>
+            </script>
     </ui:define>
 </ui:composition>

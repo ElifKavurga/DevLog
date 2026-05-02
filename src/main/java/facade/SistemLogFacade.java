@@ -5,6 +5,9 @@ import facadeLocal.SistemLogFacadeLocal;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 
 import java.util.List;
 
@@ -28,11 +31,12 @@ public class SistemLogFacade implements SistemLogFacadeLocal {
 
     @Override
     public List<SistemLog> tariheGoreAzalanListele() {
-        return em.createQuery(
-                        "SELECT s FROM SistemLog s ORDER BY s.tarih DESC",
-                        SistemLog.class)
-                .setMaxResults(2000)
-                .getResultList();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<SistemLog> cq = cb.createQuery(SistemLog.class);
+        Root<SistemLog> root = cq.from(SistemLog.class);
+        cq.select(root);
+        cq.orderBy(cb.desc(root.get("tarih")));
+        return em.createQuery(cq).setMaxResults(2000).getResultList();
     }
 
     @Override
