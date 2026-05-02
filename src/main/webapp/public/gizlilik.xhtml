@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/templates/publicTemplate.xhtml">
+
+    <ui:define name="title">DevLog — Gizlilik politikası</ui:define>
+
+    <ui:define name="content">
+        <main class="devlog-home-main w-100 flex-grow-1">
+            <div class="container py-4 py-md-5">
+                <header class="mb-4 pb-4 border-bottom border-secondary border-opacity-25">
+                    <h1 class="devlog-headline mb-2" style="font-size: 1.75rem;">Gizlilik politikası</h1>
+                    <p class="devlog-mono-label text-secondary mb-0">/public/gizlilik</p>
+                </header>
+
+                <article class="devlog-readme rounded-0 overflow-hidden">
+                    <div class="devlog-readme__cmd px-3 py-2 font-monospace small">
+                        <span class="text-secondary">&gt;</span> cat PRIVACY.md
+                    </div>
+                    <div class="devlog-readme__body p-4 p-md-5 font-monospace small">
+                        <p class="text-secondary mb-4">
+                            Bu metin, DevLog platformunda kişisel verilerin nasıl işlendiğini özetler. Hizmeti kullanarak bu politikayı
+                            okuduğunuzu varsayarız; güncellemeler bu sayfada yayımlanır.
+                        </p>
+
+                        <h2 class="text-white fs-6 fw-bold mt-4 mb-3">## Toplanan veriler</h2>
+                        <p class="text-secondary mb-3">
+                            Hesap oluşturduğunuzda; kullanıcı adı, e-posta adresi ve profilinizde paylaştığınız isteğe bağlı bilgiler
+                            (ör. ad, soyad) kaydedilebilir. Yazı, yorum veya değerlendirme gönderdiğinizde bu içerikler ve ilişkili
+                            zaman damgaları sistemde tutulur. Sunucu günlükleri; IP adresi, tarayıcı türü, istek zamanı ve hata
+                            kayıtları gibi teknik verileri sınırlı süreyle içerebilir.
+                        </p>
+
+                        <h2 class="text-white fs-6 fw-bold mt-4 mb-3">## Çerezler ve oturum</h2>
+                        <p class="text-secondary mb-3">
+                            Oturum açma ve güvenlik için zorunlu oturum çerezleri kullanılabilir. Tercih çerezleri (ör. tema veya dil)
+                            ayrıca açık rızanızla etkinleştirilebilir. Tarayıcı ayarlarınızdan çerezleri reddedebilirsiniz; bu durumda
+                            bazı özellikler düzgün çalışmayabilir.
+                        </p>
+
+                        <h2 class="text-white fs-6 fw-bold mt-4 mb-3">## Veri güvenliği ve saklama</h2>
+                        <p class="text-secondary mb-3">
+                            Verilere yetkisiz erişimi azaltmak için makul teknik ve idari önlemler alınır. Veriler, hizmetin ifası için
+                            gerekli süre boyunca ve yasal saklama yükümlülükleri çerçevesinde tutulur; amaç ortadan kalktığında silme,
+                            anonimleştirme veya erişimi kapatma yöntemleri uygulanabilir.
+                        </p>
+
+                        <h2 class="text-white fs-6 fw-bold mt-4 mb-3">## Haklarınız ve iletişim</h2>
+                        <p class="text-secondary mb-0">
+                            KVKK ve ilgili mevzuat kapsamında; verilerinize erişim, düzeltme, silme, işlemenin kısıtlanması ve itiraz
+                            haklarınız olabilir. Taleplerinizi site üzerindenki iletişim kanalları veya yayımlanan veri sorumlusu
+                            bilgileri üzerinden iletebilirsiniz. Şikâyetlerinizi yetkili denetim otoritesine de sunabilirsiniz.
+                        </p>
+
+                        <p class="text-secondary mt-4 pt-4 border-top border-secondary border-opacity-25 mb-0">
+                            <span class="devlog-read-console-prompt">&gt;</span>
+                            <h:link outcome="/public/index" styleClass="devlog-read-link text-decoration-none">cd ~/public/index</h:link>
+                            <span class="text-secondary"> — ana sayfaya dön</span>
+                        </p>
+                    </div>
+                </article>
+            </div>
+        </main>
+    </ui:define>
+</ui:composition>

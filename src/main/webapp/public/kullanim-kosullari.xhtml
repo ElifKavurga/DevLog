@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/templates/publicTemplate.xhtml">
+
+    <ui:define name="title">DevLog — Kullanım koşulları</ui:define>
+
+    <ui:define name="content">
+        <main class="devlog-home-main w-100 flex-grow-1">
+            <div class="container py-4 py-md-5">
+                <header class="mb-4 pb-4 border-bottom border-secondary border-opacity-25">
+                    <h1 class="devlog-headline mb-2" style="font-size: 1.75rem;">Kullanım koşulları</h1>
+                    <p class="devlog-mono-label text-secondary mb-0">/public/kullanim-kosullari</p>
+                </header>
+
+                <article class="devlog-readme rounded-0 overflow-hidden">
+                    <div class="devlog-readme__cmd px-3 py-2 font-monospace small">
+                        <span class="text-secondary">&gt;</span> cat TERMS.md
+                    </div>
+                    <div class="devlog-readme__body p-4 p-md-5 font-monospace small">
+                        <p class="text-secondary mb-4">
+                            DevLog hizmetini kullanarak aşağıdaki koşulları kabul etmiş sayılırsınız. Koşullar değiştiğinde bu sayfa
+                            güncellenir; önemli değişiklikler mümkün olduğunca bildirilir.
+                        </p>
+
+                        <h2 class="text-white fs-6 fw-bold mt-4 mb-3">## İçerik sorumluluğu</h2>
+                        <p class="text-secondary mb-3">
+                            Yayınladığınız yazı, kod parçası, görsel ve yorumların doğruluğu ve yasal uygunluğundan siz sorumlusunuz.
+                            Platform, kullanıcı içeriğini ön onay veya moderasyon ile denetleyebilir; yürürlükteki hukuka, üçüncü kişi
+                            haklarına veya bu koşullara aykırı içerik kaldırılabilir veya erişime kapatılabilir.
+                        </p>
+
+                        <h2 class="text-white fs-6 fw-bold mt-4 mb-3">## Davranış kuralları</h2>
+                        <p class="text-secondary mb-3">
+                            Saygılı iletişim, taciz ve nefret söylemi içermeyen paylaşımlar ve spam veya zararlı bağlantılar
+                            göndermeme beklenir. Sahte kimlikle hesap açmak, sistemi manipüle etmek veya güvenliği tehdit eden
+                            davranışlar hesabın askıya alınmasına veya kalıcı kapatılmasına yol açabilir.
+                        </p>
+
+                        <h2 class="text-white fs-6 fw-bold mt-4 mb-3">## Fikri mülkiyet</h2>
+                        <p class="text-secondary mb-3">
+                            Kendi oluşturduğunuz içerik üzerindeki haklar size aittir; DevLog’a yükleme ile, içeriği barındırma ve
+                            kullanıcılara gösterme için sınırlı, geri alınabilir bir kullanım hakkı tanırsınız. Üçüncü taraflara ait
+                            metin, görsel veya yazılımı yalnızca yetkiniz olduğunda paylaşmalısınız. Arayüz, logo ve yazılım bileşenleri
+                            proje lisansına tabidir.
+                        </p>
+
+                        <h2 class="text-white fs-6 fw-bold mt-4 mb-3">## Hizmetin sunumu ve sorumluluk reddi</h2>
+                        <p class="text-secondary mb-0">
+                            Hizmet “olduğu gibi” sunulur; kesintisiz veya hatasız olacağı garanti edilmez. DevLog, dolaylı zararlar
+                            dâhil, hizmet kullanımından doğan zararlardan yürürlükteki hukukun izin verdiği ölçüde sorumlu tutulamaz.
+                            Uyuşmazlıklarda Türkiye Cumhuriyeti kanunları uygulanır; yetkili mahkemeler ve icra daireleri İstanbul
+                            merkezli olabilir.
+                        </p>
+
+                        <p class="text-secondary mt-4 pt-4 border-top border-secondary border-opacity-25 mb-0">
+                            <span class="devlog-read-console-prompt">&gt;</span>
+                            <h:link outcome="/public/gizlilik" styleClass="devlog-read-link text-decoration-none">cat PRIVACY.md</h:link>
+                            <span class="text-secondary"> — </span>
+                            <h:link outcome="/public/index" styleClass="devlog-read-link text-decoration-none">cd ~/public/index</h:link>
+                        </p>
+                    </div>
+                </article>
+            </div>
+        </main>
+    </ui:define>
+</ui:composition>
