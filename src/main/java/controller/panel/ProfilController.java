@@ -32,11 +32,59 @@ public class ProfilController implements Serializable {
     private String yeniSifre;
     private String yeniSifreTekrar;
 
+    /** Profil formu: düzenlenebilir alanlar */
+    private String duzenleKullaniciAdi;
+    private String duzenleEposta;
+
     public String hazirla() {
         if (!oturum.isGirisYapildi() || oturum.getAktifKullanici() == null) {
             return "/auth/giris?faces-redirect=true";
         }
         yenileKullaniciOturumdan();
+        Kullanici k = oturum.getAktifKullanici();
+        duzenleKullaniciAdi = k.getKullaniciAdi();
+        duzenleEposta = k.getEposta();
+        return null;
+    }
+
+    public String profilBilgiGuncelle() {
+        if (!oturum.isGirisYapildi() || oturum.getAktifKullanici() == null) {
+            return null;
+        }
+        Kullanici k = kullaniciFacade.bul(oturum.getAktifKullanici().getId());
+        if (k == null) {
+            mesaj(FacesMessage.SEVERITY_ERROR, "Kullanıcı bulunamadı.");
+            return null;
+        }
+        if (duzenleKullaniciAdi == null || duzenleKullaniciAdi.isBlank()) {
+            mesaj(FacesMessage.SEVERITY_WARN, "Kullanıcı adı zorunludur.");
+            return null;
+        }
+        if (duzenleEposta == null || duzenleEposta.isBlank()) {
+            mesaj(FacesMessage.SEVERITY_WARN, "E-posta zorunludur.");
+            return null;
+        }
+        String trimUser = duzenleKullaniciAdi.trim();
+        String trimMail = duzenleEposta.trim();
+        if (!trimMail.contains("@") || trimMail.indexOf('@') == trimMail.length() - 1) {
+            mesaj(FacesMessage.SEVERITY_WARN, "Geçerli bir e-posta girin.");
+            return null;
+        }
+        if (kullaniciFacade.kullaniciAdiKullaniliyorMu(trimUser)
+                && (k.getKullaniciAdi() == null || !trimUser.equalsIgnoreCase(k.getKullaniciAdi()))) {
+            mesaj(FacesMessage.SEVERITY_WARN, "Bu kullanıcı adı kullanılıyor.");
+            return null;
+        }
+        if (kullaniciFacade.epostaKullaniliyorMu(trimMail)
+                && (k.getEposta() == null || !trimMail.equalsIgnoreCase(k.getEposta()))) {
+            mesaj(FacesMessage.SEVERITY_WARN, "Bu e-posta kullanılıyor.");
+            return null;
+        }
+        k.setKullaniciAdi(trimUser);
+        k.setEposta(trimMail);
+        Kullanici merged = kullaniciFacade.guncelle(k);
+        oturum.aktifKullaniciyiGuncelle(merged);
+        mesaj(FacesMessage.SEVERITY_INFO, "Profil bilgileri güncellendi.");
         return null;
     }
 
@@ -171,5 +219,21 @@ public class ProfilController implements Serializable {
 
     public void setYeniSifreTekrar(String yeniSifreTekrar) {
         this.yeniSifreTekrar = yeniSifreTekrar;
+    }
+
+    public String getDuzenleKullaniciAdi() {
+        return duzenleKullaniciAdi;
+    }
+
+    public void setDuzenleKullaniciAdi(String duzenleKullaniciAdi) {
+        this.duzenleKullaniciAdi = duzenleKullaniciAdi;
+    }
+
+    public String getDuzenleEposta() {
+        return duzenleEposta;
+    }
+
+    public void setDuzenleEposta(String duzenleEposta) {
+        this.duzenleEposta = duzenleEposta;
     }
 }

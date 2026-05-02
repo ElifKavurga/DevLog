@@ -1477,3 +1477,74 @@ a.devlog-action-btn {
 .devlog-syslog-terminal__line--muted {
     color: #6e7681;
 }
+
+/* Admin — blog ön izleme (panel içi okuma görünümü) */
+.devlog-admin-onizleme-wrap {
+    background-color: transparent;
+}
+
+.devlog-admin-onizleme-toolbar {
+    background-color: var(--dl-ref-terminal-bg);
+}
+
+.devlog-admin-onizleme .devlog-read-border,
+.devlog-admin-onizleme .devlog-read-meta,
+.devlog-admin-onizleme .devlog-read-editor {
+    background-color: var(--dl-ref-terminal-bg);
+}
+
+/* Profil — IDE form kartları ve klasör kısayolları */
+.devlog-profil-form-card {
+    background-color: #05070a;
+}
+
+.devlog-profil-kisa-kart {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
+    padding: 1.1rem 1rem;
+    border: 1px solid var(--dl-ref-outline-variant);
+    border-radius: 0;
+    background-color: var(--dl-ref-terminal-bg);
+    color: var(--dl-ref-on-surface);
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.devlog-profil-kisa-kart:hover {
+    border-color: var(--dl-ref-accent-blue);
+    background-color: var(--dl-ref-panel-bg);
+}
+
+.devlog-profil-kisa-kart__icon {
+    font-size: 1.5rem;
+    color: var(--dl-ref-slate-500);
+}
+
+.devlog-profil-kisa-kart:hover .devlog-profil-kisa-kart__icon {
+    color: var(--dl-ref-accent-blue);
+}
+
+.devlog-profil-kisa-kart__title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #fff;
+}
+
+.devlog-profil-kisa-kart__hint {
+    font-size: 0.65rem;
+    letter-spacing: 0.04em;
+}
+
+/* Panel — terminal log satırları */
+.devlog-term-log {
+    background-color: #010409;
+}
+
+.devlog-term-log-prompt {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+}
+
+.devlog-term-log__line:last-child {
+    border-bottom: none !important;
+}

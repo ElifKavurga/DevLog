@@ -79,4 +79,17 @@ public class DegerlendirmeFacade implements DegerlendirmeFacadeLocal {
             em.flush();
         }
     }
+
+    @Override
+    public List<Degerlendirme> kullaniciyaGoreListele(Long kullaniciId) {
+        if (kullaniciId == null) {
+            return List.of();
+        }
+        return em.createQuery(
+                        "SELECT d FROM Degerlendirme d JOIN FETCH d.blog JOIN FETCH d.kullanici "
+                                + "WHERE d.kullanici.id = :kid ORDER BY d.id DESC",
+                        Degerlendirme.class)
+                .setParameter("kid", kullaniciId)
+                .getResultList();
+    }
 }

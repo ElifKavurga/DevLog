@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/templates/panelTemplate.xhtml">
+
+    <f:metadata>
+        <f:viewAction action="#{yorumlarimController.hazirla}"/>
+    </f:metadata>
+
+    <ui:define name="title">DevLog — Yorumlarım</ui:define>
+
+    <ui:define name="content">
+        <header class="mb-4 pb-4 border-bottom border-secondary border-opacity-25">
+            <span class="devlog-mono-label text-primary mb-1 d-block">/panel/yorumlarim</span>
+            <h1 class="devlog-headline mb-2" style="font-size: 1.5rem;">Yorumlarım</h1>
+            <p class="devlog-term-log-prompt font-monospace small text-secondary mb-0">&gt; tail -f yorumlar.log</p>
+        </header>
+
+        <div class="devlog-term-log border border-secondary border-opacity-25 rounded-0 font-monospace small">
+            <ui:repeat value="#{yorumlarimController.bilgiSatirlari}" var="satir">
+                <div class="devlog-term-log__line border-bottom border-secondary border-opacity-25 px-3 py-2 text-secondary">
+                    <h:outputText value="#{satir}" escape="true"/>
+                </div>
+            </ui:repeat>
+        </div>
+    </ui:define>
+</ui:composition>

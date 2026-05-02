@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/templates/panelTemplate.xhtml">
+
+    <f:metadata>
+        <f:viewParam name="id" value="#{adminBlogOnizlemeController.id}" required="false">
+            <f:convertNumber integerOnly="true" groupingUsed="false"/>
+        </f:viewParam>
+        <f:viewAction action="#{adminBlogOnizlemeController.hazirla}"/>
+    </f:metadata>
+
+    <ui:define name="title">
+        #{adminBlogOnizlemeController.blog != null ? adminBlogOnizlemeController.blog.baslik : 'DevLog — Blog ön izleme'}
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="devlog-admin-onizleme-wrap mb-4">
+            <header class="mb-3 pb-3 border-bottom border-secondary border-opacity-25">
+                <span class="devlog-mono-label text-primary mb-1 d-block">/admin/blog-onizleme</span>
+                <h1 class="devlog-headline mb-0" style="font-size: 1.35rem;">Ön izleme</h1>
+            </header>
+
+            <ui:fragment rendered="#{adminBlogOnizlemeController.blog != null}">
+                <div class="devlog-admin-onizleme-toolbar border border-secondary border-opacity-25 rounded-0 px-3 py-2 d-flex flex-wrap align-items-center justify-content-between gap-2 mb-4">
+                    <span class="font-monospace small text-secondary">ONAY_BEKLIYOR · ID #{adminBlogOnizlemeController.blog.id}</span>
+                    <h:form styleClass="d-flex flex-wrap gap-2 mb-0">
+                        <h:commandButton value="Onayla" action="#{adminOnayController.onaylaVeKuyregeGit(adminBlogOnizlemeController.blog.id)}"
+                                         styleClass="btn btn-success rounded-0 px-3 py-2 font-monospace small text-uppercase"/>
+                        <h:commandButton value="Reddet" action="#{adminOnayController.reddetVeKuyregeGit(adminBlogOnizlemeController.blog.id)}"
+                                         styleClass="btn btn-outline-danger rounded-0 px-3 py-2 font-monospace small text-uppercase"/>
+                    </h:form>
+                </div>
+            </ui:fragment>
+        </div>
+
+        <main class="devlog-read devlog-admin-onizleme w-100 flex-grow-1">
+            <div class="container py-2 py-md-3 px-0 px-md-2">
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <h:link outcome="/admin/admin-onay" styleClass="devlog-read-back font-monospace small text-decoration-none">← ~/admin/admin-onay</h:link>
+                    </div>
+                </div>
+
+                <ui:fragment rendered="#{adminBlogOnizlemeController.blog == null}">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="devlog-read-empty border devlog-read-border p-5 text-center font-monospace small text-secondary">
+                                Blog bulunamadı veya onay bekliyor durumunda değil.
+                            </div>
+                        </div>
+                    </div>
+                </ui:fragment>
+
+                <ui:fragment rendered="#{adminBlogOnizlemeController.blog != null}">
+                    <div class="row g-4">
+                        <div class="col-12">
+                            <section class="devlog-read-meta border devlog-read-border font-monospace small" aria-label="Yayın bilgisi">
+                                <div class="devlog-read-meta__gutter px-2 py-1 border-bottom devlog-read-border text-secondary">/**</div>
+                                <div class="p-3 p-md-4 text-secondary">
+                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@title</span> <span class="devlog-read-meta__val text-white">#{adminBlogOnizlemeController.blog.baslik}</span></p>
+                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@author</span> <span class="devlog-read-meta__val">#{adminBlogOnizlemeController.yazarAdi()}</span></p>
+                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@category</span> <span class="devlog-read-meta__val">#{adminBlogOnizlemeController.kategoriEtiket()}</span></p>
+                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@readTime</span> <span class="devlog-read-meta__val">#{adminBlogOnizlemeController.tahminiOkuma()}</span></p>
+                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@version</span> <span class="devlog-read-meta__val">#{adminBlogOnizlemeController.surumEtiketi()}</span></p>
+                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@rating</span> <span class="devlog-read-meta__val">#{adminBlogOnizlemeController.yildizMetin()}</span> <span class="text-secondary">avg</span></p>
+                                    <p class="mb-0 devlog-read-meta__line"><span class="devlog-read-meta__kw">@published</span> <span class="devlog-read-meta__val">#{adminBlogOnizlemeController.yayinTarihiMetni()}</span></p>
+                                </div>
+                                <div class="devlog-read-meta__gutter px-2 py-1 border-top devlog-read-border text-secondary">*/</div>
+                            </section>
+                        </div>
+                    </div>
+
+                    <div class="row g-4 align-items-start mt-0">
+                        <div class="col-12 col-lg-8">
+                            <div class="ratio ratio-21x9 border devlog-read-border mb-4 devlog-read-cover">
+                                <img src="#{adminBlogOnizlemeController.kapakUrl()}" alt="" class="object-fit-cover w-100 h-100"/>
+                            </div>
+
+                            <ui:fragment rendered="#{not empty adminBlogOnizlemeController.blog.ozet}">
+                                <p class="font-monospace small text-secondary border-start border-3 devlog-read-accent-border ps-3 mb-4">
+                                    #{adminBlogOnizlemeController.blog.ozet}
+                                </p>
+                            </ui:fragment>
+
+                            <section class="devlog-read-editor border devlog-read-border mb-4" aria-label="İçerik">
+                                <div class="devlog-read-editor__toolbar px-3 py-2 border-bottom devlog-read-border d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                    <span class="devlog-mono-label text-secondary mb-0">İçerik</span>
+                                    <span class="font-monospace text-secondary" style="font-size: 0.7rem;">#{adminBlogOnizlemeController.blog.id}.md</span>
+                                </div>
+                                <div class="devlog-read-editor__body font-monospace small">
+                                    <ui:repeat value="#{adminBlogOnizlemeController.icerikSatirlari}" var="satir" varStatus="st">
+                                        <div class="devlog-read-line d-flex">
+                                            <span class="devlog-read-line__no flex-shrink-0 user-select-none" aria-hidden="true">#{st.index + 1}</span>
+                                            <div class="devlog-read-line__code flex-grow-1 min-w-0">
+                                                <h:outputText value="#{satir}" escape="true"/>
+                                            </div>
+                                        </div>
+                                    </ui:repeat>
+                                </div>
+                            </section>
+                        </div>
+
+                        <div class="col-12 col-lg-4">
+                            <div class="devlog-read-aside border devlog-read-border p-4">
+                                <h2 class="devlog-mono-label text-secondary mb-3 d-flex align-items-center gap-2">
+                                    <span class="material-symbols-outlined" style="font-size: 1rem;">data_object</span> Meta
+                                </h2>
+                                <ul class="list-unstyled font-monospace text-secondary mb-0 devlog-read-meta-list">
+                                    <li class="mb-2"><span class="text-secondary">id</span> <span class="text-white">#{adminBlogOnizlemeController.blog.id}</span></li>
+                                    <li class="mb-2"><span class="text-secondary">durum</span> <span class="text-white">#{adminBlogOnizlemeController.blog.durum}</span></li>
+                                    <li class="mb-2"><span class="text-secondary">kategori</span> <span class="text-white">#{adminBlogOnizlemeController.kategoriEtiket()}</span></li>
+                                    <li class="mb-0"><span class="text-secondary">etiketler</span> <span class="text-white">#{empty adminBlogOnizlemeController.blog.etiketler ? '—' : adminBlogOnizlemeController.blog.etiketler}</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </ui:fragment>
+            </div>
+        </main>
+    </ui:define>
+</ui:composition>

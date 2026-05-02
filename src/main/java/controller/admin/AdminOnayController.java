@@ -74,6 +74,18 @@ public class AdminOnayController implements Serializable {
         return null;
     }
 
+    /** Ön izleme sayfası: onay sonrası onay kuyruğuna dön. */
+    public String onaylaVeKuyregeGit(Long blogId) {
+        onayla(blogId);
+        return "/admin/admin-onay?faces-redirect=true";
+    }
+
+    /** Ön izleme sayfası: ret sonrası onay kuyruğuna dön. */
+    public String reddetVeKuyregeGit(Long blogId) {
+        reddet(blogId);
+        return "/admin/admin-onay?faces-redirect=true";
+    }
+
     public String yenile() {
         if (!oturum.isAdmin()) {
             return null;

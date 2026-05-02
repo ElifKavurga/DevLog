@@ -44,6 +44,11 @@
                         <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
                         <span>Onay bekleyenler</span>
                     </h:link>
+                    <h:link outcome="/admin/onay-islemlerim" rendered="#{oturum.admin}"
+                            styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/admin/onay-islemlerim.xhtml') ? 'active' : ''}">
+                        <span class="material-symbols-outlined" aria-hidden="true">history</span>
+                        <span>Onay işlemlerim</span>
+                    </h:link>
                     <h:link outcome="/admin/kategoriler" rendered="#{oturum.admin}"
                             styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/admin/kategoriler.xhtml') ? 'active' : ''}">
                         <span class="material-symbols-outlined" aria-hidden="true">category</span>

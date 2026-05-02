@@ -19,4 +19,6 @@ public interface DegerlendirmeFacadeLocal {
     Degerlendirme bulBlogVeKullanici(Long blogId, Long kullaniciId);
 
     void kaydetVeyaGuncellePuan(Long blogId, Long kullaniciId, int puan);
+
+    List<Degerlendirme> kullaniciyaGoreListele(Long kullaniciId);
 }

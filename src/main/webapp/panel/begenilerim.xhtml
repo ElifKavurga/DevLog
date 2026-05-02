@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/templates/panelTemplate.xhtml">
+
+    <f:metadata>
+        <f:viewAction action="#{begenilerimController.hazirla}"/>
+    </f:metadata>
+
+    <ui:define name="title">DevLog — Değerlendirmelerim</ui:define>
+
+    <ui:define name="content">
+        <header class="mb-4 pb-4 border-bottom border-secondary border-opacity-25">
+            <span class="devlog-mono-label text-primary mb-1 d-block">/panel/begenilerim</span>
+            <h1 class="devlog-headline mb-2" style="font-size: 1.5rem;">Değerlendirmelerim</h1>
+            <p class="devlog-term-log-prompt font-monospace small text-secondary mb-0">&gt; tail -f begeni.log</p>
+        </header>
+
+        <div class="devlog-term-log border border-secondary border-opacity-25 rounded-0 font-monospace small">
+            <ui:fragment rendered="#{empty begenilerimController.degerlendirmeler}">
+                <div class="devlog-term-log__line px-3 py-3 text-secondary">(boş) — henüz blog puanlaması yok.</div>
+            </ui:fragment>
+            <ui:repeat value="#{begenilerimController.degerlendirmeler}" var="d">
+                <div class="devlog-term-log__line border-bottom border-secondary border-opacity-25 px-3 py-2 d-flex flex-wrap align-items-center justify-content-between gap-2">
+                    <div class="text-white min-w-0">
+                        <span class="text-secondary">blog#</span>#{begenilerimController.blogId(d)}
+                        <span class="mx-2 text-secondary">·</span>
+                        <span class="text-truncate d-inline-block align-bottom" style="max-width: 14rem;">#{begenilerimController.blogBaslik(d)}</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 flex-shrink-0">
+                        <span class="text-warning">★ #{d.puan}</span>
+                        <h:link outcome="/public/blog-detay" rendered="#{begenilerimController.blogYayinda(d)}"
+                                styleClass="btn btn-sm btn-outline-primary rounded-0 font-monospace py-0 px-2">
+                            <f:param name="id" value="#{begenilerimController.blogId(d)}"/>
+                            Aç
+                        </h:link>
+                    </div>
+                </div>
+            </ui:repeat>
+        </div>
+    </ui:define>
+</ui:composition>
