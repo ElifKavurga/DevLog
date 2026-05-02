@@ -1054,6 +1054,12 @@ body.devlog-public-body:has(.devlog-home-main) {
     border-color: var(--dl-ref-outline-variant);
 }
 
+.devlog-home-filter-chip--active {
+    border-color: var(--dl-ref-accent-blue);
+    color: #fff;
+    background-color: var(--dl-ref-panel-elevated);
+}
+
 .devlog-home-kategori-pill {
     display: inline-block;
     padding: 0.2rem 0.5rem;
@@ -1094,6 +1100,68 @@ body.devlog-public-body:has(.devlog-home-main) {
 .devlog-home-post-star {
     font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
     color: var(--dl-ref-accent-blue);
+}
+
+/* Keşfet — kategori kenar çubuğu */
+.devlog-home-kategori-sidebar-link {
+    display: block;
+    padding: 0.45rem 0.65rem;
+    font-size: 0.8rem;
+    font-family: inherit;
+    color: var(--dl-ref-on-surface-variant);
+    text-decoration: none;
+    border: 1px solid var(--dl-ref-border-ide);
+    border-radius: 0;
+    background-color: var(--dl-ref-terminal-bg);
+    transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+}
+
+.devlog-home-kategori-sidebar-link:hover {
+    border-color: var(--dl-ref-accent-blue);
+    color: var(--dl-ref-accent-blue);
+}
+
+.devlog-home-kategori-sidebar-link--active {
+    border-color: var(--dl-ref-accent-blue);
+    color: #fff;
+    background-color: var(--dl-ref-panel-elevated);
+}
+
+/* Kategoriler sayfası — IDE klasörü benzeri kutucuklar */
+.devlog-kategori-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.25rem 1.1rem;
+    background-color: var(--dl-ref-terminal-bg);
+    border: 1px solid var(--dl-ref-outline-variant);
+    border-radius: 0;
+    color: inherit;
+    min-height: 7rem;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.devlog-kategori-card:hover {
+    border-color: var(--dl-ref-accent-blue);
+    background-color: var(--dl-ref-panel-bg);
+}
+
+.devlog-kategori-card__icon {
+    font-size: 1.5rem;
+    color: var(--dl-ref-slate-500);
+}
+
+.devlog-kategori-card:hover .devlog-kategori-card__icon {
+    color: var(--dl-ref-accent-blue);
+}
+
+.devlog-kategori-card__title {
+    font-size: 0.95rem;
+    line-height: 1.35;
+}
+
+.devlog-kategori-card__count {
+    margin-top: auto;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1253,4 +1321,159 @@ body.devlog-public-body:has(.devlog-read) {
 body.devlog-public-body,
 body.devlog-panel-body {
     overflow-x: clip;
+}
+
+/* Admin tablo — ikon işlem butonları (32×32, ortalanmış ikon) */
+.devlog-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    line-height: 1;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.devlog-action-btn .material-symbols-outlined {
+    font-size: 18px;
+    margin: 0;
+    padding: 0;
+    display: block;
+}
+
+button.devlog-action-btn,
+a.devlog-action-btn {
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+/* Public — kategoriler (Explorer ağacı) */
+.devlog-explorer {
+    background-color: var(--dl-ref-surface-container-low);
+    border: 1px solid var(--dl-ref-border-ide);
+}
+
+.devlog-explorer__titlebar {
+    background-color: var(--dl-ref-panel-elevated);
+    border-bottom: 1px solid var(--dl-ref-border-ide);
+}
+
+.devlog-explorer__tree {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.85rem;
+}
+
+.devlog-explorer__item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 1rem;
+    border-bottom: 1px solid rgba(45, 50, 59, 0.6);
+    color: var(--dl-ref-on-surface);
+}
+
+.devlog-explorer__item:last-child {
+    border-bottom: none;
+}
+
+.devlog-explorer__item:hover {
+    background-color: rgba(0, 123, 255, 0.06);
+}
+
+.devlog-explorer__icon {
+    color: var(--dl-ref-accent-blue);
+    font-size: 1.15rem;
+    flex-shrink: 0;
+}
+
+.devlog-explorer__slug {
+    color: var(--dl-ref-slate-500);
+    font-size: 0.75rem;
+}
+
+/* Public — Hakkımızda (README) */
+.devlog-readme {
+    background-color: var(--dl-ref-terminal-bg);
+    border: 1px solid var(--dl-ref-border-ide);
+}
+
+.devlog-readme__cmd {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.8rem;
+    color: #3fb950;
+    border-bottom: 1px solid var(--dl-ref-border-ide);
+    background-color: var(--dl-ref-panel-elevated);
+}
+
+.devlog-readme__body {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.85rem;
+    line-height: 1.75;
+    color: var(--dl-ref-on-surface-variant);
+}
+
+.devlog-readme__body h2 {
+    font-size: 1rem;
+    color: var(--dl-ref-on-surface);
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+/* Panel — profil (IDE kartları) */
+.devlog-profil-card {
+    background-color: var(--dl-ref-terminal-bg);
+}
+
+.devlog-profil-yazar-talep {
+    background: linear-gradient(180deg, rgba(74, 142, 255, 0.06) 0%, var(--dl-ref-terminal-bg) 100%);
+}
+
+.devlog-profil-yazar-btn {
+    letter-spacing: 0.06em;
+}
+
+/* Admin — sistem logları (VS Code terminal benzeri) */
+.devlog-syslog-terminal {
+    background-color: #010409;
+    color: #8b949e;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    box-shadow: inset 0 0 0 1px rgba(48, 54, 61, 0.85);
+}
+
+.devlog-syslog-terminal__titlebar {
+    background-color: #0d1117;
+    border-bottom: 1px solid #30363d;
+}
+
+.devlog-syslog-terminal__body {
+    min-height: 18rem;
+    max-height: 70vh;
+    overflow-y: auto;
+    padding: 0.75rem 1rem 1rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+    line-height: 1.65;
+}
+
+.devlog-syslog-terminal__line {
+    margin: 0;
+    padding: 0.1rem 0;
+}
+
+.devlog-syslog-time {
+    color: #6e7681;
+}
+
+.devlog-syslog-user {
+    color: #79c0ff;
+}
+
+.devlog-syslog-msg {
+    color: #3fb950;
+}
+
+.devlog-syslog-terminal__line--muted {
+    color: #6e7681;
 }

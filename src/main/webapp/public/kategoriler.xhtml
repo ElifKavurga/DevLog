@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/templates/publicTemplate.xhtml">
+
+    <ui:define name="title">DevLog — Kategoriler</ui:define>
+
+    <ui:define name="content">
+        <main class="devlog-home-main w-100 flex-grow-1">
+            <div class="container py-4 py-md-5">
+                <header class="mb-4 pb-4 border-bottom border-secondary border-opacity-25">
+                    <h1 class="devlog-headline mb-2" style="font-size: 2rem;">Kategoriler</h1>
+                    <p class="devlog-mono-label text-secondary mb-0">Keşfet sayfasında kategoriye göre filtrelemek için bir kutucuğa tıklayın.</p>
+                </header>
+
+                <ui:fragment rendered="#{empty publicKategoriController.kategoriler}">
+                    <div class="devlog-cms-card p-5 text-center font-monospace small text-secondary">
+                        Henüz kategori yok.
+                    </div>
+                </ui:fragment>
+
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
+                    <ui:repeat value="#{publicKategoriController.kategoriler}" var="kat">
+                        <div class="col d-flex">
+                            <h:link outcome="/public/index" styleClass="devlog-kategori-card w-100 text-decoration-none">
+                                <f:param name="kategoriId" value="#{kat.id}"/>
+                                <span class="material-symbols-outlined devlog-kategori-card__icon mb-2" aria-hidden="true">folder</span>
+                                <span class="text-white fw-semibold font-monospace devlog-kategori-card__title">#{kat.isim}</span>
+                                <span class="devlog-mono-label text-secondary mt-2 devlog-kategori-card__count">
+                                    #{publicKategoriController.blogSayisi(kat.id)} blog
+                                </span>
+                            </h:link>
+                        </div>
+                    </ui:repeat>
+                </div>
+            </div>
+        </main>
+    </ui:define>
+</ui:composition>

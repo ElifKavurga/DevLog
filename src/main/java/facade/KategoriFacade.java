@@ -11,9 +11,13 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Stateless
 public class KategoriFacade implements KategoriFacadeLocal {
+
+    private static final Logger LOG = Logger.getLogger(KategoriFacade.class.getName());
 
     @PersistenceContext(unitName = "default")
     private EntityManager em;
@@ -58,11 +62,32 @@ public class KategoriFacade implements KategoriFacadeLocal {
     }
 
     /**
-     * Eski PostgreSQL şemalarında {@code slug} yoksa ekler; {@code @Startup} singleton'ından önce
-     * EclipseLink DDL çalışmayabildiği için uygulama açılışında çağrılır.
+     * Eski PostgreSQL şemalarında {@code slug} yoksa ekler.
+     * Boş veritabanında {@code kategori} tablosu henüz yoksa {@code ALTER TABLE} patlayıp WAR deploy'unu
+     * düşürmemesi için önce tablo varlığı kontrol edilir.
      */
+    @Override
     public void ensureSlugColumnExists() {
-        em.createNativeQuery("ALTER TABLE kategori ADD COLUMN IF NOT EXISTS slug VARCHAR(200)").executeUpdate();
+        try {
+            Object row = em.createNativeQuery(
+                            "SELECT EXISTS (SELECT 1 FROM information_schema.tables "
+                                    + "WHERE table_schema = current_schema() AND table_name = 'kategori')")
+                    .getSingleResult();
+            boolean kategoriTablosuVar = false;
+            if (row instanceof Boolean b) {
+                kategoriTablosuVar = b;
+            } else if (row instanceof Number n) {
+                kategoriTablosuVar = n.longValue() != 0;
+            } else if (row != null) {
+                kategoriTablosuVar = Boolean.parseBoolean(row.toString());
+            }
+            if (!kategoriTablosuVar) {
+                return;
+            }
+            em.createNativeQuery("ALTER TABLE kategori ADD COLUMN IF NOT EXISTS slug VARCHAR(200)").executeUpdate();
+        } catch (RuntimeException e) {
+            LOG.log(Level.WARNING, "kategori.slug doğrulaması atlandı: {0}", e.getMessage());
+        }
     }
 
     public Kategori bul(Long id) {

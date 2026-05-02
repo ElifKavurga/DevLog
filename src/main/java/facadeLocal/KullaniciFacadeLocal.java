@@ -23,4 +23,16 @@ public interface KullaniciFacadeLocal {
     boolean epostaKullaniliyorMu(String eposta);
 
     boolean kullaniciAdiKullaniliyorMu(String kullaniciAdi);
+
+    Kullanici bul(Long id);
+
+    /**
+     * Yazarlık talebi işaretli kullanıcılar (admin kuyruğu).
+     */
+    List<Kullanici> yazarlikTalebiBekleyenleriListele();
+
+    /**
+     * Eski şemalarda {@code yazarlik_talep_etti} yoksa ekler; giriş JPQL'i tüm alanları çektiği için sütun şarttır.
+     */
+    void ensureYazarlikTalepColumnExists();
 }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/templates/publicTemplate.xhtml">
+
+    <ui:define name="title">DevLog — Hakkımızda</ui:define>
+
+    <ui:define name="content">
+        <main class="devlog-home-main w-100 flex-grow-1">
+            <div class="container py-4 py-md-5">
+                <header class="mb-4 pb-4 border-bottom border-secondary border-opacity-25">
+                    <h1 class="devlog-headline mb-2" style="font-size: 2rem;">Hakkımızda</h1>
+                    <p class="devlog-mono-label text-secondary mb-0">/docs/readme</p>
+                </header>
+
+                <article class="devlog-readme rounded-0 overflow-hidden">
+                    <div class="devlog-readme__cmd px-3 py-2">
+                        <span class="text-secondary">$</span> cat ABOUT.md
+                    </div>
+                    <div class="devlog-readme__body p-4 p-md-5">
+                        <h2># DevLog nedir?</h2>
+                        <p>
+                            DevLog, geliştiricilerin teknik yazılarını paylaştığı koyu IDE temalı bir blog ve hafif CMS deneyimidir.
+                            Jakarta EE 10 ve JSF ile inşa edilmiştir; amaç sade bir okuma yüzeyi ve yazar paneli üzerinden içerik
+                            üretimini aynı çizgide tutmaktır.
+                        </p>
+                        <h2># Ne sunuyoruz?</h2>
+                        <p>
+                            Keşfet akışında yayınlanan yazılar, panelde taslak ve onay akışı, yöneticiler için onay kuyruğu ve
+                            kategori düzenimi yer alır. Arayüz; terminal, dosya yolu ve monospace tipografi ile geliştirici
+                            alışkanlıklarına yakın durur.
+                        </p>
+                        <h2># Kimler için?</h2>
+                        <p class="mb-0">
+                            Öğrenci projelerinden ekip içi dokümantasyona kadar herkes; giriş yapan yazarlar içerik ekler,
+                            ziyaretçiler ise yayınlanan kayıtları okur. DevLog, paylaşımı hızlandırmak ve düzeni korumak için
+                            tasarlanmıştır.
+                        </p>
+                    </div>
+                </article>
+            </div>
+        </main>
+    </ui:define>
+</ui:composition>

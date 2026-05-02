@@ -92,23 +92,24 @@
                                     <td class="px-4 py-3 font-monospace small text-secondary d-none d-xl-table-cell">
                                         #{adminOnayController.tarihMetni(blog)}
                                     </td>
-                                    <td class="px-4 py-3 text-end">
-                                        <div class="d-inline-flex flex-wrap justify-content-end gap-1">
-                                            <h:link outcome="/public/blog-detay" styleClass="btn btn-sm border border-primary border-opacity-50 text-primary rounded-0 py-1 px-2"
+                                    <td class="px-4 py-3 text-end align-middle">
+                                        <div class="d-inline-flex flex-wrap justify-content-end align-items-center gap-1">
+                                            <h:link outcome="/public/blog-detay"
+                                                    styleClass="devlog-action-btn border border-primary border-opacity-50 text-primary bg-transparent"
                                                     title="Önizle">
                                                 <f:param name="id" value="#{blog.id}"/>
-                                                <span class="material-symbols-outlined" style="font-size: 1.1rem;">visibility</span>
+                                                <span class="material-symbols-outlined">visibility</span>
                                             </h:link>
-                                            <h:commandButton action="#{adminOnayController.onayla(blog.id)}"
-                                                             styleClass="btn btn-sm border border-success border-opacity-50 text-success rounded-0 py-1 px-2"
-                                                             title="Onayla">
-                                                <span class="material-symbols-outlined" style="font-size: 1.1rem;">check</span>
-                                            </h:commandButton>
-                                            <h:commandButton action="#{adminOnayController.reddet(blog.id)}"
-                                                             styleClass="btn btn-sm border border-danger border-opacity-50 text-danger rounded-0 py-1 px-2"
-                                                             title="Reddet">
-                                                <span class="material-symbols-outlined" style="font-size: 1.1rem;">close</span>
-                                            </h:commandButton>
+                                            <h:commandLink action="#{adminOnayController.onayla(blog.id)}"
+                                                           styleClass="devlog-action-btn border border-success border-opacity-50 text-success bg-transparent text-decoration-none"
+                                                           title="Onayla">
+                                                <span class="material-symbols-outlined" aria-hidden="true">check</span>
+                                            </h:commandLink>
+                                            <h:commandLink action="#{adminOnayController.reddet(blog.id)}"
+                                                           styleClass="devlog-action-btn border border-danger border-opacity-50 text-danger bg-transparent text-decoration-none"
+                                                           title="Reddet">
+                                                <span class="material-symbols-outlined" aria-hidden="true">close</span>
+                                            </h:commandLink>
                                         </div>
                                     </td>
                                 </tr>

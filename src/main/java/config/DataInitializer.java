@@ -26,6 +26,9 @@ public class DataInitializer {
     public void seedDefaults() {
         seedAdminIfAbsent();
         seedDefaultKategoriIfAbsent();
+        seedOrnekOkurIfAbsent();
+        seedOrnekYazarIfAbsent();
+        seedOrnekYoneticiIfAbsent();
     }
 
     private void seedAdminIfAbsent() {
@@ -51,5 +54,53 @@ public class DataInitializer {
         genel.setIsim("Genel");
         genel.setSlug("genel");
         kategoriFacade.olustur(genel);
+    }
+
+    /** Geliştirme: örnek okur (şifre 1234). */
+    private void seedOrnekOkurIfAbsent() {
+        if (kullaniciFacade.kullaniciAdiKullaniliyorMu("okur_demo")) {
+            return;
+        }
+        Kullanici u = new Kullanici();
+        u.setKullaniciAdi("okur_demo");
+        u.setSifre("1234");
+        u.setEposta("okur_demo@devlog.com");
+        u.setAd("Demo");
+        u.setSoyad("Okur");
+        u.setRol(RolTip.OKUR);
+        u.setYazarlikTalepEtti(false);
+        kullaniciFacade.olustur(u);
+    }
+
+    /** Geliştirme: örnek yazar (şifre 1234). */
+    private void seedOrnekYazarIfAbsent() {
+        if (kullaniciFacade.kullaniciAdiKullaniliyorMu("yazar_demo")) {
+            return;
+        }
+        Kullanici u = new Kullanici();
+        u.setKullaniciAdi("yazar_demo");
+        u.setSifre("1234");
+        u.setEposta("yazar_demo@devlog.com");
+        u.setAd("Demo");
+        u.setSoyad("Yazar");
+        u.setRol(RolTip.YAZAR);
+        u.setYazarlikTalepEtti(false);
+        kullaniciFacade.olustur(u);
+    }
+
+    /** Geliştirme: örnek yönetici (şifre 1234). */
+    private void seedOrnekYoneticiIfAbsent() {
+        if (kullaniciFacade.kullaniciAdiKullaniliyorMu("yonetici_demo")) {
+            return;
+        }
+        Kullanici u = new Kullanici();
+        u.setKullaniciAdi("yonetici_demo");
+        u.setSifre("1234");
+        u.setEposta("yonetici_demo@devlog.com");
+        u.setAd("Demo");
+        u.setSoyad("Yönetici");
+        u.setRol(RolTip.YONETICI);
+        u.setYazarlikTalepEtti(false);
+        kullaniciFacade.olustur(u);
     }
 }

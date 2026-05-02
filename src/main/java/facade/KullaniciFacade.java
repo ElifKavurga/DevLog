@@ -11,9 +11,13 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Stateless
 public class KullaniciFacade implements KullaniciFacadeLocal {
+
+    private static final Logger LOG = Logger.getLogger(KullaniciFacade.class.getName());
 
     @PersistenceContext(unitName = "default")
     private EntityManager em;
@@ -87,5 +91,44 @@ public class KullaniciFacade implements KullaniciFacadeLocal {
                 .setParameter("u", kullaniciAdi.trim())
                 .getSingleResult();
         return c != null && c.longValue() > 0;
+    }
+
+    @Override
+    public Kullanici bul(Long id) {
+        if (id == null) {
+            return null;
+        }
+        return em.find(Kullanici.class, id);
+    }
+
+    @Override
+    public List<Kullanici> yazarlikTalebiBekleyenleriListele() {
+        return em.createQuery(
+                        "SELECT k FROM Kullanici k WHERE k.yazarlikTalepEtti = true ORDER BY k.id ASC",
+                        Kullanici.class)
+                .getResultList();
+    }
+
+    @Override
+    public void ensureYazarlikTalepColumnExists() {
+        try {
+            @SuppressWarnings("unchecked")
+            List<Object> rows = em.createNativeQuery(
+                            "SELECT table_name FROM information_schema.tables "
+                                    + "WHERE table_schema = current_schema() AND lower(table_name) = 'kullanici'")
+                    .getResultList();
+            if (rows.isEmpty()) {
+                return;
+            }
+            String tableName = String.valueOf(rows.get(0));
+            String safe = tableName.replace("\"", "");
+            String quoted = "\"" + safe + "\"";
+            em.createNativeQuery(
+                            "ALTER TABLE " + quoted
+                                    + " ADD COLUMN IF NOT EXISTS yazarlik_talep_etti BOOLEAN NOT NULL DEFAULT FALSE")
+                    .executeUpdate();
+        } catch (RuntimeException e) {
+            LOG.log(Level.WARNING, "kullanici.yazarlik_talep_etti doğrulaması atlandı: {0}", e.getMessage());
+        }
     }
 }

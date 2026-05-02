@@ -66,6 +66,36 @@ public class BlogFacade implements BlogFacadeLocal {
                 .getResultList();
     }
 
+    @Override
+    public List<Blog> kategoriyeGoreListele(Long kategoriId, DurumTip durum) {
+        if (kategoriId == null || durum == null) {
+            return List.of();
+        }
+        return em.createQuery(
+                        "SELECT DISTINCT b FROM Blog b "
+                                + "LEFT JOIN FETCH b.yazar LEFT JOIN FETCH b.kategori "
+                                + "WHERE b.kategori.id = :kid AND b.durum = :durum ORDER BY b.id DESC",
+                        Blog.class)
+                .setParameter("kid", kategoriId)
+                .setParameter("durum", durum)
+                .getResultList();
+    }
+
+    @Override
+    public List<Blog> kategorilereGoreListele(List<Long> kategoriIds, DurumTip durum) {
+        if (kategoriIds == null || kategoriIds.isEmpty() || durum == null) {
+            return List.of();
+        }
+        return em.createQuery(
+                        "SELECT DISTINCT b FROM Blog b "
+                                + "LEFT JOIN FETCH b.yazar LEFT JOIN FETCH b.kategori "
+                                + "WHERE b.kategori.id IN :kids AND b.durum = :durum ORDER BY b.id DESC",
+                        Blog.class)
+                .setParameter("kids", kategoriIds)
+                .setParameter("durum", durum)
+                .getResultList();
+    }
+
     /**
      * Admin onay kuyruğu: yalnızca {@link DurumTip#ONAY_BEKLIYOR}, en yeni önce.
      */

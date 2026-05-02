@@ -1,7 +1,11 @@
 package controller.publicweb;
 
 import entity.Blog;
+import entity.Kategori;
+import enums.DurumTip;
 import facadeLocal.BlogFacadeLocal;
+import facadeLocal.KategoriFacadeLocal;
+import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -9,7 +13,9 @@ import jakarta.inject.Named;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,20 +37,183 @@ public class KesfetController implements Serializable {
     @Inject
     private BlogFacadeLocal blogFacade;
 
+    @Inject
+    private KategoriFacadeLocal kategoriFacade;
+
+    /** URL: tekrarlayan ?kategoriId=1&amp;kategoriId=2 — OR ile filtre */
+    private List<Long> seciliKategoriIds = new ArrayList<>();
+
     private List<Blog> yayinlananBloglar = new ArrayList<>();
+    private List<Kategori> kategoriler = new ArrayList<>();
 
     public void hazirla() {
+        istektenSeciliKategorileriOku();
+        yukleKategoriler();
+        yukleBloglar();
+    }
+
+    private void istektenSeciliKategorileriOku() {
+        seciliKategoriIds = new ArrayList<>();
+        FacesContext fc = FacesContext.getCurrentInstance();
+        if (fc == null) {
+            return;
+        }
+        Map<String, String[]> map = fc.getExternalContext().getRequestParameterValuesMap();
+        if (map == null) {
+            return;
+        }
+        String[] raw = map.get("kategoriId");
+        if (raw == null || raw.length == 0) {
+            return;
+        }
+        LinkedHashSet<Long> set = new LinkedHashSet<>();
+        for (String s : raw) {
+            if (s == null || s.isBlank()) {
+                continue;
+            }
+            try {
+                long v = Long.parseLong(s.trim());
+                if (v > 0) {
+                    set.add(v);
+                }
+            } catch (NumberFormatException ignored) {
+                // atla
+            }
+        }
+        seciliKategoriIds = new ArrayList<>(set);
+    }
+
+    private void yukleKategoriler() {
         try {
-            List<Blog> liste = blogFacade.yayinlananlariListele();
+            List<Kategori> list = kategoriFacade.listeleIdArtan();
+            kategoriler = list != null ? new ArrayList<>(list) : new ArrayList<>();
+        } catch (RuntimeException e) {
+            LOG.log(Level.WARNING, "Kategori listesi yüklenemedi.", e);
+            kategoriler = new ArrayList<>();
+        }
+    }
+
+    private void yukleBloglar() {
+        try {
+            List<Blog> liste;
+            if (seciliKategoriIds.isEmpty()) {
+                liste = blogFacade.yayinlananlariListele();
+            } else {
+                List<Long> gecerli = new ArrayList<>();
+                for (Long id : seciliKategoriIds) {
+                    if (id != null && kategoriFacade.bul(id) != null) {
+                        gecerli.add(id);
+                    }
+                }
+                if (gecerli.isEmpty()) {
+                    liste = new ArrayList<>();
+                } else {
+                    liste = blogFacade.kategorilereGoreListele(gecerli, DurumTip.YAYINLANDI);
+                }
+            }
             yayinlananBloglar = liste != null ? new ArrayList<>(liste) : new ArrayList<>();
         } catch (RuntimeException e) {
-            LOG.log(Level.WARNING, "Yayınlanan blog listesi yüklenemedi.", e);
+            LOG.log(Level.WARNING, "Blog listesi yüklenemedi.", e);
             yayinlananBloglar = new ArrayList<>();
         }
     }
 
+    public List<Long> getSeciliKategoriIds() {
+        return seciliKategoriIds;
+    }
+
+    public boolean kategoriSecili(Long kategoriKey) {
+        return kategoriKey != null && seciliKategoriIds.contains(kategoriKey);
+    }
+
+    /**
+     * Bu kategoriye tıklandığında URL'de gönderilecek yeni id listesi (çoklu seçim / kaldırma).
+     */
+    public List<Long> kategoriLinkIcinSecim(Long toggleId) {
+        LinkedHashSet<Long> s = new LinkedHashSet<>(seciliKategoriIds);
+        if (toggleId == null) {
+            return new ArrayList<>(s);
+        }
+        if (s.contains(toggleId)) {
+            s.remove(toggleId);
+        } else {
+            s.add(toggleId);
+        }
+        return new ArrayList<>(s);
+    }
+
+    /**
+     * Kategori chip href: JSF {@code h:link} içinde {@code ui:repeat} ile {@code f:param} çoğu sürümde
+     * sorguya eklenmediği için tam URL burada üretilir.
+     */
+    public String kategoriFiltreUrl(Long toggleKategoriId) {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        String ctx = "";
+        if (fc != null) {
+            String c = fc.getExternalContext().getRequestContextPath();
+            if (c != null) {
+                ctx = c;
+            }
+        }
+        String base = ctx + "/public/index.xhtml";
+        List<Long> ids = kategoriLinkIcinSecim(toggleKategoriId);
+        if (ids.isEmpty()) {
+            return base;
+        }
+        StringBuilder u = new StringBuilder(base).append('?');
+        for (int i = 0; i < ids.size(); i++) {
+            if (i > 0) {
+                u.append('&');
+            }
+            u.append("kategoriId=").append(ids.get(i));
+        }
+        return u.toString();
+    }
+
+    public String kesfetTemizUrl() {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        String ctx = "";
+        if (fc != null) {
+            String c = fc.getExternalContext().getRequestContextPath();
+            if (c != null) {
+                ctx = c;
+            }
+        }
+        return ctx + "/public/index.xhtml";
+    }
+
+    public boolean isFiltreAktif() {
+        return seciliKategoriIds != null && !seciliKategoriIds.isEmpty();
+    }
+
     public List<Blog> getYayinlananBloglar() {
         return yayinlananBloglar;
+    }
+
+    public List<Kategori> getKategoriler() {
+        return kategoriler;
+    }
+
+    /** Seçili kategori adları (virgülle); filtre yoksa null. */
+    public String getSeciliKategoriOzeti() {
+        if (seciliKategoriIds == null || seciliKategoriIds.isEmpty()) {
+            return null;
+        }
+        List<String> adlar = new ArrayList<>();
+        for (Long id : seciliKategoriIds) {
+            try {
+                Kategori k = kategoriFacade.bul(id);
+                if (k != null && k.getKategoriAdi() != null) {
+                    adlar.add(k.getKategoriAdi());
+                }
+            } catch (RuntimeException ignored) {
+                // atla
+            }
+        }
+        if (adlar.isEmpty()) {
+            return null;
+        }
+        return String.join(", ", adlar);
     }
 
     public String kapakUrl(Blog blog, int index) {

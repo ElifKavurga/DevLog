@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/templates/panelTemplate.xhtml">
+
+    <f:metadata>
+        <f:viewAction action="#{sistemLogController.hazirla}"/>
+    </f:metadata>
+
+    <ui:define name="title">DevLog — Sistem kayıtları</ui:define>
+
+    <ui:define name="content">
+        <header class="mb-4 pb-4 border-bottom border-secondary border-opacity-25">
+            <span class="devlog-mono-label text-primary mb-1 d-block">/sys/logs</span>
+            <h1 class="devlog-headline mb-0" style="font-size: 1.75rem;">Sistem kayıtları</h1>
+            <p class="text-secondary font-monospace small mb-0 mt-2">Terminal görünümü — son olaylar</p>
+        </header>
+
+        <div class="devlog-syslog-terminal rounded-0 border border-secondary border-opacity-25">
+            <div class="devlog-syslog-terminal__titlebar px-3 py-2 d-flex align-items-center justify-content-between flex-wrap gap-2">
+                <span class="devlog-mono-label text-secondary mb-0">OUTPUT</span>
+                <span class="font-monospace small text-secondary">#{sistemLogController.logSayisi} satır</span>
+            </div>
+            <div class="devlog-syslog-terminal__body font-monospace small" role="log" aria-live="polite">
+                <ui:fragment rendered="#{empty sistemLogController.loglar}">
+                    <div class="devlog-syslog-terminal__line devlog-syslog-terminal__line--muted">[—] Henüz kayıt yok.</div>
+                </ui:fragment>
+                <ui:repeat value="#{sistemLogController.loglar}" var="log">
+                    <div class="devlog-syslog-terminal__line">
+                        <span class="devlog-syslog-time"><h:outputText value="#{sistemLogController.logTarihParcasi(log)}" escape="true"/></span>
+                        <span class="devlog-syslog-user"><h:outputText value=" #{sistemLogController.logKimParcasi(log)} " escape="true"/></span>
+                        <span class="devlog-syslog-msg"><h:outputText value="#{sistemLogController.logIslemParcasi(log)}" escape="true"/></span>
+                    </div>
+                </ui:repeat>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

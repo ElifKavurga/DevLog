@@ -37,6 +37,19 @@ public class OturumBean implements Serializable {
         this.aktifKullanici = kullanici;
     }
 
+    /** Veritabanından güncellenmiş kullanıcıyı oturuma yazar (profil / rol değişimi sonrası). */
+    public void aktifKullaniciyiGuncelle(Kullanici kullanici) {
+        this.aktifKullanici = kullanici;
+    }
+
+    public String menuGitProfil() {
+        if (!isGirisYapildi()) {
+            uyariGirisGerekli();
+            return null;
+        }
+        return "/panel/profil?faces-redirect=true";
+    }
+
     public String cikisYap() {
         aktifKullanici = null;
         return "/public/index?faces-redirect=true";

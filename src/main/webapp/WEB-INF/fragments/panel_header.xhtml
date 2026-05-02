@@ -18,8 +18,8 @@
                         </h:link>
                         <nav class="d-none d-md-flex align-items-center gap-3 gap-lg-4">
                             <h:link outcome="/public/index" styleClass="devlog-public-nav-link devlog-public-header--ide__nav text-uppercase #{view.viewId.endsWith('/public/index.xhtml') ? 'active' : ''}">Keşfet</h:link>
-                            <a class="devlog-public-nav-link devlog-public-header--ide__nav text-uppercase" href="#">Kategoriler</a>
-                            <a class="devlog-public-nav-link devlog-public-header--ide__nav text-uppercase" href="#">Hakkımızda</a>
+                            <h:link outcome="/public/kategoriler" styleClass="devlog-public-nav-link devlog-public-header--ide__nav text-uppercase #{view.viewId.endsWith('/public/kategoriler.xhtml') ? 'active' : ''}">Kategoriler</h:link>
+                            <h:link outcome="/public/hakkimizda" styleClass="devlog-public-nav-link devlog-public-header--ide__nav text-uppercase #{view.viewId.endsWith('/public/hakkimizda.xhtml') ? 'active' : ''}">Hakkımızda</h:link>
                         </nav>
                     </div>
                     <div class="order-3 order-lg-2 flex-grow-1 w-100 w-lg-auto d-none d-md-flex justify-content-lg-center px-lg-2" style="min-width: 0;">

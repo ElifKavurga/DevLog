@@ -19,6 +19,11 @@
                     <div>
                         <h1 class="devlog-headline mb-2" style="font-size: 2rem;">Keşfet</h1>
                         <p class="devlog-mono-label text-secondary mb-0">/dev/log/public/index</p>
+                        <ui:fragment rendered="#{not empty kesfetController.seciliKategoriOzeti}">
+                            <p class="small text-secondary font-monospace mb-0 mt-2">
+                                Kategoriler: <span class="text-white">#{kesfetController.seciliKategoriOzeti}</span>
+                            </p>
+                        </ui:fragment>
                     </div>
                     <h:form styleClass="mb-0 align-self-md-center">
                         <h:commandLink action="#{oturum.menuGitYeniBlog}" styleClass="btn btn-primary rounded-0 py-2 px-4 font-monospace small fw-bold text-uppercase devlog-cms-submit-btn text-decoration-none">
@@ -27,20 +32,30 @@
                     </h:form>
                 </header>
 
-                <section class="devlog-cms-card p-4 mb-4" aria-labelledby="devlog-home-filter-heading">
-                    <h2 id="devlog-home-filter-heading" class="form-label devlog-mono-label text-secondary mb-3">Etikete göre</h2>
-                    <div class="d-flex flex-wrap gap-2">
-                        <button type="button" class="btn btn-sm rounded-0 font-monospace devlog-home-filter-chip">Backend</button>
-                        <button type="button" class="btn btn-sm rounded-0 font-monospace devlog-home-filter-chip">Frontend</button>
-                        <button type="button" class="btn btn-sm rounded-0 font-monospace devlog-home-filter-chip">DevOps</button>
-                        <button type="button" class="btn btn-sm rounded-0 font-monospace devlog-home-filter-chip">AI</button>
-                        <button type="button" class="btn btn-sm rounded-0 font-monospace devlog-home-filter-chip devlog-home-filter-chip--muted">Tümünü temizle</button>
+                <section class="devlog-cms-card p-4 mb-4" aria-labelledby="devlog-home-kategori-filter-heading">
+                    <h2 id="devlog-home-kategori-filter-heading" class="form-label devlog-mono-label text-secondary mb-3">Kategorilere göre</h2>
+                    <div class="d-flex flex-wrap gap-2 align-items-center">
+                        <ui:repeat value="#{kesfetController.kategoriler}" var="kat">
+                            <a href="#{kesfetController.kategoriFiltreUrl(kat.id)}"
+                               class="btn btn-sm rounded-0 font-monospace devlog-home-filter-chip text-decoration-none #{kesfetController.kategoriSecili(kat.id) ? 'devlog-home-filter-chip--active' : ''}">
+                                <h:outputText value="#{kat.isim}" escape="true"/>
+                            </a>
+                        </ui:repeat>
+                        <ui:fragment rendered="#{kesfetController.filtreAktif}">
+                            <a href="#{kesfetController.kesfetTemizUrl()}"
+                               class="btn btn-sm rounded-0 font-monospace devlog-home-filter-chip devlog-home-filter-chip--muted text-decoration-none">Tümünü temizle</a>
+                        </ui:fragment>
                     </div>
                 </section>
 
                 <ui:fragment rendered="#{empty kesfetController.yayinlananBloglar}">
                     <div class="devlog-cms-card p-5 text-center font-monospace small text-secondary">
-                        Henüz yayınlanan blog yok. Onaylanmış içerikler burada listelenir.
+                        <ui:fragment rendered="#{kesfetController.filtreAktif}">
+                            Seçilen kategorilerde henüz yayınlanan blog yok.
+                        </ui:fragment>
+                        <ui:fragment rendered="#{not kesfetController.filtreAktif}">
+                            Henüz yayınlanan blog yok. Onaylanmış içerikler burada listelenir.
+                        </ui:fragment>
                     </div>
                 </ui:fragment>
 

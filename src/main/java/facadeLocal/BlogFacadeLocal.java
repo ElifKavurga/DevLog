@@ -21,6 +21,16 @@ public interface BlogFacadeLocal {
 
     List<Blog> yayinlananlariListele();
 
+    /**
+     * Belirli kategori ve duruma göre bloglar; yazar ve kategori FETCH ile gelir, en yeni önce.
+     */
+    List<Blog> kategoriyeGoreListele(Long kategoriId, DurumTip durum);
+
+    /**
+     * Birden fazla kategoriden herhangi birine ait (OR) ve verilen durumdaki bloglar; FETCH ile yazar ve kategori.
+     */
+    List<Blog> kategorilereGoreListele(List<Long> kategoriIds, DurumTip durum);
+
     List<Blog> onayBekleyenleriListele();
 
     List<Blog> yazaraGoreListele(Long yazarId);

@@ -34,6 +34,11 @@
                         <span class="material-symbols-outlined" aria-hidden="true">add_box</span>
                         <span>Yeni blog ekle</span>
                     </h:commandLink>
+                    <h:link outcome="/panel/profil" rendered="#{oturum.girisYapildi}"
+                            styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/panel/profil.xhtml') ? 'active' : ''}">
+                        <span class="material-symbols-outlined" aria-hidden="true">person</span>
+                        <span>Profil</span>
+                    </h:link>
                     <h:link outcome="/admin/admin-onay" rendered="#{oturum.admin}"
                             styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/admin/admin-onay.xhtml') ? 'active' : ''}">
                         <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
@@ -43,6 +48,16 @@
                             styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/admin/kategoriler.xhtml') ? 'active' : ''}">
                         <span class="material-symbols-outlined" aria-hidden="true">category</span>
                         <span>Kategoriler</span>
+                    </h:link>
+                    <h:link outcome="/admin/yazar-talepleri" rendered="#{oturum.admin}"
+                            styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/admin/yazar-talepleri.xhtml') ? 'active' : ''}">
+                        <span class="material-symbols-outlined" aria-hidden="true">group_add</span>
+                        <span>Yazar talepleri</span>
+                    </h:link>
+                    <h:link outcome="/admin/sistem-loglari" rendered="#{oturum.admin}"
+                            styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/admin/sistem-loglari.xhtml') ? 'active' : ''}">
+                        <span class="material-symbols-outlined" aria-hidden="true">terminal</span>
+                        <span>Sistem kayıtları</span>
                     </h:link>
                     <h:link outcome="/public/index" styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/public/index.xhtml') ? 'active' : ''}">
                         <span class="material-symbols-outlined" aria-hidden="true">home</span>
