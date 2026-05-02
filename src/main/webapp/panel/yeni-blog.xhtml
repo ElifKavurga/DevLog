@@ -123,10 +123,6 @@
 
             <script type="text/javascript">
                 //<![CDATA[
-                /**
-                 * JSF gönderiminden hemen önce EasyMDE içeriğini gizli textarea'ya yazar
-                 * (blogEkleForm:icerikAlan → blogDTO.icerik model güncellemesi).
-                 */
                 function devlogSyncMarkdownToTextarea() {
                     var ta = document.getElementById('blogEkleForm:icerikAlan');
                     if (!ta) {
@@ -166,7 +162,6 @@
                             spellChecker: false,
                             status: false,
                             autofocus: false,
-                            /* Tema renkleri devlog.css (.devlog-cms-editor--mde) ile özet alanıyla uyumlu */
                             theme: 'base',
                             toolbar: ['bold', 'italic', 'heading', '|', 'quote', 'unordered-list', 'ordered-list', '|', 'link', 'image', '|', 'guide']
                         });

@@ -49,8 +49,7 @@ public class SistemLogFacade implements SistemLogFacadeLocal {
                                     + " islem VARCHAR(2000) NOT NULL,"
                                     + " tarih TIMESTAMP NOT NULL)")
                     .executeUpdate();
-        } catch (RuntimeException e) {
-            // tablo zaten var veya yetki; log yazma kritik değil
+        } catch (RuntimeException ignored) {
         }
     }
 }

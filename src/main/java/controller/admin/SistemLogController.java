@@ -48,7 +48,6 @@ public class SistemLogController implements Serializable {
         try {
             sistemLogFacade.ensureSistemLogTableExists();
         } catch (RuntimeException ignored) {
-            // tablo zaten var veya yetki
         }
         List<SistemLog> list = sistemLogFacade.tariheGoreAzalanListele();
         loglar = list != null ? new ArrayList<>(list) : new ArrayList<>();

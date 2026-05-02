@@ -7,7 +7,6 @@ import facadeLocal.DegerlendirmeFacadeLocal;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Fetch;
@@ -43,8 +42,7 @@ public class DegerlendirmeFacade implements DegerlendirmeFacadeLocal {
         CriteriaQuery<Degerlendirme> cq = cb.createQuery(Degerlendirme.class);
         Root<Degerlendirme> root = cq.from(Degerlendirme.class);
         cq.select(root);
-        TypedQuery<Degerlendirme> q = em.createQuery(cq);
-        return q.getResultList();
+        return em.createQuery(cq).getResultList();
     }
 
     @Override
