@@ -1,6 +1,7 @@
 package facade;
 
 import entity.Blog;
+import entity.Degerlendirme;
 import enums.DurumTip;
 import facadeLocal.BlogFacadeLocal;
 import jakarta.ejb.Stateless;
@@ -135,6 +136,31 @@ public class BlogFacade implements BlogFacadeLocal {
         q.setParameter("id", id);
         var list = q.getResultList();
         return list.isEmpty() ? null : list.get(0);
+    }
+
+    @Override
+    public Blog bulBlogDetayPublic(Long id) {
+        if (id == null) {
+            return null;
+        }
+        List<Blog> blogs = em.createQuery(
+                        "SELECT DISTINCT b FROM Blog b "
+                                + "LEFT JOIN FETCH b.yazar LEFT JOIN FETCH b.kategori "
+                                + "LEFT JOIN FETCH b.yorumlar y LEFT JOIN FETCH y.kullanici "
+                                + "WHERE b.id = :id",
+                        Blog.class)
+                .setParameter("id", id)
+                .getResultList();
+        if (blogs.isEmpty()) {
+            return null;
+        }
+        Blog b = blogs.get(0);
+        em.createQuery(
+                        "SELECT d FROM Degerlendirme d JOIN FETCH d.kullanici WHERE d.blog.id = :bid",
+                        Degerlendirme.class)
+                .setParameter("bid", id)
+                .getResultList();
+        return b;
     }
 
     public Double ortalamaPuan(Long blogId) {

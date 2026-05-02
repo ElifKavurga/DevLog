@@ -1,12 +1,17 @@
 package controller.publicweb;
 
 import controller.OturumBean;
+import controller.panel.ProfilController;
 import entity.Blog;
 import entity.Degerlendirme;
 import entity.Kullanici;
+import entity.SistemLog;
+import entity.Yorum;
 import enums.DurumTip;
 import facadeLocal.BlogFacadeLocal;
 import facadeLocal.DegerlendirmeFacadeLocal;
+import facadeLocal.SistemLogFacadeLocal;
+import facadeLocal.YorumFacadeLocal;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
@@ -25,6 +30,7 @@ import java.util.List;
 public class BlogDetayController implements Serializable {
 
     private static final DateTimeFormatter TARIH_FMT = DateTimeFormatter.ofPattern("d MMM yyyy", java.util.Locale.forLanguageTag("tr"));
+    private static final DateTimeFormatter YORUM_TARIH_FMT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm", java.util.Locale.forLanguageTag("tr"));
 
     private static final List<String> UNSPLASH_KAPAK_URLS = List.of(
             "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
@@ -42,12 +48,17 @@ public class BlogDetayController implements Serializable {
     private DegerlendirmeFacadeLocal degerlendirmeFacade;
 
     @Inject
+    private YorumFacadeLocal yorumFacade;
+
+    @Inject
+    private SistemLogFacadeLocal sistemLogFacade;
+
+    @Inject
     private OturumBean oturum;
 
     private Long id;
     private Blog blog;
     private Integer kullaniciPuani;
-    /** UI: yorum alanı (kalıcı kayıt yok; gönderimde bilgilendirme). */
     private String yorumMetni;
 
     public void yukle() {
@@ -62,7 +73,7 @@ public class BlogDetayController implements Serializable {
             blog = null;
             return;
         }
-        blog = b;
+        blog = blogFacade.bulBlogDetayPublic(id);
         yukleKullaniciPuani();
     }
 
@@ -77,6 +88,23 @@ public class BlogDetayController implements Serializable {
         }
     }
 
+    private void blogDetayiYenile() {
+        if (id == null) {
+            return;
+        }
+        blog = blogFacade.bulBlogDetayPublic(id);
+        yukleKullaniciPuani();
+    }
+
+    private void sistemLogKaydet(String islem) {
+        Kullanici k = oturum.isGirisYapildi() ? oturum.getAktifKullanici() : null;
+        SistemLog log = new SistemLog();
+        log.setKullaniciBilgisi(ProfilController.kullaniciLogKimligi(k));
+        log.setIslem(islem);
+        log.setTarih(LocalDateTime.now());
+        sistemLogFacade.olustur(log);
+    }
+
     public String puanVer(int puan) {
         if (!oturum.isGirisYapildi() || oturum.getAktifKullanici() == null || blog == null) {
             return null;
@@ -86,6 +114,8 @@ public class BlogDetayController implements Serializable {
         }
         degerlendirmeFacade.kaydetVeyaGuncellePuan(blog.getId(), oturum.getAktifKullanici().getId(), puan);
         kullaniciPuani = puan;
+        sistemLogKaydet("Kullanıcı bir bloga yorum yaptı.");
+        blogDetayiYenile();
         return null;
     }
 
@@ -193,9 +223,6 @@ public class BlogDetayController implements Serializable {
         return String.format("v%d.%02d.%02d", t.getYear(), t.getMonthValue(), t.getDayOfMonth());
     }
 
-    /**
-     * Blog gövdesini satır satır editör görünümü için döndürür (boş satırlar korunur).
-     */
     public List<String> getIcerikSatirlari() {
         if (blog == null || blog.getIcerik() == null) {
             return Collections.emptyList();
@@ -211,19 +238,50 @@ public class BlogDetayController implements Serializable {
         this.yorumMetni = yorumMetni;
     }
 
+    public String yorumYazarEtiketi(Yorum y) {
+        if (y == null || y.getKullanici() == null) {
+            return "—";
+        }
+        Kullanici k = y.getKullanici();
+        String ad = k.getAd() != null ? k.getAd() : "";
+        String soy = k.getSoyad() != null ? k.getSoyad() : "";
+        String full = (ad + " " + soy).trim();
+        if (!full.isEmpty()) {
+            return full;
+        }
+        if (k.getKullaniciAdi() != null && !k.getKullaniciAdi().isBlank()) {
+            return k.getKullaniciAdi();
+        }
+        return "—";
+    }
+
+    public String yorumTarihMetni(Yorum y) {
+        if (y == null || y.getOlusturulmaTarihi() == null) {
+            return "—";
+        }
+        return y.getOlusturulmaTarihi().format(YORUM_TARIH_FMT);
+    }
+
     public String yorumGonder() {
         if (blog == null) {
             return null;
         }
-        String t = yorumMetni != null ? yorumMetni.trim() : "";
         FacesContext ctx = FacesContext.getCurrentInstance();
+        if (!oturum.isGirisYapildi() || oturum.getAktifKullanici() == null) {
+            ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Uyarı", "Yorum yazmak için giriş yapın."));
+            return null;
+        }
+        String t = yorumMetni != null ? yorumMetni.trim() : "";
         if (t.isEmpty()) {
             ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Uyarı", "Yorum boş olamaz."));
             return null;
         }
+        Kullanici k = oturum.getAktifKullanici();
+        yorumFacade.olustur(blog.getId(), k.getId(), t);
         yorumMetni = "";
-        ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Bilgi",
-                "Bu sürümde yorumlar henüz kalıcı olarak kaydedilmiyor; metniniz yalnızca arayüzde işlendi."));
+        sistemLogKaydet("Kullanıcı bir bloga yorum yaptı.");
+        blogDetayiYenile();
+        ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Bilgi", "Yorumunuz kaydedildi."));
         return null;
     }
 }

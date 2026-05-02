@@ -37,5 +37,10 @@ public interface BlogFacadeLocal {
 
     Blog bul(Long id);
 
+    /**
+     * Blog detay (yorumlar ve yorum yazarları FETCH); değerlendirme satırları ayrı sorgu ile önbelleğe alınır.
+     */
+    Blog bulBlogDetayPublic(Long id);
+
     Double ortalamaPuan(Long blogId);
 }

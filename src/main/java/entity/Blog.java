@@ -52,6 +52,10 @@ public class Blog implements Serializable {
     @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Degerlendirme> degerlendirmeler = new ArrayList<>();
 
+    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OrderBy("olusturulmaTarihi ASC")
+    private List<Yorum> yorumlar = new ArrayList<>();
+
     public Blog() {}
 
     public Long getId() {
@@ -148,5 +152,13 @@ public class Blog implements Serializable {
 
     public void setDegerlendirmeler(List<Degerlendirme> degerlendirmeler) {
         this.degerlendirmeler = degerlendirmeler;
+    }
+
+    public List<Yorum> getYorumlar() {
+        return yorumlar;
+    }
+
+    public void setYorumlar(List<Yorum> yorumlar) {
+        this.yorumlar = yorumlar;
     }
 }

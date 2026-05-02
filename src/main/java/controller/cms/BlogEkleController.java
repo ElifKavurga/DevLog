@@ -1,12 +1,15 @@
 package controller.cms;
 
 import controller.OturumBean;
+import controller.panel.ProfilController;
 import entity.Blog;
 import entity.Kategori;
 import entity.Kullanici;
+import entity.SistemLog;
 import enums.DurumTip;
 import facadeLocal.BlogFacadeLocal;
 import facadeLocal.KategoriFacadeLocal;
+import facadeLocal.SistemLogFacadeLocal;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
@@ -29,6 +32,9 @@ public class BlogEkleController implements Serializable {
 
     @Inject
     private OturumBean oturum;
+
+    @Inject
+    private SistemLogFacadeLocal sistemLogFacade;
 
     private List<Kategori> kategoriler = new ArrayList<>();
 
@@ -98,6 +104,11 @@ public class BlogEkleController implements Serializable {
         b.setKategori(kat);
 
         blogFacade.olustur(b);
+        SistemLog log = new SistemLog();
+        log.setKullaniciBilgisi(ProfilController.kullaniciLogKimligi(yazar));
+        log.setIslem("Kullanıcı yeni bir blog yazısı oluşturdu.");
+        log.setTarih(LocalDateTime.now());
+        sistemLogFacade.olustur(log);
         temizleForm();
         return "/panel/bloglarim?faces-redirect=true";
     }

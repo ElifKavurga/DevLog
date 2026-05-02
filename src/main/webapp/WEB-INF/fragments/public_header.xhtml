@@ -42,9 +42,11 @@
                                 <h:commandLink action="#{oturum.menuGitYeniBlog}" styleClass="btn devlog-public-btn-primary devlog-public-header--ide__btn-primary rounded-0 px-2 px-md-3 py-2 small text-decoration-none d-none d-lg-inline-block text-uppercase">
                                     Yeni Blog Ekle
                                 </h:commandLink>
-                                <span class="font-monospace small devlog-public-header--ide__username text-truncate d-none d-sm-inline" style="max-width: 7rem;" title="#{oturum.aktifKullanici.kullaniciAdi}">
+                                <h:link outcome="/panel/profil"
+                                        styleClass="font-monospace small devlog-public-header--ide__username devlog-header-profile-link text-truncate d-none d-sm-inline"
+                                        title="#{oturum.aktifKullanici.kullaniciAdi}">
                                     #{oturum.aktifKullanici.kullaniciAdi}
-                                </span>
+                                </h:link>
                                 <h:commandLink action="#{oturum.cikisYap}" styleClass="btn devlog-public-btn-outline devlog-public-header--ide__btn rounded-0 px-2 py-2 border-0 text-decoration-none small text-uppercase">
                                     Çıkış
                                 </h:commandLink>

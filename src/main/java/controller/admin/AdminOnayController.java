@@ -1,15 +1,19 @@
 package controller.admin;
 
 import controller.OturumBean;
+import controller.panel.ProfilController;
 import entity.Blog;
 import entity.Kullanici;
+import entity.SistemLog;
 import enums.DurumTip;
 import facadeLocal.BlogFacadeLocal;
+import facadeLocal.SistemLogFacadeLocal;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +29,9 @@ public class AdminOnayController implements Serializable {
 
     @Inject
     private OturumBean oturum;
+
+    @Inject
+    private SistemLogFacadeLocal sistemLogFacade;
 
     private List<Blog> bekleyenler = new ArrayList<>();
 
@@ -55,6 +62,7 @@ public class AdminOnayController implements Serializable {
         }
         b.setDurum(DurumTip.YAYINLANDI);
         blogFacade.guncelle(b);
+        adminLogKaydet("Admin bir blog yazısını onayladı.");
         yukleListe();
         return null;
     }
@@ -70,8 +78,18 @@ public class AdminOnayController implements Serializable {
         }
         b.setDurum(DurumTip.REDDEDILDI);
         blogFacade.guncelle(b);
+        adminLogKaydet("Admin bir blog yazısını reddetti.");
         yukleListe();
         return null;
+    }
+
+    private void adminLogKaydet(String islem) {
+        Kullanici admin = oturum.getAktifKullanici();
+        SistemLog log = new SistemLog();
+        log.setKullaniciBilgisi(ProfilController.kullaniciLogKimligi(admin));
+        log.setIslem(islem);
+        log.setTarih(LocalDateTime.now());
+        sistemLogFacade.olustur(log);
     }
 
     /** Ön izleme sayfası: onay sonrası onay kuyruğuna dön. */

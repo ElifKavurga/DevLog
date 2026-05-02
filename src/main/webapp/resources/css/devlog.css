@@ -1023,6 +1023,37 @@ body.devlog-panel-body {
     color: var(--dl-ref-slate-500);
 }
 
+a.devlog-header-profile-link {
+    max-width: 7rem;
+    color: var(--dl-ref-slate-500) !important;
+    text-decoration: none !important;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+a.devlog-header-profile-link:hover,
+a.devlog-header-profile-link:focus {
+    color: var(--dl-ref-on-surface) !important;
+    text-decoration: none !important;
+}
+
+.devlog-sidebar-profile-card {
+    border-left: 4px solid transparent;
+    padding-top: 0.35rem;
+    padding-bottom: 0.35rem;
+    transition: background-color 0.1s ease, border-color 0.1s ease, color 0.1s ease;
+}
+
+.devlog-sidebar-profile-card:hover {
+    background-color: #1c2128;
+    border-left-color: var(--dl-ref-accent-blue);
+}
+
+.devlog-sidebar-profile-card:focus-visible {
+    outline: 1px solid var(--dl-ref-accent-blue);
+    outline-offset: 2px;
+}
+
 body.devlog-public-body:has(.devlog-home-main) {
     background-color: var(--dl-ref-panel-bg);
     color: var(--dl-ref-on-surface);

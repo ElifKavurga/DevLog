@@ -95,7 +95,12 @@
                                     <div class="devlog-read-terminal__prompt font-monospace small text-secondary mb-2">
                                         <span class="devlog-read-terminal__user">guest@devlog</span><span class="text-white">:</span><span class="devlog-read-terminal__path">~/blog/#{blogDetayController.blog.id}</span><span class="text-white">$</span>
                                     </div>
-                                    <h:form id="yorumForm" styleClass="mb-0">
+                                    <ui:fragment rendered="#{not oturum.girisYapildi}">
+                                        <p class="text-secondary font-monospace small mb-0">
+                                            Yorum yazmak için <h:link outcome="/auth/giris" styleClass="devlog-read-link">giriş yapın</h:link>.
+                                        </p>
+                                    </ui:fragment>
+                                    <h:form id="yorumForm" styleClass="mb-0" rendered="#{oturum.girisYapildi}">
                                         <label class="form-label devlog-mono-label text-secondary mb-2" for="yorumMetni">Girdi</label>
                                         <h:inputTextarea id="yorumMetni" value="#{blogDetayController.yorumMetni}" rows="5"
                                                          styleClass="form-control devlog-read-terminal__input rounded-0 font-monospace small mb-3"
@@ -105,6 +110,26 @@
                                     </h:form>
                                 </div>
                             </section>
+
+                            <ui:fragment rendered="#{not empty blogDetayController.blog.yorumlar}">
+                                <section class="devlog-read-terminal border devlog-read-border mt-4" aria-label="Yorumlar">
+                                    <div class="devlog-read-terminal__titlebar px-3 py-2 border-bottom devlog-read-border d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                        <span class="devlog-mono-label text-secondary mb-0">stdout — yorumlar</span>
+                                        <span class="font-monospace text-secondary" style="font-size: 0.65rem;">#{blogDetayController.blog.yorumlar.size()} satır</span>
+                                    </div>
+                                    <div class="devlog-read-terminal__body p-0">
+                                        <ui:repeat value="#{blogDetayController.blog.yorumlar}" var="y">
+                                            <div class="border-bottom devlog-read-border px-3 py-3 font-monospace small">
+                                                <div class="d-flex flex-wrap justify-content-between gap-2 mb-2 text-secondary" style="font-size: 0.7rem;">
+                                                    <span class="text-white">#{blogDetayController.yorumYazarEtiketi(y)}</span>
+                                                    <span>#{blogDetayController.yorumTarihMetni(y)}</span>
+                                                </div>
+                                                <div class="text-secondary" style="white-space: pre-wrap;"><h:outputText value="#{y.metin}" escape="true"/></div>
+                                            </div>
+                                        </ui:repeat>
+                                    </div>
+                                </section>
+                            </ui:fragment>
                         </div>
 
                         <div class="col-12 col-lg-4">

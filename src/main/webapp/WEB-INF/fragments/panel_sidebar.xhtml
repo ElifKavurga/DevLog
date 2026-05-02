@@ -34,11 +34,6 @@
                         <span class="material-symbols-outlined" aria-hidden="true">add_box</span>
                         <span>Yeni blog ekle</span>
                     </h:commandLink>
-                    <h:link outcome="/panel/profil" rendered="#{oturum.girisYapildi}"
-                            styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/panel/profil.xhtml') ? 'active' : ''}">
-                        <span class="material-symbols-outlined" aria-hidden="true">person</span>
-                        <span>Profil</span>
-                    </h:link>
                     <h:link outcome="/admin/admin-onay" rendered="#{oturum.admin}"
                             styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/admin/admin-onay.xhtml') ? 'active' : ''}">
                         <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
@@ -72,16 +67,19 @@
 
                 <div class="border-top devlog-global-offcanvas__border p-3 mt-auto">
                     <h:panelGroup rendered="#{oturum.girisYapildi}" layout="block">
-                        <div class="d-flex align-items-center gap-2 px-2 mb-3">
-                            <div class="rounded d-flex align-items-center justify-content-center fw-bold small text-white text-uppercase devlog-global-offcanvas__avatar"
-                                 aria-hidden="true">
-                                #{empty oturum.aktifKullanici.kullaniciAdi ? '?' : oturum.aktifKullanici.kullaniciAdi.substring(0,1)}
+                        <h:link outcome="/panel/profil"
+                                styleClass="devlog-sidebar-profile-card d-block text-decoration-none text-reset mb-3">
+                            <div class="d-flex align-items-center gap-2 px-2">
+                                <div class="rounded d-flex align-items-center justify-content-center fw-bold small text-white text-uppercase devlog-global-offcanvas__avatar"
+                                     aria-hidden="true">
+                                    #{empty oturum.aktifKullanici.kullaniciAdi ? '?' : oturum.aktifKullanici.kullaniciAdi.substring(0,1)}
+                                </div>
+                                <div class="d-flex flex-column text-truncate" style="max-width: 10rem;">
+                                    <span class="small fw-bold text-white text-truncate">#{oturum.aktifKullanici.kullaniciAdi}</span>
+                                    <span class="text-secondary devlog-global-offcanvas__role">#{oturum.admin ? 'Admin' : 'Yazar'}</span>
+                                </div>
                             </div>
-                            <div class="d-flex flex-column text-truncate" style="max-width: 10rem;">
-                                <span class="small fw-bold text-white text-truncate">#{oturum.aktifKullanici.kullaniciAdi}</span>
-                                <span class="text-secondary devlog-global-offcanvas__role">#{oturum.admin ? 'Admin' : 'Yazar'}</span>
-                            </div>
-                        </div>
+                        </h:link>
                         <h:commandLink action="#{oturum.cikisYap}" styleClass="devlog-panel-nav-link border-0 bg-transparent w-100 text-start">
                             <span class="material-symbols-outlined" aria-hidden="true">logout</span>
                             <span>Çıkış</span>

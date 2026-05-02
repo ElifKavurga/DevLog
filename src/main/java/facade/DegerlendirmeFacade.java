@@ -86,8 +86,8 @@ public class DegerlendirmeFacade implements DegerlendirmeFacadeLocal {
             return List.of();
         }
         return em.createQuery(
-                        "SELECT d FROM Degerlendirme d JOIN FETCH d.blog JOIN FETCH d.kullanici "
-                                + "WHERE d.kullanici.id = :kid ORDER BY d.id DESC",
+                        "SELECT DISTINCT d FROM Degerlendirme d JOIN FETCH d.blog b LEFT JOIN FETCH b.kategori "
+                                + "JOIN FETCH d.kullanici WHERE d.kullanici.id = :kid ORDER BY d.id DESC",
                         Degerlendirme.class)
                 .setParameter("kid", kullaniciId)
                 .getResultList();

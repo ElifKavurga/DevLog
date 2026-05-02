@@ -11,6 +11,7 @@
         <class>entity.Kullanici</class>
         <class>entity.Kategori</class>
         <class>entity.Degerlendirme</class>
+        <class>entity.Yorum</class>
         <class>entity.SistemLog</class>
         <properties>
             <property name="eclipselink.target-database" value="PostgreSQL"/>
