@@ -1,6 +1,7 @@
 package controller.cms;
 
-import controller.OturumBean;
+import controller.OturumController;
+import dto.BlogDTO;
 import entity.Blog;
 import enums.DurumTip;
 import facadeLocal.BlogFacadeLocal;
@@ -9,6 +10,7 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import mapper.BlogMapper;
 
 import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
@@ -25,12 +27,12 @@ public class YazarPanelController implements Serializable {
     private BlogFacadeLocal blogFacade;
 
     @Inject
-    private OturumBean oturum;
+    private OturumController oturum;
 
-    private List<Blog> bloglar = new ArrayList<>();
+    private List<BlogDTO> bloglar = new ArrayList<>();
 
     public String hazirla() {
-        if (!oturum.isGirisYapildi() || oturum.getAktifKullanici() == null) {
+        if (!oturum.isGirisYapildi() || oturum.getAktifKullaniciEntity() == null) {
             return "/auth/giris?faces-redirect=true";
         }
         if (!oturum.isYazmayaYetkili()) {
@@ -40,14 +42,12 @@ public class YazarPanelController implements Serializable {
             fc.getExternalContext().getFlash().setKeepMessages(true);
             return "/public/index?faces-redirect=true";
         }
-        bloglar = blogFacade.yazaraGoreListele(oturum.getAktifKullanici().getId());
-        if (bloglar == null) {
-            bloglar = new ArrayList<>();
-        }
+        List<Blog> raw = blogFacade.yazaraGoreListele(oturum.getAktifKullaniciEntity().getId());
+        bloglar = BlogMapper.toListItems(raw != null ? raw : List.of());
         return null;
     }
 
-    public List<Blog> getBloglar() {
+    public List<BlogDTO> getBloglar() {
         return bloglar;
     }
 
@@ -73,7 +73,7 @@ public class YazarPanelController implements Serializable {
                 .count();
     }
 
-    public String olusturulmaMetni(Blog blog) {
+    public String olusturulmaMetni(BlogDTO blog) {
         if (blog == null || blog.getOlusturulmaTarihi() == null) {
             return "—";
         }
@@ -92,7 +92,7 @@ public class YazarPanelController implements Serializable {
         };
     }
 
-    public String kategoriBaslik(Blog blog) {
+    public String kategoriBaslik(BlogDTO blog) {
         if (blog == null || blog.getKategori() == null) {
             return "—";
         }

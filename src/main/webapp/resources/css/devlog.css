@@ -857,17 +857,31 @@ body.devlog-panel-body {
 }
 
 .devlog-cms-editor-body {
-    background-color: var(--dl-ref-terminal-bg);
+    background-color: #000000;
 }
 
-.devlog-cms-textarea {
-    background-color: transparent !important;
+/* Blog gövdesi: siyah arka plan, beyaz yazı (terminal görünümü) */
+.devlog-cms-editor-body .devlog-cms-textarea.form-control {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    caret-color: #ffffff;
     min-height: 22rem;
     resize: vertical;
 }
 
-.devlog-cms-textarea:focus {
-    box-shadow: none !important;
+.devlog-cms-editor-body .devlog-cms-textarea.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.45);
+}
+
+.devlog-cms-editor-body .devlog-cms-textarea.form-control:focus {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 0 1px var(--dl-ref-accent-blue) !important;
+}
+
+.devlog-cms-editor-body .devlog-cms-textarea.form-control::selection {
+    background-color: rgba(74, 142, 255, 0.45);
+    color: #ffffff;
 }
 
 .devlog-cms-badge-code {

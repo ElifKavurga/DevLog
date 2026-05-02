@@ -1,6 +1,6 @@
 package controller.admin;
 
-import controller.OturumBean;
+import controller.OturumController;
 import entity.SistemLog;
 import facadeLocal.SistemLogFacadeLocal;
 import jakarta.enterprise.context.RequestScoped;
@@ -19,7 +19,7 @@ public class SistemLogController implements Serializable {
     private static final DateTimeFormatter FMT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Inject
-    private OturumBean oturum;
+    private OturumController oturum;
 
     @Inject
     private SistemLogFacadeLocal sistemLogFacade;

@@ -9,9 +9,9 @@ import java.io.Serializable;
 /**
  * Panel üst çubuğunda gösterilecek kısa dosya yolu (~/{view}).
  */
-@Named("panelYol")
+@Named("panelYolController")
 @RequestScoped
-public class PanelYolBean implements Serializable {
+public class PanelYolController implements Serializable {
 
     public String getKisaYol() {
         FacesContext ctx = FacesContext.getCurrentInstance();

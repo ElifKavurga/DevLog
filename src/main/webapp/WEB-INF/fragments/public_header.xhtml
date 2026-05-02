@@ -35,11 +35,11 @@
                         </form>
                     </div>
                     <div class="d-flex align-items-center gap-2 gap-md-3 flex-shrink-0 ms-md-auto">
-                        <h:panelGroup rendered="#{not oturum.girisYapildi}" layout="block" styleClass="d-flex align-items-center gap-2 flex-wrap justify-content-end">
+                        <h:panelGroup rendered="#{not oturumController.girisYapildi}" layout="block" styleClass="d-flex align-items-center gap-2 flex-wrap justify-content-end">
                             <h:link outcome="/auth/giris" styleClass="btn devlog-public-btn-outline devlog-public-header--ide__btn rounded-0 px-3 py-2 text-decoration-none text-uppercase small">Giriş yap</h:link>
                             <h:link outcome="/auth/kayit" styleClass="btn devlog-public-btn-primary devlog-public-header--ide__btn-primary rounded-0 px-3 py-2 text-decoration-none text-uppercase small">Kayıt ol</h:link>
                         </h:panelGroup>
-                        <h:panelGroup rendered="#{oturum.girisYapildi}" layout="block" styleClass="d-flex align-items-center gap-2 flex-wrap justify-content-end">
+                        <h:panelGroup rendered="#{oturumController.girisYapildi}" layout="block" styleClass="d-flex align-items-center gap-2 flex-wrap justify-content-end">
                             <h:form styleClass="d-flex align-items-center gap-2 flex-wrap mb-0">
                                 <span class="position-relative d-inline-block align-middle">
                                     <h:commandLink action="#{bildirimController.zilTiklaVeListeyeGit}"
@@ -50,20 +50,20 @@
                                                       styleClass="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-dark rounded-circle devlog-header-notif-dot"/>
                                     </h:commandLink>
                                 </span>
-                                <h:commandLink action="#{oturum.menuGitBloglarim}" rendered="#{oturum.yazmayaYetkili}"
+                                <h:commandLink action="#{oturumController.menuGitBloglarim}" rendered="#{oturumController.yazmayaYetkili}"
                                                styleClass="btn devlog-public-btn-outline devlog-public-header--ide__btn rounded-0 px-2 px-md-3 py-2 small text-decoration-none d-none d-md-inline-block text-uppercase">
                                     Bloglarım
                                 </h:commandLink>
-                                <h:commandLink action="#{oturum.menuGitYeniBlog}" rendered="#{oturum.yazmayaYetkili}"
+                                <h:commandLink action="#{oturumController.menuGitYeniBlog}" rendered="#{oturumController.yazmayaYetkili}"
                                                styleClass="btn devlog-public-btn-primary devlog-public-header--ide__btn-primary rounded-0 px-2 px-md-3 py-2 small text-decoration-none d-none d-lg-inline-block text-uppercase">
                                     Yeni Blog Ekle
                                 </h:commandLink>
                                 <h:link outcome="/panel/profil"
                                         styleClass="font-monospace small devlog-public-header--ide__username devlog-header-profile-link text-truncate d-none d-sm-inline"
-                                        title="#{oturum.aktifKullanici.kullaniciAdi}">
-                                    #{oturum.aktifKullanici.kullaniciAdi}
+                                        title="#{oturumController.aktifKullanici.kullaniciAdi}">
+                                    #{oturumController.aktifKullanici.kullaniciAdi}
                                 </h:link>
-                                <h:commandLink action="#{oturum.cikisYap}" styleClass="btn devlog-public-btn-outline devlog-public-header--ide__btn rounded-0 px-2 py-2 border-0 text-decoration-none small text-uppercase">
+                                <h:commandLink action="#{oturumController.cikisYap}" styleClass="btn devlog-public-btn-outline devlog-public-header--ide__btn rounded-0 px-2 py-2 border-0 text-decoration-none small text-uppercase">
                                     Çıkış
                                 </h:commandLink>
                             </h:form>

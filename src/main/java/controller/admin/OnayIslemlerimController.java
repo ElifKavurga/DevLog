@@ -1,32 +1,31 @@
 package controller.admin;
 
-import controller.OturumBean;
+import controller.OturumController;
+import dto.BlogDTO;
 import entity.Blog;
 import enums.DurumTip;
 import facadeLocal.BlogFacadeLocal;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import mapper.BlogMapper;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * Yayında ve reddedilmiş bloglar (veri modelinde yönetici kimliği tutulmadığı için genel işlem geçmişi).
- */
 @Named("onayIslemlerimController")
 @ViewScoped
 public class OnayIslemlerimController implements Serializable {
 
     @Inject
-    private OturumBean oturum;
+    private OturumController oturum;
 
     @Inject
     private BlogFacadeLocal blogFacade;
 
-    private List<Blog> gecmis = new ArrayList<>();
+    private List<BlogDTO> gecmis = new ArrayList<>();
 
     public String hazirla() {
         if (!oturum.isGirisYapildi()) {
@@ -37,18 +36,19 @@ public class OnayIslemlerimController implements Serializable {
         }
         List<Blog> yayin = blogFacade.durumaGoreListele(DurumTip.YAYINLANDI);
         List<Blog> red = blogFacade.durumaGoreListele(DurumTip.REDDEDILDI);
-        gecmis = new ArrayList<>();
+        List<Blog> birlesik = new ArrayList<>();
         if (yayin != null) {
-            gecmis.addAll(yayin);
+            birlesik.addAll(yayin);
         }
         if (red != null) {
-            gecmis.addAll(red);
+            birlesik.addAll(red);
         }
-        gecmis.sort(Comparator.comparing(Blog::getId, Comparator.nullsLast(Comparator.reverseOrder())));
+        birlesik.sort(Comparator.comparing(Blog::getId, Comparator.nullsLast(Comparator.reverseOrder())));
+        gecmis = BlogMapper.toListItems(birlesik);
         return null;
     }
 
-    public List<Blog> getGecmis() {
+    public List<BlogDTO> getGecmis() {
         return gecmis;
     }
 
@@ -56,7 +56,7 @@ public class OnayIslemlerimController implements Serializable {
         return gecmis.size();
     }
 
-    public String durumEtiket(Blog b) {
+    public String durumEtiket(BlogDTO b) {
         if (b == null || b.getDurum() == null) {
             return "—";
         }
@@ -67,7 +67,7 @@ public class OnayIslemlerimController implements Serializable {
         };
     }
 
-    public boolean yayinda(Blog b) {
+    public boolean yayinda(BlogDTO b) {
         return b != null && b.getDurum() == DurumTip.YAYINLANDI;
     }
 }

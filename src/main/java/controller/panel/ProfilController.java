@@ -1,6 +1,6 @@
 package controller.panel;
 
-import controller.OturumBean;
+import controller.OturumController;
 import entity.Kullanici;
 import entity.SistemLog;
 import enums.RolTip;
@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 public class ProfilController implements Serializable {
 
     @Inject
-    private OturumBean oturum;
+    private OturumController oturum;
 
     @Inject
     private KullaniciFacadeLocal kullaniciFacade;
@@ -41,21 +41,21 @@ public class ProfilController implements Serializable {
     private String duzenleEposta;
 
     public String hazirla() {
-        if (!oturum.isGirisYapildi() || oturum.getAktifKullanici() == null) {
+        if (!oturum.isGirisYapildi() || oturum.getAktifKullaniciEntity() == null) {
             return "/auth/giris?faces-redirect=true";
         }
         yenileKullaniciOturumdan();
-        Kullanici k = oturum.getAktifKullanici();
+        Kullanici k = oturum.getAktifKullaniciEntity();
         duzenleKullaniciAdi = k.getKullaniciAdi();
         duzenleEposta = k.getEposta();
         return null;
     }
 
     public String profilBilgiGuncelle() {
-        if (!oturum.isGirisYapildi() || oturum.getAktifKullanici() == null) {
+        if (!oturum.isGirisYapildi() || oturum.getAktifKullaniciEntity() == null) {
             return null;
         }
-        Kullanici k = kullaniciFacade.bul(oturum.getAktifKullanici().getId());
+        Kullanici k = kullaniciFacade.bul(oturum.getAktifKullaniciEntity().getId());
         if (k == null) {
             mesaj(FacesMessage.SEVERITY_ERROR, "Kullanıcı bulunamadı.");
             return null;
@@ -93,7 +93,7 @@ public class ProfilController implements Serializable {
     }
 
     private void yenileKullaniciOturumdan() {
-        Long id = oturum.getAktifKullanici().getId();
+        Long id = oturum.getAktifKullaniciEntity().getId();
         if (id != null) {
             Kullanici db = kullaniciFacade.bul(id);
             if (db != null) {
@@ -106,7 +106,7 @@ public class ProfilController implements Serializable {
         if (!oturum.isGirisYapildi()) {
             return null;
         }
-        Kullanici k = kullaniciFacade.bul(oturum.getAktifKullanici().getId());
+        Kullanici k = kullaniciFacade.bul(oturum.getAktifKullaniciEntity().getId());
         if (k == null) {
             mesaj(FacesMessage.SEVERITY_ERROR, "Oturum bulunamadı.");
             return null;
@@ -141,7 +141,7 @@ public class ProfilController implements Serializable {
         if (!oturum.isGirisYapildi()) {
             return null;
         }
-        Kullanici k = kullaniciFacade.bul(oturum.getAktifKullanici().getId());
+        Kullanici k = kullaniciFacade.bul(oturum.getAktifKullaniciEntity().getId());
         if (k == null) {
             mesaj(FacesMessage.SEVERITY_ERROR, "Kullanıcı bulunamadı.");
             return null;
@@ -202,10 +202,10 @@ public class ProfilController implements Serializable {
     }
 
     public boolean isYazarlikTalebiGosterme() {
-        if (!oturum.isGirisYapildi() || oturum.getAktifKullanici() == null) {
+        if (!oturum.isGirisYapildi() || oturum.getAktifKullaniciEntity() == null) {
             return false;
         }
-        Kullanici k = oturum.getAktifKullanici();
+        Kullanici k = oturum.getAktifKullaniciEntity();
         return k.getRol() == RolTip.OKUR;
     }
 

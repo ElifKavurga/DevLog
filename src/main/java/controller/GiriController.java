@@ -14,7 +14,7 @@ public class GiriController {
     private KullaniciFacadeLocal kullaniciFacade;
 
     @Inject
-    private OturumBean oturumBean;
+    private OturumController oturumController;
 
     private String epostaVeyaKullaniciAdi;
     private String sifre;
@@ -32,7 +32,7 @@ public class GiriController {
             hataMesaji = "Bilgiler eşleşmedi. E-posta / kullanıcı adı veya şifreyi kontrol edin.";
             return null;
         }
-        oturumBean.girisYap(k);
+        oturumController.girisYap(k);
         return "/public/index?faces-redirect=true";
     }
 

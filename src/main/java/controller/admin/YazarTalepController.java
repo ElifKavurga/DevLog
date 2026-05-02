@@ -1,6 +1,6 @@
 package controller.admin;
 
-import controller.OturumBean;
+import controller.OturumController;
 import controller.panel.ProfilController;
 import entity.Kullanici;
 import entity.SistemLog;
@@ -21,7 +21,7 @@ import java.util.List;
 public class YazarTalepController implements Serializable {
 
     @Inject
-    private OturumBean oturum;
+    private OturumController oturum;
 
     @Inject
     private KullaniciFacadeLocal kullaniciFacade;

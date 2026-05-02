@@ -61,11 +61,11 @@
 
                 <dl class="row font-monospace small text-secondary mb-0 px-1">
                     <dt class="col-4">Rol</dt>
-                    <dd class="col-8 text-white mb-2">#{oturum.aktifKullanici.rol}</dd>
+                    <dd class="col-8 text-white mb-2">#{oturumController.aktifKullanici.rol}</dd>
                     <dt class="col-4">Ad</dt>
-                    <dd class="col-8 text-white mb-2">#{empty oturum.aktifKullanici.ad ? '—' : oturum.aktifKullanici.ad}</dd>
+                    <dd class="col-8 text-white mb-2">#{empty oturumController.aktifKullanici.ad ? '—' : oturumController.aktifKullanici.ad}</dd>
                     <dt class="col-4">Soyad</dt>
-                    <dd class="col-8 text-white mb-0">#{empty oturum.aktifKullanici.soyad ? '—' : oturum.aktifKullanici.soyad}</dd>
+                    <dd class="col-8 text-white mb-0">#{empty oturumController.aktifKullanici.soyad ? '—' : oturumController.aktifKullanici.soyad}</dd>
                 </dl>
             </div>
 
@@ -97,12 +97,12 @@
                 <p class="text-secondary font-monospace small mb-4">
                     Okur olarak yazılarınızı yayımlamak için yönetici onayı gerekir.
                 </p>
-                <ui:fragment rendered="#{oturum.aktifKullanici.yazarlikTalepEtti}">
+                <ui:fragment rendered="#{oturumController.aktifKullanici.yazarlikTalepEtti}">
                     <div class="alert alert-info rounded-0 small font-monospace border border-primary border-opacity-25 mb-0">
                         Yazarlık talebiniz alındı; yönetici onayı bekleniyor.
                     </div>
                 </ui:fragment>
-                <h:form styleClass="mb-0" rendered="#{not oturum.aktifKullanici.yazarlikTalepEtti}">
+                <h:form styleClass="mb-0" rendered="#{not oturumController.aktifKullanici.yazarlikTalepEtti}">
                     <h:commandButton value="Yazarlık talebi gönder"
                                      action="#{profilController.yazarlikTalebiGonder}"
                                      styleClass="btn btn-primary rounded-0 w-100 py-3 font-monospace fw-bold text-uppercase devlog-profil-yazar-btn"/>

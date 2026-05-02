@@ -1,7 +1,8 @@
 package controller.admin;
 
-import controller.OturumBean;
+import controller.OturumController;
 import controller.panel.ProfilController;
+import dto.BlogDTO;
 import entity.Blog;
 import entity.Kullanici;
 import entity.SistemLog;
@@ -13,6 +14,7 @@ import facadeLocal.SistemLogFacadeLocal;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import mapper.BlogMapper;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -30,7 +32,7 @@ public class AdminOnayController implements Serializable {
     private BlogFacadeLocal blogFacade;
 
     @Inject
-    private OturumBean oturum;
+    private OturumController oturum;
 
     @Inject
     private SistemLogFacadeLocal sistemLogFacade;
@@ -38,7 +40,7 @@ public class AdminOnayController implements Serializable {
     @Inject
     private BildirimFacadeLocal bildirimFacade;
 
-    private List<Blog> bekleyenler = new ArrayList<>();
+    private List<BlogDTO> bekleyenler = new ArrayList<>();
 
     public String hazirla() {
         if (!oturum.isGirisYapildi()) {
@@ -53,7 +55,7 @@ public class AdminOnayController implements Serializable {
 
     private void yukleListe() {
         List<Blog> list = blogFacade.onayBekleyenleriListele();
-        bekleyenler = list != null ? new ArrayList<>(list) : new ArrayList<>();
+        bekleyenler = BlogMapper.toListItems(list != null ? list : List.of());
     }
 
     public String onayla(Long blogId) {
@@ -94,7 +96,7 @@ public class AdminOnayController implements Serializable {
     }
 
     private void adminLogKaydet(String islem) {
-        Kullanici admin = oturum.getAktifKullanici();
+        Kullanici admin = oturum.getAktifKullaniciEntity();
         SistemLog log = new SistemLog();
         log.setKullaniciBilgisi(ProfilController.kullaniciLogKimligi(admin));
         log.setIslem(islem);
@@ -102,13 +104,11 @@ public class AdminOnayController implements Serializable {
         sistemLogFacade.olustur(log);
     }
 
-    /** Ön izleme sayfası: onay sonrası onay kuyruğuna dön. */
     public String onaylaVeKuyregeGit(Long blogId) {
         onayla(blogId);
         return "/admin/admin-onay?faces-redirect=true";
     }
 
-    /** Ön izleme sayfası: ret sonrası onay kuyruğuna dön. */
     public String reddetVeKuyregeGit(Long blogId) {
         reddet(blogId);
         return "/admin/admin-onay?faces-redirect=true";
@@ -122,7 +122,7 @@ public class AdminOnayController implements Serializable {
         return null;
     }
 
-    public List<Blog> getBekleyenler() {
+    public List<BlogDTO> getBekleyenler() {
         return bekleyenler;
     }
 
@@ -130,11 +130,11 @@ public class AdminOnayController implements Serializable {
         return bekleyenler.size();
     }
 
-    public String yazarOzeti(Blog blog) {
+    public String yazarOzeti(BlogDTO blog) {
         if (blog == null || blog.getYazar() == null) {
             return "—";
         }
-        Kullanici y = blog.getYazar();
+        var y = blog.getYazar();
         String ad = (y.getAd() != null ? y.getAd() : "").trim();
         String soy = (y.getSoyad() != null ? y.getSoyad() : "").trim();
         String birlesik = (ad + " " + soy).trim();
@@ -147,7 +147,7 @@ public class AdminOnayController implements Serializable {
         return "—";
     }
 
-    public String yazarHarfi(Blog blog) {
+    public String yazarHarfi(BlogDTO blog) {
         String oz = yazarOzeti(blog);
         if (oz == null || oz.isBlank() || "—".equals(oz)) {
             return "?";
@@ -155,7 +155,7 @@ public class AdminOnayController implements Serializable {
         return oz.substring(0, 1).toUpperCase();
     }
 
-    public String kategoriEtiket(Blog blog) {
+    public String kategoriEtiket(BlogDTO blog) {
         if (blog == null || blog.getKategori() == null) {
             return "—";
         }
@@ -163,7 +163,7 @@ public class AdminOnayController implements Serializable {
         return isim != null && !isim.isBlank() ? isim : "—";
     }
 
-    public String tarihMetni(Blog blog) {
+    public String tarihMetni(BlogDTO blog) {
         if (blog == null || blog.getOlusturulmaTarihi() == null) {
             return "—";
         }

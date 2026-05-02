@@ -1,11 +1,13 @@
 package controller.panel;
 
-import controller.OturumBean;
+import controller.OturumController;
+import dto.YorumDTO;
 import entity.Yorum;
 import facadeLocal.YorumFacadeLocal;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import mapper.YorumMapper;
 
 import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
@@ -20,43 +22,28 @@ public class YorumlarimController implements Serializable {
     private static final DateTimeFormatter TARIH_FMT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm", Locale.forLanguageTag("tr"));
 
     @Inject
-    private OturumBean oturum;
+    private OturumController oturum;
 
     @Inject
     private YorumFacadeLocal yorumFacade;
 
-    private List<Yorum> yorumlar = new ArrayList<>();
+    private List<YorumDTO> yorumlar = new ArrayList<>();
 
     public String hazirla() {
-        if (!oturum.isGirisYapildi() || oturum.getAktifKullanici() == null) {
+        if (!oturum.isGirisYapildi() || oturum.getAktifKullaniciEntity() == null) {
             return "/auth/giris?faces-redirect=true";
         }
-        Long kid = oturum.getAktifKullanici().getId();
+        Long kid = oturum.getAktifKullaniciEntity().getId();
         List<Yorum> list = yorumFacade.kullaniciyaGoreListele(kid);
-        yorumlar = list != null ? new ArrayList<>(list) : new ArrayList<>();
+        yorumlar = YorumMapper.toDtoList(list != null ? list : List.of());
         return null;
     }
 
-    public List<Yorum> getYorumlar() {
+    public List<YorumDTO> getYorumlar() {
         return yorumlar;
     }
 
-    public String blogBaslik(Yorum y) {
-        if (y == null || y.getBlog() == null) {
-            return "—";
-        }
-        String b = y.getBlog().getBaslik();
-        return b != null && !b.isBlank() ? b : "Başlıksız";
-    }
-
-    public Long blogId(Yorum y) {
-        if (y == null || y.getBlog() == null) {
-            return null;
-        }
-        return y.getBlog().getId();
-    }
-
-    public String tarihMetni(Yorum y) {
+    public String tarihMetni(YorumDTO y) {
         if (y == null || y.getOlusturulmaTarihi() == null) {
             return "—";
         }

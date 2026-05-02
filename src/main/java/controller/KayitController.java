@@ -15,7 +15,7 @@ public class KayitController {
     private KullaniciFacadeLocal kullaniciFacade;
 
     @Inject
-    private OturumBean oturumBean;
+    private OturumController oturumController;
 
     private String adSoyad;
     private String kullaniciAdi;
@@ -74,7 +74,7 @@ public class KayitController {
         yeni.setRol(RolTip.OKUR);
 
         kullaniciFacade.olustur(yeni);
-        oturumBean.girisYap(yeni);
+        oturumController.girisYap(yeni);
         temizleForm();
         return "/public/index?faces-redirect=true";
     }

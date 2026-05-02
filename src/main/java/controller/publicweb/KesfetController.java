@@ -1,5 +1,7 @@
 package controller.publicweb;
 
+import dto.BlogDTO;
+import dto.KategoriDTO;
 import entity.Blog;
 import entity.Kategori;
 import facadeLocal.BlogFacadeLocal;
@@ -8,6 +10,8 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import mapper.BlogMapper;
+import mapper.KategoriMapper;
 
 import java.io.Serializable;
 import java.net.URLEncoder;
@@ -32,14 +36,10 @@ public class KesfetController implements Serializable {
     @Inject
     private KategoriFacadeLocal kategoriFacade;
 
-    /** URL: tekrarlayan ?kategoriId=1&amp;kategoriId=2 — OR ile filtre */
     private List<Long> seciliKategoriIds = new ArrayList<>();
-
-    /** URL: ?q=... — başlık / özet / içerik araması */
     private String aramaMetni = "";
-
-    private List<Blog> yayinlananBloglar = new ArrayList<>();
-    private List<Kategori> kategoriler = new ArrayList<>();
+    private List<BlogDTO> yayinlananBloglar = new ArrayList<>();
+    private List<KategoriDTO> kategoriler = new ArrayList<>();
 
     public void hazirla() {
         istektenSeciliKategorileriOku();
@@ -73,7 +73,6 @@ public class KesfetController implements Serializable {
                     set.add(v);
                 }
             } catch (NumberFormatException ignored) {
-                // atla
             }
         }
         seciliKategoriIds = new ArrayList<>(set);
@@ -99,7 +98,7 @@ public class KesfetController implements Serializable {
     private void yukleKategoriler() {
         try {
             List<Kategori> list = kategoriFacade.listeleIdArtan();
-            kategoriler = list != null ? new ArrayList<>(list) : new ArrayList<>();
+            kategoriler = KategoriMapper.toDtoList(list != null ? list : List.of());
         } catch (RuntimeException e) {
             LOG.log(Level.WARNING, "Kategori listesi yüklenemedi.", e);
             kategoriler = new ArrayList<>();
@@ -124,7 +123,7 @@ public class KesfetController implements Serializable {
             }
             String qAra = aramaMetni != null && !aramaMetni.isBlank() ? aramaMetni : null;
             List<Blog> liste = blogFacade.yayinlananFiltrele(kidParams, qAra);
-            yayinlananBloglar = liste != null ? new ArrayList<>(liste) : new ArrayList<>();
+            yayinlananBloglar = BlogMapper.toListItems(liste != null ? liste : List.of());
         } catch (RuntimeException e) {
             LOG.log(Level.WARNING, "Blog listesi yüklenemedi.", e);
             yayinlananBloglar = new ArrayList<>();
@@ -139,9 +138,6 @@ public class KesfetController implements Serializable {
         return kategoriKey != null && seciliKategoriIds.contains(kategoriKey);
     }
 
-    /**
-     * Bu kategoriye tıklandığında URL'de gönderilecek yeni id listesi (çoklu seçim / kaldırma).
-     */
     public List<Long> kategoriLinkIcinSecim(Long toggleId) {
         LinkedHashSet<Long> s = new LinkedHashSet<>(seciliKategoriIds);
         if (toggleId == null) {
@@ -155,10 +151,6 @@ public class KesfetController implements Serializable {
         return new ArrayList<>(s);
     }
 
-    /**
-     * Kategori chip href: JSF {@code h:link} içinde {@code ui:repeat} ile {@code f:param} çoğu sürümde
-     * sorguya eklenmediği için tam URL burada üretilir.
-     */
     public String kategoriFiltreUrl(Long toggleKategoriId) {
         FacesContext fc = FacesContext.getCurrentInstance();
         String ctx = "";
@@ -229,15 +221,14 @@ public class KesfetController implements Serializable {
         return URLEncoder.encode(s, StandardCharsets.UTF_8).replace("+", "%20");
     }
 
-    public List<Blog> getYayinlananBloglar() {
+    public List<BlogDTO> getYayinlananBloglar() {
         return yayinlananBloglar;
     }
 
-    public List<Kategori> getKategoriler() {
+    public List<KategoriDTO> getKategoriler() {
         return kategoriler;
     }
 
-    /** Seçili kategori adları (virgülle); filtre yoksa null. */
     public String getSeciliKategoriOzeti() {
         if (seciliKategoriIds == null || seciliKategoriIds.isEmpty()) {
             return null;
@@ -250,7 +241,6 @@ public class KesfetController implements Serializable {
                     adlar.add(k.getKategoriAdi());
                 }
             } catch (RuntimeException ignored) {
-                // atla
             }
         }
         if (adlar.isEmpty()) {
@@ -259,7 +249,7 @@ public class KesfetController implements Serializable {
         return String.join(", ", adlar);
     }
 
-    public String yazarAdi(Blog blog) {
+    public String yazarAdi(BlogDTO blog) {
         if (blog == null || blog.getYazar() == null) {
             return "—";
         }
@@ -276,7 +266,7 @@ public class KesfetController implements Serializable {
         return "—";
     }
 
-    public String yazarHarfi(Blog blog) {
+    public String yazarHarfi(BlogDTO blog) {
         String n = yazarAdi(blog);
         if (n == null || n.isBlank() || "—".equals(n)) {
             return "?";
@@ -284,14 +274,14 @@ public class KesfetController implements Serializable {
         return n.substring(0, 1).toUpperCase();
     }
 
-    public String kategoriEtiket(Blog blog) {
+    public String kategoriEtiket(BlogDTO blog) {
         if (blog != null && blog.getKategori() != null && blog.getKategori().getKategoriAdi() != null) {
             return blog.getKategori().getKategoriAdi();
         }
         return "Genel";
     }
 
-    public String surumEtiketi(Blog blog) {
+    public String surumEtiketi(BlogDTO blog) {
         LocalDateTime t = blog != null ? blog.getOlusturulmaTarihi() : null;
         if (t == null) {
             return "—";
@@ -299,7 +289,7 @@ public class KesfetController implements Serializable {
         return String.format("v%d.%02d.%02d", t.getYear(), t.getMonthValue(), t.getDayOfMonth());
     }
 
-    public String tahminiOkuma(Blog blog) {
+    public String tahminiOkuma(BlogDTO blog) {
         if (blog != null && blog.getTahminiOkumaSuresi() != null && blog.getTahminiOkumaSuresi() > 0) {
             return blog.getTahminiOkumaSuresi() + " dk";
         }
@@ -311,7 +301,7 @@ public class KesfetController implements Serializable {
         return mins + " dk";
     }
 
-    public String yildizMetin(Blog blog) {
+    public String yildizMetin(BlogDTO blog) {
         if (blog == null || blog.getId() == null) {
             return "—";
         }

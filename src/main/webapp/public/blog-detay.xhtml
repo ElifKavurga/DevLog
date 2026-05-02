@@ -127,12 +127,12 @@
                                     <div class="devlog-read-terminal__prompt font-monospace small text-secondary mb-2">
                                         <span class="devlog-read-terminal__user">guest@devlog</span><span class="text-white">:</span><span class="devlog-read-terminal__path">~/blog/#{blogDetayController.blog.id}</span><span class="text-white">$</span>
                                     </div>
-                                    <ui:fragment rendered="#{not oturum.girisYapildi}">
+                                    <ui:fragment rendered="#{not oturumController.girisYapildi}">
                                         <p class="text-secondary font-monospace small mb-0">
                                             Yorum yazmak için <h:link outcome="/auth/giris" styleClass="devlog-read-link">giriş yapın</h:link>.
                                         </p>
                                     </ui:fragment>
-                                    <h:form id="yorumFormu" styleClass="mb-0" rendered="#{oturum.girisYapildi}">
+                                    <h:form id="yorumFormu" styleClass="mb-0" rendered="#{oturumController.girisYapildi}">
                                         <label class="form-label devlog-mono-label text-secondary mb-2" for="yorumMetni">Girdi</label>
                                         <h:inputTextarea id="yorumMetni" value="#{blogDetayController.yorumMetni}" rows="5"
                                                          styleClass="form-control devlog-read-terminal__input rounded-0 font-monospace small mb-3"
@@ -149,12 +149,12 @@
                         <div class="col-12 col-lg-4">
                             <aside class="devlog-read-aside border devlog-read-border p-4 mb-4">
                                 <h2 class="devlog-mono-label text-secondary mb-3">Puanla</h2>
-                                <ui:fragment rendered="#{not oturum.girisYapildi}">
+                                <ui:fragment rendered="#{not oturumController.girisYapildi}">
                                     <p class="text-secondary font-monospace small mb-0">
                                         Puan vermek için <h:link outcome="/auth/giris" styleClass="devlog-read-link">giriş yapın</h:link>.
                                     </p>
                                 </ui:fragment>
-                                <h:panelGroup rendered="#{oturum.girisYapildi}" layout="block">
+                                <h:panelGroup rendered="#{oturumController.girisYapildi}" layout="block">
                                     <p class="text-secondary font-monospace small mb-3">1–5 yıldız; tekrar seçerek güncelleyebilirsiniz.</p>
                                     <h:form id="puanForm" styleClass="mb-0">
                                         <div class="d-flex flex-wrap align-items-center gap-1 devlog-rating-stars" role="group" aria-label="Blog puanı">

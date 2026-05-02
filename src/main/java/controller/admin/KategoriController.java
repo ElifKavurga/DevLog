@@ -1,11 +1,13 @@
 package controller.admin;
 
-import controller.OturumBean;
+import controller.OturumController;
+import dto.KategoriDTO;
 import entity.Kategori;
 import facadeLocal.KategoriFacadeLocal;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import mapper.KategoriMapper;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,9 +22,9 @@ public class KategoriController implements Serializable {
     private KategoriFacadeLocal kategoriFacade;
 
     @Inject
-    private OturumBean oturum;
+    private OturumController oturum;
 
-    private List<Kategori> kategoriler = new ArrayList<>();
+    private List<KategoriDTO> kategoriler = new ArrayList<>();
 
     private String yeniIsim;
     private String hataMesaji;
@@ -43,12 +45,9 @@ public class KategoriController implements Serializable {
 
     private void yukleListe() {
         List<Kategori> list = kategoriFacade.listeleIdArtan();
-        kategoriler = list != null ? new ArrayList<>(list) : new ArrayList<>();
+        kategoriler = KategoriMapper.toDtoList(list != null ? list : List.of());
     }
 
-    /**
-     * İsimden URL uyumlu slug: küçük harf, harf/rakam dışı tire.
-     */
     public String slugUret(String isim) {
         if (isim == null || isim.isBlank()) {
             return "kategori";
@@ -76,7 +75,7 @@ public class KategoriController implements Serializable {
         return null;
     }
 
-    public String duzenlemeyeBasla(Kategori k) {
+    public String duzenlemeyeBasla(KategoriDTO k) {
         hataMesaji = null;
         if (k == null) {
             duzenlemeId = null;
@@ -139,7 +138,7 @@ public class KategoriController implements Serializable {
         return null;
     }
 
-    public List<Kategori> getKategoriler() {
+    public List<KategoriDTO> getKategoriler() {
         return kategoriler;
     }
 
@@ -171,7 +170,7 @@ public class KategoriController implements Serializable {
         return duzenlemeId != null;
     }
 
-    public long blogSayisi(Kategori k) {
+    public long blogSayisi(KategoriDTO k) {
         if (k == null || k.getId() == null) {
             return 0L;
         }

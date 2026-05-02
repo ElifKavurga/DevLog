@@ -1,7 +1,9 @@
 package controller.cms;
 
-import controller.OturumBean;
+import controller.OturumController;
 import controller.panel.ProfilController;
+import dto.BlogDTO;
+import dto.KategoriDTO;
 import entity.Blog;
 import entity.Kategori;
 import entity.Kullanici;
@@ -19,6 +21,8 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import mapper.BlogMapper;
+import mapper.KategoriMapper;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -36,7 +40,7 @@ public class BlogEkleController implements Serializable {
     private KategoriFacadeLocal kategoriFacade;
 
     @Inject
-    private OturumBean oturum;
+    private OturumController oturum;
 
     @Inject
     private SistemLogFacadeLocal sistemLogFacade;
@@ -47,27 +51,27 @@ public class BlogEkleController implements Serializable {
     @Inject
     private KullaniciFacadeLocal kullaniciFacade;
 
-    private List<Kategori> kategoriler = new ArrayList<>();
+    private List<KategoriDTO> kategoriler = new ArrayList<>();
 
-    private String baslik;
+    /** Form alanları (Markdown gövdesi dahil); JSF doğrudan özelliklere bağlanır. */
+    private BlogDTO blogDTO = new BlogDTO();
+
     private Long kategoriId;
-    private String ozet;
-    private String icerik;
-    private Integer tahminiOkumaSuresi;
-    private String kapakGorseliUrl;
-    private String etiketler;
     private String hataMesaji;
 
     @PostConstruct
     public void init() {
-        kategoriler = kategoriFacade.listele();
-        if (kategoriler == null) {
-            kategoriler = new ArrayList<>();
-        }
+        yukleKategoriler();
+    }
+
+    private void yukleKategoriler() {
+        List<Kategori> raw = kategoriFacade.listele();
+        kategoriler = KategoriMapper.toDtoList(raw != null ? raw : List.of());
     }
 
     /**
-     * Giriş zorunluluğu; view açılışında çağrılır.
+     * Sayfa ilk açılışında yetki ve kategori listesi. POST geri gönderiminde tekrar çalışmaz
+     * (model güncellemesi ve Markdown senkronu için).
      */
     public String hazirla() {
         if (!oturum.isGirisYapildi()) {
@@ -81,17 +85,14 @@ public class BlogEkleController implements Serializable {
             return "/public/index?faces-redirect=true";
         }
         if (kategoriler == null || kategoriler.isEmpty()) {
-            kategoriler = kategoriFacade.listele();
-            if (kategoriler == null) {
-                kategoriler = new ArrayList<>();
-            }
+            yukleKategoriler();
         }
         return null;
     }
 
     public String kaydet() {
         hataMesaji = null;
-        if (!oturum.isGirisYapildi() || oturum.getAktifKullanici() == null) {
+        if (!oturum.isGirisYapildi() || oturum.getAktifKullaniciEntity() == null) {
             return "/auth/giris?faces-redirect=true";
         }
         if (!oturum.isYazmayaYetkili()) {
@@ -101,7 +102,7 @@ public class BlogEkleController implements Serializable {
             fc.getExternalContext().getFlash().setKeepMessages(true);
             return "/public/index?faces-redirect=true";
         }
-        if (baslik == null || baslik.isBlank()) {
+        if (blogDTO.getBaslik() == null || blogDTO.getBaslik().isBlank()) {
             hataMesaji = "Başlık zorunludur.";
             return null;
         }
@@ -115,18 +116,8 @@ public class BlogEkleController implements Serializable {
             return null;
         }
 
-        Kullanici yazar = oturum.getAktifKullanici();
-        Blog b = new Blog();
-        b.setBaslik(baslik.trim());
-        b.setOzet(ozet != null ? ozet.trim() : null);
-        b.setIcerik(icerik != null ? icerik : null);
-        b.setTahminiOkumaSuresi(tahminiOkumaSuresi);
-        b.setKapakGorseliUrl(kapakGorseliUrl != null && !kapakGorseliUrl.isBlank() ? kapakGorseliUrl.trim() : null);
-        b.setEtiketler(etiketler != null && !etiketler.isBlank() ? etiketler.trim() : null);
-        b.setOlusturulmaTarihi(LocalDateTime.now());
-        b.setDurum(DurumTip.ONAY_BEKLIYOR);
-        b.setYazar(yazar);
-        b.setKategori(kat);
+        Kullanici yazar = oturum.getAktifKullaniciEntity();
+        Blog b = BlogMapper.toNewBlogEntity(blogDTO, kat, yazar, LocalDateTime.now(), DurumTip.ONAY_BEKLIYOR);
 
         blogFacade.olustur(b);
         SistemLog log = new SistemLog();
@@ -146,25 +137,22 @@ public class BlogEkleController implements Serializable {
     }
 
     private void temizleForm() {
-        baslik = null;
+        blogDTO = new BlogDTO();
         kategoriId = null;
-        ozet = null;
-        icerik = null;
-        tahminiOkumaSuresi = null;
-        kapakGorseliUrl = null;
-        etiketler = null;
     }
 
-    public List<Kategori> getKategoriler() {
+    public List<KategoriDTO> getKategoriler() {
         return kategoriler;
     }
 
-    public String getBaslik() {
-        return baslik;
+    public BlogDTO getBlogDTO() {
+        return blogDTO;
     }
 
-    public void setBaslik(String baslik) {
-        this.baslik = baslik;
+    public void setBlogDTO(BlogDTO blogDTO) {
+        if (blogDTO != null) {
+            this.blogDTO = blogDTO;
+        }
     }
 
     public Long getKategoriId() {
@@ -173,46 +161,6 @@ public class BlogEkleController implements Serializable {
 
     public void setKategoriId(Long kategoriId) {
         this.kategoriId = kategoriId;
-    }
-
-    public String getOzet() {
-        return ozet;
-    }
-
-    public void setOzet(String ozet) {
-        this.ozet = ozet;
-    }
-
-    public String getIcerik() {
-        return icerik;
-    }
-
-    public void setIcerik(String icerik) {
-        this.icerik = icerik;
-    }
-
-    public Integer getTahminiOkumaSuresi() {
-        return tahminiOkumaSuresi;
-    }
-
-    public void setTahminiOkumaSuresi(Integer tahminiOkumaSuresi) {
-        this.tahminiOkumaSuresi = tahminiOkumaSuresi;
-    }
-
-    public String getKapakGorseliUrl() {
-        return kapakGorseliUrl;
-    }
-
-    public void setKapakGorseliUrl(String kapakGorseliUrl) {
-        this.kapakGorseliUrl = kapakGorseliUrl;
-    }
-
-    public String getEtiketler() {
-        return etiketler;
-    }
-
-    public void setEtiketler(String etiketler) {
-        this.etiketler = etiketler;
     }
 
     public String getHataMesaji() {

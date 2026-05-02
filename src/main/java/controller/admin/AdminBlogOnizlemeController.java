@@ -1,13 +1,14 @@
 package controller.admin;
 
-import controller.OturumBean;
+import controller.OturumController;
+import dto.BlogDTO;
 import entity.Blog;
-import entity.Kullanici;
 import enums.DurumTip;
 import facadeLocal.BlogFacadeLocal;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import mapper.BlogMapper;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -16,9 +17,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Admin: onay kuyruğundaki blogu public detay ile aynı blok görünümünde ön izler.
- */
 @Named("adminBlogOnizlemeController")
 @ViewScoped
 public class AdminBlogOnizlemeController implements Serializable {
@@ -29,10 +27,10 @@ public class AdminBlogOnizlemeController implements Serializable {
     private BlogFacadeLocal blogFacade;
 
     @Inject
-    private OturumBean oturum;
+    private OturumController oturum;
 
     private Long id;
-    private Blog blog;
+    private BlogDTO blog;
 
     public String hazirla() {
         if (!oturum.isGirisYapildi()) {
@@ -55,7 +53,7 @@ public class AdminBlogOnizlemeController implements Serializable {
             blog = null;
             return;
         }
-        blog = b;
+        blog = BlogMapper.toDetail(b);
     }
 
     public Long getId() {
@@ -66,7 +64,7 @@ public class AdminBlogOnizlemeController implements Serializable {
         this.id = id;
     }
 
-    public Blog getBlog() {
+    public BlogDTO getBlog() {
         return blog;
     }
 
@@ -97,7 +95,7 @@ public class AdminBlogOnizlemeController implements Serializable {
         if (blog == null || blog.getYazar() == null) {
             return "—";
         }
-        Kullanici y = blog.getYazar();
+        var y = blog.getYazar();
         String ad = y.getAd() != null ? y.getAd() : "";
         String soy = y.getSoyad() != null ? y.getSoyad() : "";
         String full = (ad + " " + soy).trim();

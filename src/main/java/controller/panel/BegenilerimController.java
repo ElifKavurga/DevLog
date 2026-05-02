@@ -1,7 +1,6 @@
 package controller.panel;
 
-import controller.OturumBean;
-import entity.Blog;
+import controller.OturumController;
 import entity.Degerlendirme;
 import enums.DurumTip;
 import facadeLocal.DegerlendirmeFacadeLocal;
@@ -18,7 +17,7 @@ import java.util.List;
 public class BegenilerimController implements Serializable {
 
     @Inject
-    private OturumBean oturum;
+    private OturumController oturum;
 
     @Inject
     private DegerlendirmeFacadeLocal degerlendirmeFacade;
@@ -26,10 +25,10 @@ public class BegenilerimController implements Serializable {
     private List<Degerlendirme> degerlendirmeler = new ArrayList<>();
 
     public String hazirla() {
-        if (!oturum.isGirisYapildi() || oturum.getAktifKullanici() == null) {
+        if (!oturum.isGirisYapildi() || oturum.getAktifKullaniciEntity() == null) {
             return "/auth/giris?faces-redirect=true";
         }
-        Long kid = oturum.getAktifKullanici().getId();
+        Long kid = oturum.getAktifKullaniciEntity().getId();
         List<Degerlendirme> list = degerlendirmeFacade.kullaniciyaGoreListele(kid);
         degerlendirmeler = list != null ? new ArrayList<>(list) : new ArrayList<>();
         return null;

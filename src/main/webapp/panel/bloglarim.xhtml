@@ -20,7 +20,7 @@
                         Toplam #{yazarPanelController.toplamBlogSayisi} blog kaydı listeleniyor.
                     </p>
                 </div>
-                <h:link outcome="/panel/yeni-blog" rendered="#{oturum.yazmayaYetkili}"
+                <h:link outcome="/panel/yeni-blog" rendered="#{oturumController.yazmayaYetkili}"
                         styleClass="btn btn-primary rounded-0 px-4 py-3 font-monospace small fw-bold text-uppercase text-decoration-none d-inline-flex align-items-center gap-2">
                     <span class="material-symbols-outlined">add</span>
                     Yeni blog ekle
@@ -72,7 +72,7 @@
                             <tr>
                                 <td colspan="6" class="px-4 py-5 text-center text-secondary font-monospace small">
                                     Henüz blog kaydınız yok.
-                                    <ui:fragment rendered="#{oturum.yazmayaYetkili}">
+                                    <ui:fragment rendered="#{oturumController.yazmayaYetkili}">
                                         <h:link outcome="/panel/yeni-blog" styleClass="text-primary">Yeni blog ekle</h:link> ile başlayın.
                                     </ui:fragment>
                                 </td>

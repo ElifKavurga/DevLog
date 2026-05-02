@@ -1,6 +1,6 @@
 package controller.panel;
 
-import controller.OturumBean;
+import controller.OturumController;
 import entity.Bildirim;
 import facadeLocal.BildirimFacadeLocal;
 import jakarta.enterprise.context.SessionScoped;
@@ -26,15 +26,15 @@ public class BildirimController implements Serializable {
     private BildirimFacadeLocal bildirimFacade;
 
     @Inject
-    private OturumBean oturum;
+    private OturumController oturum;
 
     private List<Bildirim> bildirimler = new ArrayList<>();
 
     public String hazirla() {
-        if (!oturum.isGirisYapildi() || oturum.getAktifKullanici() == null) {
+        if (!oturum.isGirisYapildi() || oturum.getAktifKullaniciEntity() == null) {
             return "/auth/giris?faces-redirect=true";
         }
-        Long kid = oturum.getAktifKullanici().getId();
+        Long kid = oturum.getAktifKullaniciEntity().getId();
         List<Bildirim> list = bildirimFacade.kullaniciyaGoreBildirimleriGetir(kid);
         bildirimler = list != null ? new ArrayList<>(list) : new ArrayList<>();
         return null;
@@ -44,18 +44,18 @@ public class BildirimController implements Serializable {
      * Zil: tüm okunmamışları okundu yap, bildirimler sayfasına yönlendir.
      */
     public String zilTiklaVeListeyeGit() {
-        if (!oturum.isGirisYapildi() || oturum.getAktifKullanici() == null) {
+        if (!oturum.isGirisYapildi() || oturum.getAktifKullaniciEntity() == null) {
             return null;
         }
-        bildirimFacade.tumunuOkunduYap(oturum.getAktifKullanici().getId());
+        bildirimFacade.tumunuOkunduYap(oturum.getAktifKullaniciEntity().getId());
         return "/panel/bildirimler?faces-redirect=true";
     }
 
     public int getOkunmamisSayisi() {
-        if (!oturum.isGirisYapildi() || oturum.getAktifKullanici() == null) {
+        if (!oturum.isGirisYapildi() || oturum.getAktifKullaniciEntity() == null) {
             return 0;
         }
-        long c = bildirimFacade.kullaniciyaGoreOkunmamisBildirimSayisi(oturum.getAktifKullanici().getId());
+        long c = bildirimFacade.kullaniciyaGoreOkunmamisBildirimSayisi(oturum.getAktifKullaniciEntity().getId());
         return (int) Math.min(c, 99L);
     }
 

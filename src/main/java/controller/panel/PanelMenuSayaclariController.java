@@ -1,6 +1,6 @@
 package controller.panel;
 
-import controller.OturumBean;
+import controller.OturumController;
 import facadeLocal.BlogFacadeLocal;
 import facadeLocal.KullaniciFacadeLocal;
 import jakarta.enterprise.context.RequestScoped;
@@ -12,9 +12,9 @@ import java.io.Serializable;
 /**
  * Yan menüde admin rozetleri için sayımlar (her istekte güncel).
  */
-@Named("panelMenuSayaclari")
+@Named("panelMenuSayaclariController")
 @RequestScoped
-public class PanelMenuSayaclari implements Serializable {
+public class PanelMenuSayaclariController implements Serializable {
 
     @Inject
     private BlogFacadeLocal blogFacade;
@@ -23,7 +23,7 @@ public class PanelMenuSayaclari implements Serializable {
     private KullaniciFacadeLocal kullaniciFacade;
 
     @Inject
-    private OturumBean oturum;
+    private OturumController oturum;
 
     public long getOnayBekleyenSayisi() {
         if (!oturum.isGirisYapildi() || !oturum.isAdmin()) {

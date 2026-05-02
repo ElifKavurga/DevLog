@@ -27,14 +27,14 @@
                 <div class="devlog-term-log__line border-bottom border-secondary border-opacity-25 px-3 py-2">
                     <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-1">
                         <div class="text-white min-w-0">
-                            <span class="text-secondary">blog#</span>#{yorumlarimController.blogId(y)}
+                            <span class="text-secondary">blog#</span>#{y.blogId}
                             <span class="mx-2 text-secondary">·</span>
-                            <span class="text-truncate d-inline-block align-bottom" style="max-width: 14rem;">#{yorumlarimController.blogBaslik(y)}</span>
+                            <span class="text-truncate d-inline-block align-bottom" style="max-width: 14rem;">#{y.blogBaslik}</span>
                         </div>
                         <div class="d-flex align-items-center gap-2 flex-shrink-0">
                             <span class="text-secondary" style="font-size: 0.7rem;">#{yorumlarimController.tarihMetni(y)}</span>
                             <h:link outcome="/public/blog-detay" styleClass="btn btn-sm btn-outline-primary rounded-0 font-monospace py-0 px-2">
-                                <f:param name="id" value="#{yorumlarimController.blogId(y)}"/>
+                                <f:param name="id" value="#{y.blogId}"/>
                                 Aç
                             </h:link>
                         </div>

@@ -1,24 +1,34 @@
 package controller;
 
+import dto.KullaniciDTO;
 import entity.Kullanici;
 import enums.RolTip;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
+import mapper.KullaniciMapper;
 
 import java.io.Serializable;
 
 /**
  * Oturum açmış kullanıcı bilgisi (HTTP oturumu ile aynı ömür).
  */
-@Named("oturum")
+@Named("oturumController")
 @SessionScoped
-public class OturumBean implements Serializable {
+public class OturumController implements Serializable {
 
     private Kullanici aktifKullanici;
 
-    public Kullanici getAktifKullanici() {
+    /**
+     * XHTML / EL için şifre içermeyen DTO görünümü.
+     */
+    public KullaniciDTO getAktifKullanici() {
+        return KullaniciMapper.toDto(aktifKullanici);
+    }
+
+    /** Facade ve iş kuralları için kalıcı kullanıcı nesnesi. */
+    public Kullanici getAktifKullaniciEntity() {
         return aktifKullanici;
     }
 
@@ -26,16 +36,10 @@ public class OturumBean implements Serializable {
         return aktifKullanici != null;
     }
 
-    /**
-     * CMS admin menüsü ve sayfaları için; yalnızca {@link RolTip#ADMIN}.
-     */
     public boolean isAdmin() {
         return aktifKullanici != null && aktifKullanici.getRol() == RolTip.ADMIN;
     }
 
-    /**
-     * Blog oluşturma ve yazar paneli; {@link RolTip#OKUR} hariç tüm roller.
-     */
     public boolean isYazmayaYetkili() {
         return aktifKullanici != null
                 && (aktifKullanici.getRol() == RolTip.YAZAR
@@ -47,7 +51,6 @@ public class OturumBean implements Serializable {
         this.aktifKullanici = kullanici;
     }
 
-    /** Veritabanından güncellenmiş kullanıcıyı oturuma yazar (profil / rol değişimi sonrası). */
     public void aktifKullaniciyiGuncelle(Kullanici kullanici) {
         this.aktifKullanici = kullanici;
     }
