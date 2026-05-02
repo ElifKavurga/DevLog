@@ -2,7 +2,6 @@ package controller.publicweb;
 
 import entity.Blog;
 import entity.Kategori;
-import enums.DurumTip;
 import facadeLocal.BlogFacadeLocal;
 import facadeLocal.KategoriFacadeLocal;
 import jakarta.faces.context.FacesContext;
@@ -11,6 +10,8 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
 import java.io.Serializable;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -34,11 +35,15 @@ public class KesfetController implements Serializable {
     /** URL: tekrarlayan ?kategoriId=1&amp;kategoriId=2 — OR ile filtre */
     private List<Long> seciliKategoriIds = new ArrayList<>();
 
+    /** URL: ?q=... — başlık / özet / içerik araması */
+    private String aramaMetni = "";
+
     private List<Blog> yayinlananBloglar = new ArrayList<>();
     private List<Kategori> kategoriler = new ArrayList<>();
 
     public void hazirla() {
         istektenSeciliKategorileriOku();
+        istektenAramaOku();
         yukleKategoriler();
         yukleBloglar();
     }
@@ -74,6 +79,23 @@ public class KesfetController implements Serializable {
         seciliKategoriIds = new ArrayList<>(set);
     }
 
+    private void istektenAramaOku() {
+        aramaMetni = "";
+        FacesContext fc = FacesContext.getCurrentInstance();
+        if (fc == null) {
+            return;
+        }
+        String q = fc.getExternalContext().getRequestParameterMap().get("q");
+        if (q == null) {
+            return;
+        }
+        String t = q.trim();
+        if (t.length() > 200) {
+            t = t.substring(0, 200);
+        }
+        aramaMetni = t;
+    }
+
     private void yukleKategoriler() {
         try {
             List<Kategori> list = kategoriFacade.listeleIdArtan();
@@ -86,10 +108,8 @@ public class KesfetController implements Serializable {
 
     private void yukleBloglar() {
         try {
-            List<Blog> liste;
-            if (seciliKategoriIds.isEmpty()) {
-                liste = blogFacade.yayinlananlariListele();
-            } else {
+            List<Long> kidParams = null;
+            if (!seciliKategoriIds.isEmpty()) {
                 List<Long> gecerli = new ArrayList<>();
                 for (Long id : seciliKategoriIds) {
                     if (id != null && kategoriFacade.bul(id) != null) {
@@ -97,11 +117,13 @@ public class KesfetController implements Serializable {
                     }
                 }
                 if (gecerli.isEmpty()) {
-                    liste = new ArrayList<>();
-                } else {
-                    liste = blogFacade.kategorilereGoreListele(gecerli, DurumTip.YAYINLANDI);
+                    yayinlananBloglar = new ArrayList<>();
+                    return;
                 }
+                kidParams = gecerli;
             }
+            String qAra = aramaMetni != null && !aramaMetni.isBlank() ? aramaMetni : null;
+            List<Blog> liste = blogFacade.yayinlananFiltrele(kidParams, qAra);
             yayinlananBloglar = liste != null ? new ArrayList<>(liste) : new ArrayList<>();
         } catch (RuntimeException e) {
             LOG.log(Level.WARNING, "Blog listesi yüklenemedi.", e);
@@ -149,7 +171,12 @@ public class KesfetController implements Serializable {
         String base = ctx + "/public/index.xhtml";
         List<Long> ids = kategoriLinkIcinSecim(toggleKategoriId);
         if (ids.isEmpty()) {
-            return base;
+            if (aramaMetni == null || aramaMetni.isBlank()) {
+                return base;
+            }
+            StringBuilder u = new StringBuilder(base).append('?');
+            aramaQueryEkle(u);
+            return u.toString();
         }
         StringBuilder u = new StringBuilder(base).append('?');
         for (int i = 0; i < ids.size(); i++) {
@@ -158,6 +185,7 @@ public class KesfetController implements Serializable {
             }
             u.append("kategoriId=").append(ids.get(i));
         }
+        aramaQueryEkle(u);
         return u.toString();
     }
 
@@ -175,6 +203,30 @@ public class KesfetController implements Serializable {
 
     public boolean isFiltreAktif() {
         return seciliKategoriIds != null && !seciliKategoriIds.isEmpty();
+    }
+
+    public String getAramaMetni() {
+        return aramaMetni != null ? aramaMetni : "";
+    }
+
+    public boolean isAramaAktif() {
+        return aramaMetni != null && !aramaMetni.isBlank();
+    }
+
+    private void aramaQueryEkle(StringBuilder u) {
+        if (aramaMetni == null || aramaMetni.isBlank()) {
+            return;
+        }
+        if (u.indexOf("?") < 0) {
+            u.append('?');
+        } else if (u.charAt(u.length() - 1) != '?') {
+            u.append('&');
+        }
+        u.append("q=").append(urlEncodeQ(aramaMetni.trim()));
+    }
+
+    private static String urlEncodeQ(String s) {
+        return URLEncoder.encode(s, StandardCharsets.UTF_8).replace("+", "%20");
     }
 
     public List<Blog> getYayinlananBloglar() {

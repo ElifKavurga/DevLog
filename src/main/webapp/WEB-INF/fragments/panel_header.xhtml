@@ -23,11 +23,16 @@
                         </nav>
                     </div>
                     <div class="order-3 order-lg-2 flex-grow-1 w-100 w-lg-auto d-none d-md-flex justify-content-lg-center px-lg-2" style="min-width: 0;">
-                        <div class="position-relative w-100" style="max-width: 18rem;">
-                            <input type="search" class="form-control devlog-public-search devlog-public-header--ide__search py-1 ps-3 pe-5 rounded-0 w-100"
-                                   placeholder="Blog veya dosya ara..." aria-label="Ara"/>
-                            <span class="material-symbols-outlined position-absolute end-0 top-50 translate-middle-y me-2 devlog-public-header--ide__search-icon">search</span>
-                        </div>
+                        <form action="#{request.contextPath}/public/index.xhtml" method="get" role="search" class="position-relative w-100 mb-0" style="max-width: 18rem;">
+                            <label class="visually-hidden" for="devlogPanelHeaderArama">Blog ara</label>
+                            <input id="devlogPanelHeaderArama" type="search" name="q" maxlength="200"
+                                   class="form-control devlog-public-search devlog-public-header--ide__search py-1 ps-3 pe-5 rounded-0 w-100"
+                                   placeholder="Blog veya dosya ara..." aria-label="Ara" value="#{param.q}"/>
+                            <button type="submit" class="btn btn-link position-absolute end-0 top-50 translate-middle-y p-0 me-1 border-0 text-secondary devlog-public-header-search-submit"
+                                    aria-label="Ara">
+                                <span class="material-symbols-outlined devlog-public-header--ide__search-icon" aria-hidden="true">search</span>
+                            </button>
+                        </form>
                     </div>
                     <div class="order-2 order-lg-3 d-flex align-items-center gap-2 gap-md-3 flex-shrink-0 ms-lg-auto flex-wrap justify-content-end">
                         <span class="d-none d-xl-inline font-monospace small text-secondary text-truncate devlog-panel-header__path order-lg-0" title="#{panelYol.kisaYol}">

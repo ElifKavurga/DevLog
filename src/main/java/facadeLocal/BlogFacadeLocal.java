@@ -22,6 +22,12 @@ public interface BlogFacadeLocal {
     List<Blog> yayinlananlariListele();
 
     /**
+     * Yayında bloglar; isteğe bağlı kategori (IN, OR) ve metin araması (başlık/özet/içerik, büyük/küçük harf yok sayılır).
+     * {@code kategoriIds} null veya boş ise tüm kategoriler; {@code arama} null veya boşsa metin filtresi yok.
+     */
+    List<Blog> yayinlananFiltrele(List<Long> kategoriIds, String arama);
+
+    /**
      * Belirli kategori ve duruma göre bloglar; yazar ve kategori FETCH ile gelir, en yeni önce.
      */
     List<Blog> kategoriyeGoreListele(Long kategoriId, DurumTip durum);

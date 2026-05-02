@@ -15,6 +15,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 
 import java.util.List;
+import java.util.Locale;
 
 @Stateless
 public class BlogFacade implements BlogFacadeLocal {
@@ -67,6 +68,49 @@ public class BlogFacade implements BlogFacadeLocal {
                         Blog.class)
                 .setParameter("durum", DurumTip.YAYINLANDI)
                 .getResultList();
+    }
+
+    @Override
+    public List<Blog> yayinlananFiltrele(List<Long> kategoriIds, String arama) {
+        String likePat = aramaLikeOrNull(arama);
+        boolean hasKat = kategoriIds != null && !kategoriIds.isEmpty();
+        boolean hasArama = likePat != null;
+
+        StringBuilder jpql = new StringBuilder(
+                "SELECT DISTINCT b FROM Blog b LEFT JOIN FETCH b.yazar LEFT JOIN FETCH b.kategori "
+                        + "WHERE b.durum = :durum");
+        if (hasKat) {
+            jpql.append(" AND b.kategori.id IN :kids");
+        }
+        if (hasArama) {
+            jpql.append(" AND (LOWER(COALESCE(b.baslik, '')) LIKE :pat OR LOWER(COALESCE(b.ozet, '')) LIKE :pat OR LOWER(COALESCE(b.icerik, '')) LIKE :pat)");
+        }
+        jpql.append(" ORDER BY b.id DESC");
+
+        TypedQuery<Blog> q = em.createQuery(jpql.toString(), Blog.class)
+                .setParameter("durum", DurumTip.YAYINLANDI);
+        if (hasKat) {
+            q.setParameter("kids", kategoriIds);
+        }
+        if (hasArama) {
+            q.setParameter("pat", likePat);
+        }
+        return q.getResultList();
+    }
+
+    private static String aramaLikeOrNull(String arama) {
+        if (arama == null) {
+            return null;
+        }
+        String t = arama.trim();
+        if (t.length() > 200) {
+            t = t.substring(0, 200);
+        }
+        t = t.toLowerCase(Locale.ROOT).replace("%", "").replace("_", "");
+        if (t.isEmpty()) {
+            return null;
+        }
+        return "%" + t + "%";
     }
 
     @Override

@@ -25,6 +25,12 @@
                                 Kategoriler: <span class="text-white">#{kesfetController.seciliKategoriOzeti}</span>
                             </p>
                         </ui:fragment>
+                        <ui:fragment rendered="#{kesfetController.aramaAktif}">
+                            <p class="small text-secondary font-monospace mb-0 mt-2">
+                                Arama: <span class="text-white"><h:outputText value="#{kesfetController.aramaMetni}" escape="true"/></span>
+                                <a href="#{kesfetController.kesfetTemizUrl()}" class="devlog-read-link text-decoration-none ms-2">temizle</a>
+                            </p>
+                        </ui:fragment>
                     </div>
                     <h:form styleClass="mb-0 align-self-md-center">
                         <h:commandLink action="#{oturum.menuGitYeniBlog}" rendered="#{oturum.yazmayaYetkili}"
@@ -52,10 +58,14 @@
 
                 <ui:fragment rendered="#{empty kesfetController.yayinlananBloglar}">
                     <div class="devlog-cms-card p-5 text-center font-monospace small text-secondary">
-                        <ui:fragment rendered="#{kesfetController.filtreAktif}">
+                        <ui:fragment rendered="#{kesfetController.aramaAktif}">
+                            “<h:outputText value="#{kesfetController.aramaMetni}" escape="true"/>” için sonuç bulunamadı. Farklı anahtar kelimeler deneyin veya
+                            <a href="#{kesfetController.kesfetTemizUrl()}" class="devlog-read-link text-decoration-none">filtreyi temizleyin</a>.
+                        </ui:fragment>
+                        <ui:fragment rendered="#{not kesfetController.aramaAktif and kesfetController.filtreAktif}">
                             Seçilen kategorilerde henüz yayınlanan blog yok.
                         </ui:fragment>
-                        <ui:fragment rendered="#{not kesfetController.filtreAktif}">
+                        <ui:fragment rendered="#{not kesfetController.aramaAktif and not kesfetController.filtreAktif}">
                             Henüz yayınlanan blog yok. Onaylanmış içerikler burada listelenir.
                         </ui:fragment>
                     </div>
