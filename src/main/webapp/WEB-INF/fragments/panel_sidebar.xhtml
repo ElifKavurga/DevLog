@@ -38,6 +38,10 @@
                             styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/admin/admin-onay.xhtml') ? 'active' : ''}">
                         <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
                         <span>Onay bekleyenler</span>
+                        <h:panelGroup layout="span" styleClass="ms-auto"
+                                      rendered="#{panelMenuSayaclari.onayBekleyenSayisi gt 0}">
+                            <span class="badge bg-danger rounded-pill">#{panelMenuSayaclari.onayBekleyenSayisi}</span>
+                        </h:panelGroup>
                     </h:link>
                     <h:link outcome="/admin/onay-islemlerim" rendered="#{oturum.admin}"
                             styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/admin/onay-islemlerim.xhtml') ? 'active' : ''}">
@@ -53,6 +57,10 @@
                             styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/admin/yazar-talepleri.xhtml') ? 'active' : ''}">
                         <span class="material-symbols-outlined" aria-hidden="true">group_add</span>
                         <span>Yazar talepleri</span>
+                        <h:panelGroup layout="span" styleClass="ms-auto"
+                                      rendered="#{panelMenuSayaclari.yazarlikTalepSayisi gt 0}">
+                            <span class="badge bg-danger rounded-pill">#{panelMenuSayaclari.yazarlikTalepSayisi}</span>
+                        </h:panelGroup>
                     </h:link>
                     <h:link outcome="/admin/sistem-loglari" rendered="#{oturum.admin}"
                             styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/admin/sistem-loglari.xhtml') ? 'active' : ''}">

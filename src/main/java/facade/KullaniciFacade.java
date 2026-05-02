@@ -111,6 +111,15 @@ public class KullaniciFacade implements KullaniciFacadeLocal {
     }
 
     @Override
+    public long yazarlikTalebiBekleyenSayisi() {
+        Long c = em.createQuery(
+                        "SELECT COUNT(k) FROM Kullanici k WHERE k.yazarlikTalepEtti = true",
+                        Long.class)
+                .getSingleResult();
+        return c != null ? c : 0L;
+    }
+
+    @Override
     public List<Kullanici> rolIleListele(RolTip rol) {
         if (rol == null) {
             return List.of();

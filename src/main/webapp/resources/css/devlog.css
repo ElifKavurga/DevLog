@@ -210,10 +210,10 @@ body.devlog-body {
 }
 
 .devlog-card-img {
-    object-fit: cover;
     width: 100%;
-    height: 100%;
-    min-height: 192px;
+    height: 180px;
+    object-fit: cover;
+    display: block;
     transition: transform 0.5s;
 }
 
@@ -1251,18 +1251,80 @@ body.devlog-public-body:has(.devlog-read) {
     background-color: #010409;
 }
 
-/* Keşfet kartı — harici Unsplash yok; boş kapakta logo */
-.devlog-home-card-cover {
+/* Blog detay / önizleme — kapak tam görünür (kırpma yok; boşluk kabul) */
+.devlog-read-hero {
+    width: 100%;
+    min-width: 0;
+    height: clamp(200px, 36vw, 400px);
+    min-height: 200px;
+    padding: 0.65rem 0.85rem;
+    box-sizing: border-box;
+    background-color: #010409;
     overflow: hidden;
-    display: flex;
-    align-items: stretch;
 }
 
-.devlog-card-img {
+.devlog-read-hero-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    height: 180px;
-    object-fit: cover;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+}
+
+.devlog-read-hero-img {
     display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    object-position: center;
+}
+
+/* Keşfet kartı — kapak tam görünsün: flex + max-boyut (letterbox/pillarbox serbest, kırpma yok) */
+.devlog-home-card-cover-link {
+    display: block;
+    overflow: hidden;
+    line-height: 0;
+}
+
+.devlog-home-card-cover-link:focus-visible {
+    outline: 2px solid var(--dl-ref-accent-blue, #58a6ff);
+    outline-offset: -2px;
+}
+
+.devlog-home-card-cover {
+    width: 100%;
+    min-width: 0;
+    height: 180px;
+    min-height: 180px;
+    margin: 0;
+    padding: 0.45rem 0.55rem;
+    box-sizing: border-box;
+    background-color: #010409;
+}
+
+/* İç kutu: img için %100 yükseklik referansı (logo/kapak tam sığar, kırpma yok) */
+.devlog-home-card-cover-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+}
+
+.devlog-home-card-img {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    object-position: center;
 }
 
 .devlog-blog-cover-img {
@@ -1347,6 +1409,15 @@ body.devlog-public-body:has(.devlog-read) {
     color: #8b949e;
     font-size: 0.7rem;
     margin-bottom: 0.35rem;
+}
+
+.devlog-bildirim-log__link {
+    color: #58a6ff;
+}
+
+.devlog-bildirim-log__link:hover {
+    color: #79c0ff;
+    text-decoration: underline !important;
 }
 
 .devlog-bildirim-log__msg {

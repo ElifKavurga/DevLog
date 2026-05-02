@@ -33,6 +33,9 @@ public interface BlogFacadeLocal {
 
     List<Blog> onayBekleyenleriListele();
 
+    /** Onay kuyruğundaki blog sayısı (menü rozeti). */
+    long onayBekleyenSayisi();
+
     List<Blog> yazaraGoreListele(Long yazarId);
 
     Blog bul(Long id);

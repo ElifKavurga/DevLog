@@ -8,6 +8,7 @@ import entity.Kullanici;
 import entity.SistemLog;
 import entity.Yorum;
 import enums.DurumTip;
+import enums.RolTip;
 import facadeLocal.BildirimFacadeLocal;
 import facadeLocal.BlogFacadeLocal;
 import facadeLocal.DegerlendirmeFacadeLocal;
@@ -93,8 +94,11 @@ public class BlogDetayController implements Serializable {
         yukleKullaniciPuani();
     }
 
-    private void yazaraBildirimGonder(String mesaj) {
+    private void yazaraBildirimGonder(String mesajGovdesi) {
         if (blog == null || blog.getYazar() == null || blog.getYazar().getId() == null) {
+            return;
+        }
+        if (blog.getYazar().getRol() != RolTip.YAZAR) {
             return;
         }
         Long yazarId = blog.getYazar().getId();
@@ -102,7 +106,8 @@ public class BlogDetayController implements Serializable {
                 && yazarId.equals(oturum.getAktifKullanici().getId())) {
             return;
         }
-        bildirimFacade.aliciyaMesajOlustur(yazarId, mesaj);
+        String govde = mesajGovdesi != null ? mesajGovdesi : "";
+        bildirimFacade.aliciyaMesajOlustur(yazarId, "BLOG:" + blog.getId() + ":" + govde);
     }
 
     private void sistemLogKaydet(String islem) {
@@ -278,8 +283,7 @@ public class BlogDetayController implements Serializable {
         sistemLogKaydet("Kullanıcı bir bloga yorum yaptı.");
         yazaraBildirimGonder("Blog yazınıza yeni bir yorum/puan eklendi.");
         id = blogId;
-        blog = null;
-        blog = blogFacade.bulBlogDetayPublic(blogId);
+        this.blog = blogFacade.bulBlogDetayPublic(blog.getId());
         yukleKullaniciPuani();
         ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Bilgi", "Yorumunuz kaydedildi."));
         return null;

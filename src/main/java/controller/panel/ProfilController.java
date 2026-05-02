@@ -163,7 +163,7 @@ public class ProfilController implements Serializable {
         for (Kullanici admin : kullaniciFacade.rolIleListele(RolTip.ADMIN)) {
             if (admin != null && admin.getId() != null) {
                 bildirimFacade.aliciyaMesajOlustur(admin.getId(),
-                        "Yeni bir yazarlık talebi var: " + ka);
+                        "ANLIK:YAZAR_TALEPLERI:Yeni bir yazarlık talebi var: " + ka);
             }
         }
         mesaj(FacesMessage.SEVERITY_INFO, "Yazarlık talebiniz yöneticiye iletildi.");

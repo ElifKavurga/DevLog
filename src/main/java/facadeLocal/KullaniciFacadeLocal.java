@@ -32,6 +32,9 @@ public interface KullaniciFacadeLocal {
      */
     List<Kullanici> yazarlikTalebiBekleyenleriListele();
 
+    /** Bekleyen yazarlık talebi sayısı (menü rozeti). */
+    long yazarlikTalebiBekleyenSayisi();
+
     List<Kullanici> rolIleListele(RolTip rol);
 
     /**

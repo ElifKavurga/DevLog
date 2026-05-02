@@ -3,7 +3,7 @@ package controller.admin;
 import controller.OturumBean;
 import entity.SistemLog;
 import facadeLocal.SistemLogFacadeLocal;
-import jakarta.faces.view.ViewScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Named("sistemLogController")
-@ViewScoped
+@RequestScoped
 public class SistemLogController implements Serializable {
 
     private static final DateTimeFormatter FMT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -33,9 +33,25 @@ public class SistemLogController implements Serializable {
         if (!oturum.isAdmin()) {
             return "/panel/bloglarim?faces-redirect=true";
         }
+        veritabanindanYenile();
+        return null;
+    }
+
+    /**
+     * Her sayfa girişinde ve @PostConstruct sonrası güncel log listesi.
+     */
+    private void veritabanindanYenile() {
+        loglar = new ArrayList<>();
+        if (!oturum.isGirisYapildi() || !oturum.isAdmin()) {
+            return;
+        }
+        try {
+            sistemLogFacade.ensureSistemLogTableExists();
+        } catch (RuntimeException ignored) {
+            // tablo zaten var veya yetki
+        }
         List<SistemLog> list = sistemLogFacade.tariheGoreAzalanListele();
         loglar = list != null ? new ArrayList<>(list) : new ArrayList<>();
-        return null;
     }
 
     public List<SistemLog> getLoglar() {

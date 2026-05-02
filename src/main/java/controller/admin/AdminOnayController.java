@@ -6,6 +6,7 @@ import entity.Blog;
 import entity.Kullanici;
 import entity.SistemLog;
 import enums.DurumTip;
+import enums.RolTip;
 import facadeLocal.BildirimFacadeLocal;
 import facadeLocal.BlogFacadeLocal;
 import facadeLocal.SistemLogFacadeLocal;
@@ -67,10 +68,10 @@ public class AdminOnayController implements Serializable {
         b.setDurum(DurumTip.YAYINLANDI);
         blogFacade.guncelle(b);
         adminLogKaydet("Admin bir blog yazısını onayladı.");
-        if (b.getYazar() != null && b.getYazar().getId() != null) {
+        if (b.getYazar() != null && b.getYazar().getId() != null && b.getYazar().getRol() == RolTip.YAZAR) {
             String baslikEt = b.getBaslik() != null && !b.getBaslik().isBlank() ? b.getBaslik().trim() : "Başlıksız";
             bildirimFacade.aliciyaMesajOlustur(b.getYazar().getId(),
-                    "Blog yazınız onaylandı: " + baslikEt);
+                    "BLOG:" + b.getId() + ":Blog yazınız onaylandı: " + baslikEt);
         }
         yukleListe();
         return null;

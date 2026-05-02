@@ -8,6 +8,8 @@ import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
+import org.eclipse.persistence.config.HintValues;
+import org.eclipse.persistence.config.QueryHints;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
@@ -110,6 +112,16 @@ public class BlogFacade implements BlogFacadeLocal {
                 .getResultList();
     }
 
+    @Override
+    public long onayBekleyenSayisi() {
+        Long c = em.createQuery(
+                        "SELECT COUNT(b) FROM Blog b WHERE b.durum = :durum",
+                        Long.class)
+                .setParameter("durum", DurumTip.ONAY_BEKLIYOR)
+                .getSingleResult();
+        return c != null ? c : 0L;
+    }
+
     /**
      * Belirli yazarın tüm blog kayıtları (panel listesi); en yeni önce.
      */
@@ -143,14 +155,15 @@ public class BlogFacade implements BlogFacadeLocal {
         if (id == null) {
             return null;
         }
-        List<Blog> blogs = em.createQuery(
+        var q = em.createQuery(
                         "SELECT DISTINCT b FROM Blog b "
                                 + "LEFT JOIN FETCH b.yazar LEFT JOIN FETCH b.kategori "
                                 + "LEFT JOIN FETCH b.yorumlar y LEFT JOIN FETCH y.kullanici "
                                 + "WHERE b.id = :id",
-                        Blog.class)
-                .setParameter("id", id)
-                .getResultList();
+                        Blog.class);
+        q.setParameter("id", id);
+        q.setHint(QueryHints.REFRESH, HintValues.TRUE);
+        List<Blog> blogs = q.getResultList();
         if (blogs.isEmpty()) {
             return null;
         }

@@ -134,13 +134,11 @@ public class BlogEkleController implements Serializable {
         log.setIslem("Kullanıcı yeni bir blog yazısı oluşturdu.");
         log.setTarih(LocalDateTime.now());
         sistemLogFacade.olustur(log);
-        if (yazar.getRol() == RolTip.YAZAR) {
-            String baslikEt = b.getBaslik() != null && !b.getBaslik().isBlank() ? b.getBaslik().trim() : "Başlıksız";
-            for (Kullanici admin : kullaniciFacade.rolIleListele(RolTip.ADMIN)) {
-                if (admin != null && admin.getId() != null) {
-                    bildirimFacade.aliciyaMesajOlustur(admin.getId(),
-                            "Onay bekleyen yeni bir blog eklendi: " + baslikEt);
-                }
+        String baslikEt = b.getBaslik() != null && !b.getBaslik().isBlank() ? b.getBaslik().trim() : "Başlıksız";
+        for (Kullanici admin : kullaniciFacade.rolIleListele(RolTip.ADMIN)) {
+            if (admin != null && admin.getId() != null) {
+                bildirimFacade.aliciyaMesajOlustur(admin.getId(),
+                        "ANLIK:ONAY_BEKLEYEN:Onay bekleyen yeni bir blog eklendi: " + baslikEt);
             }
         }
         temizleForm();

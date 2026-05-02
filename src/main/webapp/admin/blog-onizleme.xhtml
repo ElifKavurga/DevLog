@@ -76,9 +76,11 @@
 
                     <div class="row g-4 align-items-start mt-0">
                         <div class="col-12 col-lg-8">
-                            <div class="ratio ratio-21x9 border devlog-read-border mb-4 devlog-read-cover">
-                                <img src="#{not empty adminBlogOnizlemeController.blog.kapakGorseliUrl ? adminBlogOnizlemeController.blog.kapakGorseliUrl : resource['img:Logo_Amblem.png']}"
-                                     alt="" class="object-fit-cover w-100 h-100"/>
+                            <div class="devlog-read-hero border devlog-read-border mb-4">
+                                <div class="devlog-read-hero-inner">
+                                    <img src="#{not empty adminBlogOnizlemeController.blog.kapakGorseliUrl ? adminBlogOnizlemeController.blog.kapakGorseliUrl : resource['img:Logo_Amblem.png']}"
+                                         alt="" class="devlog-read-hero-img"/>
+                                </div>
                             </div>
 
                             <ui:fragment rendered="#{not empty adminBlogOnizlemeController.blog.ozet}">

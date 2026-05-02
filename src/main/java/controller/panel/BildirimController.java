@@ -76,4 +76,31 @@ public class BildirimController implements Serializable {
         }
         return b.isOkunduMu() ? "READ" : "NEW";
     }
+
+    public boolean bildirimBlogDetayLinkli(Bildirim bn) {
+        return bn != null && bn.getMesaj() != null && bn.getMesaj().startsWith("BLOG:");
+    }
+
+    public Long bildirimBlogDetayId(Bildirim bn) {
+        if (!bildirimBlogDetayLinkli(bn)) {
+            return null;
+        }
+        String[] p = bn.getMesaj().split(":", 3);
+        if (p.length >= 2) {
+            try {
+                return Long.parseLong(p[1].trim());
+            } catch (NumberFormatException ignored) {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    public boolean bildirimAdminOnayLinkli(Bildirim bn) {
+        return bn != null && bn.getMesaj() != null && bn.getMesaj().startsWith("ANLIK:ONAY_BEKLEYEN:");
+    }
+
+    public boolean bildirimYazarTalepLinkli(Bildirim bn) {
+        return bn != null && bn.getMesaj() != null && bn.getMesaj().startsWith("ANLIK:YAZAR_TALEPLERI:");
+    }
 }

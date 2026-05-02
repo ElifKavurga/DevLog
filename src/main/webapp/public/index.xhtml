@@ -4,6 +4,7 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
                 template="/WEB-INF/templates/publicTemplate.xhtml">
 
     <f:metadata>
@@ -68,11 +69,18 @@
                                     <span class="devlog-mono-label text-secondary mb-0">Kayıt</span>
                                     <span class="font-monospace small text-secondary">#<h:outputText value="#{blog.id}"/></span>
                                 </div>
-                                <div class="border-bottom border-secondary border-opacity-25 bg-dark devlog-home-card-cover position-relative z-1">
-                                    <img src="#{not empty blog.kapakGorseliUrl ? blog.kapakGorseliUrl : resource['img:Logo_Amblem.png']}"
-                                         alt=""
-                                         class="devlog-card-img"/>
-                                </div>
+                                <h:link outcome="/public/blog-detay"
+                                        styleClass="devlog-home-card-cover-link border-bottom border-secondary border-opacity-25 bg-dark position-relative z-1 d-block text-reset text-decoration-none"
+                                        pt:title="#{empty blog.baslik ? 'Başlıksız' : blog.baslik}">
+                                    <f:param name="id" value="#{blog.id}"/>
+                                    <div class="devlog-home-card-cover">
+                                        <div class="devlog-home-card-cover-inner">
+                                            <img src="#{not empty blog.kapakGorseliUrl ? blog.kapakGorseliUrl : resource['img:Logo_Amblem.png']}"
+                                                 alt=""
+                                                 class="devlog-home-card-img"/>
+                                        </div>
+                                    </div>
+                                </h:link>
                                 <div class="p-4 d-flex flex-column flex-grow-1 position-relative z-1">
                                     <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
                                         <span class="devlog-home-kategori-pill font-monospace text-truncate">#{kesfetController.kategoriEtiket(blog)}</span>
