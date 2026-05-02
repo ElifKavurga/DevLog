@@ -24,12 +24,12 @@
         <div class="offcanvas-body p-0 d-flex flex-column devlog-global-offcanvas__body">
             <h:form id="sidebarNavForm" styleClass="d-flex flex-column flex-grow-1 mb-0">
                 <nav class="flex-grow-1 py-2" aria-label="Ana menü">
-                    <h:commandLink action="#{oturum.menuGitBloglarim}"
+                    <h:commandLink action="#{oturum.menuGitBloglarim}" rendered="#{oturum.yazmayaYetkili}"
                                    styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/panel/bloglarim.xhtml') ? 'active' : ''}">
                         <span class="material-symbols-outlined" aria-hidden="true">article</span>
                         <span>Bloglarım</span>
                     </h:commandLink>
-                    <h:commandLink action="#{oturum.menuGitYeniBlog}"
+                    <h:commandLink action="#{oturum.menuGitYeniBlog}" rendered="#{oturum.yazmayaYetkili}"
                                    styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/panel/yeni-blog.xhtml') ? 'active' : ''}">
                         <span class="material-symbols-outlined" aria-hidden="true">add_box</span>
                         <span>Yeni blog ekle</span>

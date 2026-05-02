@@ -25,15 +25,6 @@ public class KesfetController implements Serializable {
 
     private static final Logger LOG = Logger.getLogger(KesfetController.class.getName());
 
-    private static final List<String> UNSPLASH_KAPAK_URLS = List.of(
-            "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80",
-            "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80",
-            "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=800&q=80",
-            "https://images.unsplash.com/photo-1504639725590-34d0984388bd?auto=format&fit=crop&w=800&q=80",
-            "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80",
-            "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=800&q=80"
-    );
-
     @Inject
     private BlogFacadeLocal blogFacade;
 
@@ -214,13 +205,6 @@ public class KesfetController implements Serializable {
             return null;
         }
         return String.join(", ", adlar);
-    }
-
-    public String kapakUrl(Blog blog, int index) {
-        if (blog != null && blog.getKapakGorseliUrl() != null && !blog.getKapakGorseliUrl().isBlank()) {
-            return blog.getKapakGorseliUrl().trim();
-        }
-        return UNSPLASH_KAPAK_URLS.get(Math.floorMod(index, UNSPLASH_KAPAK_URLS.size()));
     }
 
     public String yazarAdi(Blog blog) {

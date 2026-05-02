@@ -4,6 +4,8 @@ import controller.OturumBean;
 import entity.Blog;
 import enums.DurumTip;
 import facadeLocal.BlogFacadeLocal;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -30,6 +32,13 @@ public class YazarPanelController implements Serializable {
     public String hazirla() {
         if (!oturum.isGirisYapildi() || oturum.getAktifKullanici() == null) {
             return "/auth/giris?faces-redirect=true";
+        }
+        if (!oturum.isYazmayaYetkili()) {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+                    "Erişim yok", "Bloglarım yalnızca yazar ve yöneticiler içindir."));
+            fc.getExternalContext().getFlash().setKeepMessages(true);
+            return "/public/index?faces-redirect=true";
         }
         bloglar = blogFacade.yazaraGoreListele(oturum.getAktifKullanici().getId());
         if (bloglar == null) {

@@ -33,6 +33,16 @@ public class OturumBean implements Serializable {
         return aktifKullanici != null && aktifKullanici.getRol() == RolTip.ADMIN;
     }
 
+    /**
+     * Blog oluşturma ve yazar paneli; {@link RolTip#OKUR} hariç tüm roller.
+     */
+    public boolean isYazmayaYetkili() {
+        return aktifKullanici != null
+                && (aktifKullanici.getRol() == RolTip.YAZAR
+                || aktifKullanici.getRol() == RolTip.YONETICI
+                || aktifKullanici.getRol() == RolTip.ADMIN);
+    }
+
     public void girisYap(Kullanici kullanici) {
         this.aktifKullanici = kullanici;
     }
@@ -66,6 +76,10 @@ public class OturumBean implements Serializable {
             uyariGirisGerekli();
             return null;
         }
+        if (!isYazmayaYetkili()) {
+            uyariYazmaYetkisiYok();
+            return "/public/index?faces-redirect=true";
+        }
         return "/panel/bloglarim?faces-redirect=true";
     }
 
@@ -74,6 +88,18 @@ public class OturumBean implements Serializable {
             uyariGirisGerekli();
             return null;
         }
+        if (!isYazmayaYetkili()) {
+            uyariYazmaYetkisiYok();
+            return "/public/index?faces-redirect=true";
+        }
         return "/panel/yeni-blog?faces-redirect=true";
+    }
+
+    private void uyariYazmaYetkisiYok() {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        fc.addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_WARN,
+                        "Blog yazma yetkiniz yok.", "Bu işlem yalnızca yazar ve yöneticiler içindir."));
+        fc.getExternalContext().getFlash().setKeepMessages(true);
     }
 }

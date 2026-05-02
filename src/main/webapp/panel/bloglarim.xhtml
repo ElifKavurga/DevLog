@@ -20,7 +20,8 @@
                         Toplam #{yazarPanelController.toplamBlogSayisi} blog kaydı listeleniyor.
                     </p>
                 </div>
-                <h:link outcome="/panel/yeni-blog" styleClass="btn btn-primary rounded-0 px-4 py-3 font-monospace small fw-bold text-uppercase text-decoration-none d-inline-flex align-items-center gap-2">
+                <h:link outcome="/panel/yeni-blog" rendered="#{oturum.yazmayaYetkili}"
+                        styleClass="btn btn-primary rounded-0 px-4 py-3 font-monospace small fw-bold text-uppercase text-decoration-none d-inline-flex align-items-center gap-2">
                     <span class="material-symbols-outlined">add</span>
                     Yeni blog ekle
                 </h:link>
@@ -58,6 +59,7 @@
                     <table class="table table-hover devlog-cms-table mb-0 align-middle">
                         <thead>
                         <tr class="devlog-cms-table-head text-uppercase">
+                            <th scope="col" class="px-3 py-3 d-none d-sm-table-cell" style="width: 5.5rem;">Kapak</th>
                             <th scope="col" class="px-4 py-3">Başlık</th>
                             <th scope="col" class="px-4 py-3 d-none d-md-table-cell">Kategori</th>
                             <th scope="col" class="px-4 py-3">Durum</th>
@@ -68,13 +70,20 @@
                         <tbody>
                         <ui:fragment rendered="#{empty yazarPanelController.bloglar}">
                             <tr>
-                                <td colspan="5" class="px-4 py-5 text-center text-secondary font-monospace small">
-                                    Henüz blog kaydınız yok. <h:link outcome="/panel/yeni-blog" styleClass="text-primary">Yeni blog ekle</h:link> ile başlayın.
+                                <td colspan="6" class="px-4 py-5 text-center text-secondary font-monospace small">
+                                    Henüz blog kaydınız yok.
+                                    <ui:fragment rendered="#{oturum.yazmayaYetkili}">
+                                        <h:link outcome="/panel/yeni-blog" styleClass="text-primary">Yeni blog ekle</h:link> ile başlayın.
+                                    </ui:fragment>
                                 </td>
                             </tr>
                         </ui:fragment>
                         <ui:repeat value="#{yazarPanelController.bloglar}" var="blog">
                             <tr class="devlog-cms-table-row">
+                                <td class="px-3 py-3 align-middle d-none d-sm-table-cell">
+                                    <img src="#{not empty blog.kapakGorseliUrl ? blog.kapakGorseliUrl : resource['img:Logo_Amblem.png']}"
+                                         alt="" class="devlog-blog-cover-thumb rounded-0 border border-secondary border-opacity-25"/>
+                                </td>
                                 <td class="px-4 py-4">
                                     <div class="fw-bold text-white">#{empty blog.baslik ? 'Başlıksız' : blog.baslik}</div>
                                     <div class="text-secondary font-monospace mt-1" style="font-size: 0.65rem;">

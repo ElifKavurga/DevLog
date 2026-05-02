@@ -77,7 +77,8 @@
                     <div class="row g-4 align-items-start mt-0">
                         <div class="col-12 col-lg-8">
                             <div class="ratio ratio-21x9 border devlog-read-border mb-4 devlog-read-cover">
-                                <img src="#{adminBlogOnizlemeController.kapakUrl()}" alt="" class="object-fit-cover w-100 h-100"/>
+                                <img src="#{not empty adminBlogOnizlemeController.blog.kapakGorseliUrl ? adminBlogOnizlemeController.blog.kapakGorseliUrl : resource['img:Logo_Amblem.png']}"
+                                     alt="" class="object-fit-cover w-100 h-100"/>
                             </div>
 
                             <ui:fragment rendered="#{not empty adminBlogOnizlemeController.blog.ozet}">

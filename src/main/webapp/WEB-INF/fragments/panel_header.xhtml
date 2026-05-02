@@ -39,10 +39,12 @@
                         </h:panelGroup>
                         <h:panelGroup rendered="#{oturum.girisYapildi}" layout="block" styleClass="d-flex align-items-center gap-2 flex-wrap">
                             <h:form styleClass="d-flex align-items-center gap-2 flex-wrap mb-0">
-                                <h:commandLink action="#{oturum.menuGitBloglarim}" styleClass="btn devlog-public-btn-outline devlog-public-header--ide__btn rounded-0 px-2 px-md-3 py-2 small text-decoration-none d-none d-md-inline-block text-uppercase">
+                                <h:commandLink action="#{oturum.menuGitBloglarim}" rendered="#{oturum.yazmayaYetkili}"
+                                               styleClass="btn devlog-public-btn-outline devlog-public-header--ide__btn rounded-0 px-2 px-md-3 py-2 small text-decoration-none d-none d-md-inline-block text-uppercase">
                                     Bloglarım
                                 </h:commandLink>
-                                <h:commandLink action="#{oturum.menuGitYeniBlog}" styleClass="btn devlog-public-btn-primary devlog-public-header--ide__btn-primary rounded-0 px-2 px-md-3 py-2 small text-decoration-none d-none d-lg-inline-block text-uppercase">
+                                <h:commandLink action="#{oturum.menuGitYeniBlog}" rendered="#{oturum.yazmayaYetkili}"
+                                               styleClass="btn devlog-public-btn-primary devlog-public-header--ide__btn-primary rounded-0 px-2 px-md-3 py-2 small text-decoration-none d-none d-lg-inline-block text-uppercase">
                                     Yeni Blog Ekle
                                 </h:commandLink>
                                 <h:link outcome="/panel/profil"

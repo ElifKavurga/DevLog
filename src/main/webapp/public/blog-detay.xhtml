@@ -59,7 +59,8 @@
                     <div class="row g-4 align-items-start mt-0">
                         <div class="col-12 col-lg-8">
                             <div class="ratio ratio-21x9 border devlog-read-border mb-4 devlog-read-cover">
-                                <img src="#{blogDetayController.kapakUrl()}" alt="" class="object-fit-cover w-100 h-100"/>
+                                <img src="#{not empty blogDetayController.blog.kapakGorseliUrl ? blogDetayController.blog.kapakGorseliUrl : resource['img:Logo_Amblem.png']}"
+                                     alt="" class="object-fit-cover w-100 h-100"/>
                             </div>
 
                             <ui:fragment rendered="#{not empty blogDetayController.blog.ozet}">
@@ -79,6 +80,33 @@
                                             <span class="devlog-read-line__no flex-shrink-0 user-select-none" aria-hidden="true">#{st.index + 1}</span>
                                             <div class="devlog-read-line__code flex-grow-1 min-w-0">
                                                 <h:outputText value="#{satir}" escape="true"/>
+                                            </div>
+                                        </div>
+                                    </ui:repeat>
+                                </div>
+                            </section>
+
+                            <section class="devlog-read-console-out border devlog-read-border mb-4" aria-label="Yorum çıktısı">
+                                <div class="devlog-read-terminal__titlebar px-3 py-2 border-bottom devlog-read-border d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                    <span class="devlog-mono-label text-secondary mb-0">Yorumlar — stdout</span>
+                                    <span class="font-monospace text-secondary" style="font-size: 0.65rem;">console</span>
+                                </div>
+                                <div class="p-0">
+                                    <ui:fragment rendered="#{empty blogDetayController.blog.yorumlar}">
+                                        <div class="px-3 py-3 font-monospace small border-bottom devlog-read-border">
+                                            <span class="devlog-read-console-prompt">&gt;</span>
+                                            <span class="text-secondary"> henüz yorum yok.</span>
+                                        </div>
+                                    </ui:fragment>
+                                    <ui:repeat value="#{blogDetayController.blog.yorumlar}" var="y" varStatus="yst">
+                                        <div class="devlog-read-console-block px-3 py-3 font-monospace small #{yst.last ? '' : 'border-bottom devlog-read-border'}">
+                                            <div class="devlog-read-console-line mb-2">
+                                                <span class="devlog-read-console-prompt">&gt;</span>
+                                                <span class="devlog-read-console-meta"> [#{blogDetayController.yorumTarihMetni(y)}] </span>
+                                                <span class="devlog-read-console-user">@#{blogDetayController.yorumKullaniciAdi(y)}:</span>
+                                            </div>
+                                            <div class="devlog-read-console-body text-secondary" style="white-space: pre-wrap;">
+                                                <h:outputText value="#{y.metin}" escape="true"/>
                                             </div>
                                         </div>
                                     </ui:repeat>
@@ -110,26 +138,6 @@
                                     </h:form>
                                 </div>
                             </section>
-
-                            <ui:fragment rendered="#{not empty blogDetayController.blog.yorumlar}">
-                                <section class="devlog-read-terminal border devlog-read-border mt-4" aria-label="Yorumlar">
-                                    <div class="devlog-read-terminal__titlebar px-3 py-2 border-bottom devlog-read-border d-flex align-items-center justify-content-between flex-wrap gap-2">
-                                        <span class="devlog-mono-label text-secondary mb-0">stdout — yorumlar</span>
-                                        <span class="font-monospace text-secondary" style="font-size: 0.65rem;">#{blogDetayController.blog.yorumlar.size()} satır</span>
-                                    </div>
-                                    <div class="devlog-read-terminal__body p-0">
-                                        <ui:repeat value="#{blogDetayController.blog.yorumlar}" var="y">
-                                            <div class="border-bottom devlog-read-border px-3 py-3 font-monospace small">
-                                                <div class="d-flex flex-wrap justify-content-between gap-2 mb-2 text-secondary" style="font-size: 0.7rem;">
-                                                    <span class="text-white">#{blogDetayController.yorumYazarEtiketi(y)}</span>
-                                                    <span>#{blogDetayController.yorumTarihMetni(y)}</span>
-                                                </div>
-                                                <div class="text-secondary" style="white-space: pre-wrap;"><h:outputText value="#{y.metin}" escape="true"/></div>
-                                            </div>
-                                        </ui:repeat>
-                                    </div>
-                                </section>
-                            </ui:fragment>
                         </div>
 
                         <div class="col-12 col-lg-4">

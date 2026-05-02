@@ -11,6 +11,8 @@ import facadeLocal.BlogFacadeLocal;
 import facadeLocal.KategoriFacadeLocal;
 import facadeLocal.SistemLogFacadeLocal;
 import jakarta.annotation.PostConstruct;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -62,6 +64,13 @@ public class BlogEkleController implements Serializable {
         if (!oturum.isGirisYapildi()) {
             return "/auth/giris?faces-redirect=true";
         }
+        if (!oturum.isYazmayaYetkili()) {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Yetkisiz erişim", "Blog oluşturma yalnızca yazar ve yöneticiler içindir."));
+            fc.getExternalContext().getFlash().setKeepMessages(true);
+            return "/public/index?faces-redirect=true";
+        }
         if (kategoriler == null || kategoriler.isEmpty()) {
             kategoriler = kategoriFacade.listele();
             if (kategoriler == null) {
@@ -75,6 +84,13 @@ public class BlogEkleController implements Serializable {
         hataMesaji = null;
         if (!oturum.isGirisYapildi() || oturum.getAktifKullanici() == null) {
             return "/auth/giris?faces-redirect=true";
+        }
+        if (!oturum.isYazmayaYetkili()) {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Yetkisiz erişim", "Blog kaydetme yalnızca yazar ve yöneticiler içindir."));
+            fc.getExternalContext().getFlash().setKeepMessages(true);
+            return "/public/index?faces-redirect=true";
         }
         if (baslik == null || baslik.isBlank()) {
             hataMesaji = "Başlık zorunludur.";

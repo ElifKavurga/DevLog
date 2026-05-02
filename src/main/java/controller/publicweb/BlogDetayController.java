@@ -32,15 +32,6 @@ public class BlogDetayController implements Serializable {
     private static final DateTimeFormatter TARIH_FMT = DateTimeFormatter.ofPattern("d MMM yyyy", java.util.Locale.forLanguageTag("tr"));
     private static final DateTimeFormatter YORUM_TARIH_FMT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm", java.util.Locale.forLanguageTag("tr"));
 
-    private static final List<String> UNSPLASH_KAPAK_URLS = List.of(
-            "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
-            "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1200&q=80",
-            "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=1200&q=80",
-            "https://images.unsplash.com/photo-1504639725590-34d0984388bd?auto=format&fit=crop&w=1200&q=80",
-            "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80",
-            "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&q=80"
-    );
-
     @Inject
     private BlogFacadeLocal blogFacade;
 
@@ -139,19 +130,6 @@ public class BlogDetayController implements Serializable {
         return kullaniciPuani;
     }
 
-    public String kapakUrl() {
-        if (blog == null) {
-            return UNSPLASH_KAPAK_URLS.get(0);
-        }
-        if (blog.getKapakGorseliUrl() != null && !blog.getKapakGorseliUrl().isBlank()) {
-            return blog.getKapakGorseliUrl().trim();
-        }
-        if (blog.getId() == null) {
-            return UNSPLASH_KAPAK_URLS.get(0);
-        }
-        return UNSPLASH_KAPAK_URLS.get(Math.floorMod(blog.getId().intValue(), UNSPLASH_KAPAK_URLS.size()));
-    }
-
     public String yildizMetin() {
         if (blog == null || blog.getId() == null) {
             return "—";
@@ -238,21 +216,16 @@ public class BlogDetayController implements Serializable {
         this.yorumMetni = yorumMetni;
     }
 
-    public String yorumYazarEtiketi(Yorum y) {
+    /** Konsol satırı için @kullaniciAdi (yorum listesi). */
+    public String yorumKullaniciAdi(Yorum y) {
         if (y == null || y.getKullanici() == null) {
-            return "—";
+            return "kullanici";
         }
-        Kullanici k = y.getKullanici();
-        String ad = k.getAd() != null ? k.getAd() : "";
-        String soy = k.getSoyad() != null ? k.getSoyad() : "";
-        String full = (ad + " " + soy).trim();
-        if (!full.isEmpty()) {
-            return full;
+        String ad = y.getKullanici().getKullaniciAdi();
+        if (ad == null || ad.isBlank()) {
+            return "kullanici";
         }
-        if (k.getKullaniciAdi() != null && !k.getKullaniciAdi().isBlank()) {
-            return k.getKullaniciAdi();
-        }
-        return "—";
+        return ad.trim();
     }
 
     public String yorumTarihMetni(Yorum y) {
