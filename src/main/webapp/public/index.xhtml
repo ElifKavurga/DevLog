@@ -63,30 +63,30 @@
                 <div class="row">
                     <ui:repeat value="#{kesfetController.yayinlananBloglar}" var="blog">
                         <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4 d-flex">
-                            <article class="devlog-cms-card overflow-hidden w-100 d-flex flex-column p-0">
-                                <div class="devlog-cms-editor-toolbar d-flex align-items-center justify-content-between px-3 py-2 border-bottom border-secondary border-opacity-25">
+                            <article class="devlog-cms-card overflow-hidden w-100 d-flex flex-column p-0 position-relative">
+                                <div class="devlog-cms-editor-toolbar d-flex align-items-center justify-content-between px-3 py-2 border-bottom border-secondary border-opacity-25 position-relative z-1">
                                     <span class="devlog-mono-label text-secondary mb-0">Kayıt</span>
                                     <span class="font-monospace small text-secondary">#<h:outputText value="#{blog.id}"/></span>
                                 </div>
-                                <div class="border-bottom border-secondary border-opacity-25 bg-dark devlog-home-card-cover">
+                                <div class="border-bottom border-secondary border-opacity-25 bg-dark devlog-home-card-cover position-relative z-1">
                                     <img src="#{not empty blog.kapakGorseliUrl ? blog.kapakGorseliUrl : resource['img:Logo_Amblem.png']}"
                                          alt=""
-                                         class="devlog-blog-cover-img"/>
+                                         class="devlog-card-img"/>
                                 </div>
-                                <div class="p-4 d-flex flex-column flex-grow-1">
+                                <div class="p-4 d-flex flex-column flex-grow-1 position-relative z-1">
                                     <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
                                         <span class="devlog-home-kategori-pill font-monospace text-truncate">#{kesfetController.kategoriEtiket(blog)}</span>
                                         <span class="devlog-mono-label text-secondary flex-shrink-0">#{kesfetController.surumEtiketi(blog)}</span>
                                     </div>
                                     <h2 class="fs-5 mb-2 font-monospace">
-                                        <h:link outcome="/public/blog-detay" styleClass="text-white text-decoration-none devlog-home-post-title" value="#{empty blog.baslik ? 'Başlıksız' : blog.baslik}">
+                                        <h:link outcome="/public/blog-detay" styleClass="text-white text-decoration-none devlog-home-post-title stretched-link" value="#{empty blog.baslik ? 'Başlıksız' : blog.baslik}">
                                             <f:param name="id" value="#{blog.id}"/>
                                         </h:link>
                                     </h2>
                                     <p class="text-secondary small font-monospace devlog-home-post-excerpt flex-grow-1 mb-3">
                                         #{empty blog.ozet ? '—' : blog.ozet}
                                     </p>
-                                    <div class="pt-3 mt-auto border-top border-secondary border-opacity-25 d-flex flex-wrap align-items-center justify-content-between gap-2">
+                                    <div class="pt-3 mt-auto border-top border-secondary border-opacity-25 d-flex flex-wrap align-items-center justify-content-between gap-2 position-relative z-2">
                                         <div class="d-flex align-items-center gap-2 min-w-0">
                                             <span class="devlog-home-post-avatar font-monospace flex-shrink-0" aria-hidden="true">#{kesfetController.yazarHarfi(blog)}</span>
                                             <span class="devlog-mono-label text-secondary text-truncate text-uppercase" style="color: var(--dl-ref-on-surface);">#{kesfetController.yazarAdi(blog)}</span>

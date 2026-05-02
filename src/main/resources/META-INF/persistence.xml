@@ -13,6 +13,7 @@
         <class>entity.Degerlendirme</class>
         <class>entity.Yorum</class>
         <class>entity.SistemLog</class>
+        <class>entity.Bildirim</class>
         <properties>
             <property name="eclipselink.target-database" value="PostgreSQL"/>
             <property name="eclipselink.logging.level" value="FINE"/>

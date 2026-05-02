@@ -39,6 +39,15 @@
                         </h:panelGroup>
                         <h:panelGroup rendered="#{oturum.girisYapildi}" layout="block" styleClass="d-flex align-items-center gap-2 flex-wrap">
                             <h:form styleClass="d-flex align-items-center gap-2 flex-wrap mb-0">
+                                <span class="position-relative d-inline-block align-middle">
+                                    <h:commandLink action="#{bildirimController.zilTiklaVeListeyeGit}"
+                                                   styleClass="btn btn-link text-secondary p-1 border-0 text-decoration-none devlog-header-notif-btn"
+                                                   title="Bildirimler">
+                                        <span class="material-symbols-outlined" style="font-size: 1.35rem;" aria-hidden="true">notifications</span>
+                                        <h:panelGroup rendered="#{bildirimController.okunmamisSayisi > 0}"
+                                                      styleClass="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-dark rounded-circle devlog-header-notif-dot"/>
+                                    </h:commandLink>
+                                </span>
                                 <h:commandLink action="#{oturum.menuGitBloglarim}" rendered="#{oturum.yazmayaYetkili}"
                                                styleClass="btn devlog-public-btn-outline devlog-public-header--ide__btn rounded-0 px-2 px-md-3 py-2 small text-decoration-none d-none d-md-inline-block text-uppercase">
                                     Bloglarım

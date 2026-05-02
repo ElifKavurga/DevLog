@@ -6,6 +6,7 @@ import entity.Blog;
 import entity.Kullanici;
 import entity.SistemLog;
 import enums.DurumTip;
+import facadeLocal.BildirimFacadeLocal;
 import facadeLocal.BlogFacadeLocal;
 import facadeLocal.SistemLogFacadeLocal;
 import jakarta.faces.view.ViewScoped;
@@ -32,6 +33,9 @@ public class AdminOnayController implements Serializable {
 
     @Inject
     private SistemLogFacadeLocal sistemLogFacade;
+
+    @Inject
+    private BildirimFacadeLocal bildirimFacade;
 
     private List<Blog> bekleyenler = new ArrayList<>();
 
@@ -63,6 +67,11 @@ public class AdminOnayController implements Serializable {
         b.setDurum(DurumTip.YAYINLANDI);
         blogFacade.guncelle(b);
         adminLogKaydet("Admin bir blog yazısını onayladı.");
+        if (b.getYazar() != null && b.getYazar().getId() != null) {
+            String baslikEt = b.getBaslik() != null && !b.getBaslik().isBlank() ? b.getBaslik().trim() : "Başlıksız";
+            bildirimFacade.aliciyaMesajOlustur(b.getYazar().getId(),
+                    "Blog yazınız onaylandı: " + baslikEt);
+        }
         yukleListe();
         return null;
     }

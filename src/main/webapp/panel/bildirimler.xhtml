@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/templates/panelTemplate.xhtml">
+
+    <f:metadata>
+        <f:viewAction action="#{bildirimController.hazirla}"/>
+    </f:metadata>
+
+    <ui:define name="title">DevLog — Bildirimler</ui:define>
+
+    <ui:define name="content">
+        <header class="mb-4 pb-4 border-bottom border-secondary border-opacity-25">
+            <span class="devlog-mono-label text-primary mb-1 d-block">/panel/bildirimler</span>
+            <h1 class="devlog-headline mb-2" style="font-size: 1.5rem;">Bildirimler</h1>
+            <p class="devlog-term-log-prompt font-monospace small text-secondary mb-0">&gt; cat notifications.log</p>
+        </header>
+
+        <div class="devlog-bildirim-log rounded-0 font-monospace small">
+            <ui:fragment rendered="#{empty bildirimController.bildirimler}">
+                <div class="devlog-bildirim-log__line text-secondary px-3 py-4">(boş) — bildirim yok.</div>
+            </ui:fragment>
+            <ui:repeat value="#{bildirimController.bildirimler}" var="bn">
+                <div class="devlog-bildirim-log__line">
+                    <div class="devlog-bildirim-log__meta d-flex flex-wrap justify-content-between gap-2">
+                        <span class="text-success">#<h:outputText value="#{bn.id}"/></span>
+                        <span>[#{bildirimController.tarihMetni(bn)}] · #{bildirimController.okunduEtiketi(bn)}</span>
+                    </div>
+                    <div class="devlog-bildirim-log__msg">
+                        <h:outputText value="#{bn.mesaj}" escape="true"/>
+                    </div>
+                </div>
+            </ui:repeat>
+        </div>
+    </ui:define>
+</ui:composition>

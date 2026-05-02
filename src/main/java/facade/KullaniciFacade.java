@@ -1,6 +1,7 @@
 package facade;
 
 import entity.Kullanici;
+import enums.RolTip;
 import facadeLocal.KullaniciFacadeLocal;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
@@ -106,6 +107,18 @@ public class KullaniciFacade implements KullaniciFacadeLocal {
         return em.createQuery(
                         "SELECT k FROM Kullanici k WHERE k.yazarlikTalepEtti = true ORDER BY k.id ASC",
                         Kullanici.class)
+                .getResultList();
+    }
+
+    @Override
+    public List<Kullanici> rolIleListele(RolTip rol) {
+        if (rol == null) {
+            return List.of();
+        }
+        return em.createQuery(
+                        "SELECT k FROM Kullanici k WHERE k.rol = :r ORDER BY k.id ASC",
+                        Kullanici.class)
+                .setParameter("r", rol)
                 .getResultList();
     }
 

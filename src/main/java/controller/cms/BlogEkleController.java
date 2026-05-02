@@ -7,8 +7,11 @@ import entity.Kategori;
 import entity.Kullanici;
 import entity.SistemLog;
 import enums.DurumTip;
+import enums.RolTip;
+import facadeLocal.BildirimFacadeLocal;
 import facadeLocal.BlogFacadeLocal;
 import facadeLocal.KategoriFacadeLocal;
+import facadeLocal.KullaniciFacadeLocal;
 import facadeLocal.SistemLogFacadeLocal;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
@@ -37,6 +40,12 @@ public class BlogEkleController implements Serializable {
 
     @Inject
     private SistemLogFacadeLocal sistemLogFacade;
+
+    @Inject
+    private BildirimFacadeLocal bildirimFacade;
+
+    @Inject
+    private KullaniciFacadeLocal kullaniciFacade;
 
     private List<Kategori> kategoriler = new ArrayList<>();
 
@@ -125,6 +134,15 @@ public class BlogEkleController implements Serializable {
         log.setIslem("Kullanıcı yeni bir blog yazısı oluşturdu.");
         log.setTarih(LocalDateTime.now());
         sistemLogFacade.olustur(log);
+        if (yazar.getRol() == RolTip.YAZAR) {
+            String baslikEt = b.getBaslik() != null && !b.getBaslik().isBlank() ? b.getBaslik().trim() : "Başlıksız";
+            for (Kullanici admin : kullaniciFacade.rolIleListele(RolTip.ADMIN)) {
+                if (admin != null && admin.getId() != null) {
+                    bildirimFacade.aliciyaMesajOlustur(admin.getId(),
+                            "Onay bekleyen yeni bir blog eklendi: " + baslikEt);
+                }
+            }
+        }
         temizleForm();
         return "/panel/bloglarim?faces-redirect=true";
     }

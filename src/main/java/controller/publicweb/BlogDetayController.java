@@ -8,6 +8,7 @@ import entity.Kullanici;
 import entity.SistemLog;
 import entity.Yorum;
 import enums.DurumTip;
+import facadeLocal.BildirimFacadeLocal;
 import facadeLocal.BlogFacadeLocal;
 import facadeLocal.DegerlendirmeFacadeLocal;
 import facadeLocal.SistemLogFacadeLocal;
@@ -43,6 +44,9 @@ public class BlogDetayController implements Serializable {
 
     @Inject
     private SistemLogFacadeLocal sistemLogFacade;
+
+    @Inject
+    private BildirimFacadeLocal bildirimFacade;
 
     @Inject
     private OturumBean oturum;
@@ -83,8 +87,22 @@ public class BlogDetayController implements Serializable {
         if (id == null) {
             return;
         }
-        blog = blogFacade.bulBlogDetayPublic(id);
+        Long blogId = id;
+        blog = null;
+        blog = blogFacade.bulBlogDetayPublic(blogId);
         yukleKullaniciPuani();
+    }
+
+    private void yazaraBildirimGonder(String mesaj) {
+        if (blog == null || blog.getYazar() == null || blog.getYazar().getId() == null) {
+            return;
+        }
+        Long yazarId = blog.getYazar().getId();
+        if (oturum.isGirisYapildi() && oturum.getAktifKullanici() != null
+                && yazarId.equals(oturum.getAktifKullanici().getId())) {
+            return;
+        }
+        bildirimFacade.aliciyaMesajOlustur(yazarId, mesaj);
     }
 
     private void sistemLogKaydet(String islem) {
@@ -106,6 +124,7 @@ public class BlogDetayController implements Serializable {
         degerlendirmeFacade.kaydetVeyaGuncellePuan(blog.getId(), oturum.getAktifKullanici().getId(), puan);
         kullaniciPuani = puan;
         sistemLogKaydet("Kullanıcı bir bloga yorum yaptı.");
+        yazaraBildirimGonder("Blog yazınıza yeni bir yorum/puan eklendi.");
         blogDetayiYenile();
         return null;
     }
@@ -235,7 +254,10 @@ public class BlogDetayController implements Serializable {
         return y.getOlusturulmaTarihi().format(YORUM_TARIH_FMT);
     }
 
-    public String yorumGonder() {
+    /**
+     * Yorum kaydı ve blog + yorum listesinin veritabanından tazelenmesi (JSF listesi için referans sıfırlanır).
+     */
+    public String yorumEkle() {
         if (blog == null) {
             return null;
         }
@@ -250,11 +272,21 @@ public class BlogDetayController implements Serializable {
             return null;
         }
         Kullanici k = oturum.getAktifKullanici();
-        yorumFacade.olustur(blog.getId(), k.getId(), t);
+        Long blogId = blog.getId();
+        yorumFacade.olustur(blogId, k.getId(), t);
         yorumMetni = "";
         sistemLogKaydet("Kullanıcı bir bloga yorum yaptı.");
-        blogDetayiYenile();
+        yazaraBildirimGonder("Blog yazınıza yeni bir yorum/puan eklendi.");
+        id = blogId;
+        blog = null;
+        blog = blogFacade.bulBlogDetayPublic(blogId);
+        yukleKullaniciPuani();
         ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Bilgi", "Yorumunuz kaydedildi."));
         return null;
+    }
+
+    /** Geriye dönük / mevcut view bağları. */
+    public String yorumGonder() {
+        return yorumEkle();
     }
 }

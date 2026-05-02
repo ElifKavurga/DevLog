@@ -4,6 +4,7 @@ import controller.OturumBean;
 import entity.Kullanici;
 import entity.SistemLog;
 import enums.RolTip;
+import facadeLocal.BildirimFacadeLocal;
 import facadeLocal.KullaniciFacadeLocal;
 import facadeLocal.SistemLogFacadeLocal;
 import jakarta.faces.application.FacesMessage;
@@ -27,6 +28,9 @@ public class ProfilController implements Serializable {
 
     @Inject
     private SistemLogFacadeLocal sistemLogFacade;
+
+    @Inject
+    private BildirimFacadeLocal bildirimFacade;
 
     private String mevcutSifre;
     private String yeniSifre;
@@ -154,6 +158,14 @@ public class ProfilController implements Serializable {
         Kullanici merged = kullaniciFacade.guncelle(k);
         oturum.aktifKullaniciyiGuncelle(merged);
         logYaz(merged, "Kullanıcı yazarlık talebinde bulundu.");
+        String ka = merged.getKullaniciAdi() != null && !merged.getKullaniciAdi().isBlank()
+                ? merged.getKullaniciAdi().trim() : "Kullanıcı";
+        for (Kullanici admin : kullaniciFacade.rolIleListele(RolTip.ADMIN)) {
+            if (admin != null && admin.getId() != null) {
+                bildirimFacade.aliciyaMesajOlustur(admin.getId(),
+                        "Yeni bir yazarlık talebi var: " + ka);
+            }
+        }
         mesaj(FacesMessage.SEVERITY_INFO, "Yazarlık talebiniz yöneticiye iletildi.");
         return null;
     }

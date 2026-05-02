@@ -1,6 +1,7 @@
 package facadeLocal;
 
 import entity.Kullanici;
+import enums.RolTip;
 import jakarta.ejb.Local;
 
 import java.util.List;
@@ -30,6 +31,8 @@ public interface KullaniciFacadeLocal {
      * Yazarlık talebi işaretli kullanıcılar (admin kuyruğu).
      */
     List<Kullanici> yazarlikTalebiBekleyenleriListele();
+
+    List<Kullanici> rolIleListele(RolTip rol);
 
     /**
      * Eski şemalarda {@code yazarlik_talep_etti} yoksa ekler; giriş JPQL'i tüm alanları çektiği için sütun şarttır.

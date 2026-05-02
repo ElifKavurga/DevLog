@@ -59,9 +59,14 @@
                         <span class="material-symbols-outlined" aria-hidden="true">terminal</span>
                         <span>Sistem kayıtları</span>
                     </h:link>
+                    <h:link outcome="/panel/bildirimler" rendered="#{oturum.girisYapildi}"
+                            styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/panel/bildirimler.xhtml') ? 'active' : ''}">
+                        <span class="material-symbols-outlined" aria-hidden="true">notifications</span>
+                        <span>Bildirimler</span>
+                    </h:link>
                     <h:link outcome="/public/index" styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/public/index.xhtml') ? 'active' : ''}">
                         <span class="material-symbols-outlined" aria-hidden="true">home</span>
-                        <span>Siteye dön</span>
+                        <span>Anasayfaya Dön</span>
                     </h:link>
                 </nav>
 
