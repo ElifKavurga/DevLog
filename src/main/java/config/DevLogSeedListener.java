@@ -11,10 +11,6 @@ import jakarta.servlet.annotation.WebListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * JPA / DDL tamamlandıktan ve web bağlamı ayağa kalktıktan sonra veri tohumlaması yapılır.
- * {@code @Startup} EJB'den önce persistence hazır olmayabildiği için {@link DataInitializer} buradan tetiklenir.
- */
 @WebListener
 public class DevLogSeedListener implements ServletContextListener {
 

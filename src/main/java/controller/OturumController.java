@@ -11,23 +11,16 @@ import mapper.KullaniciMapper;
 
 import java.io.Serializable;
 
-/**
- * Oturum açmış kullanıcı bilgisi (HTTP oturumu ile aynı ömür).
- */
 @Named("oturumController")
 @SessionScoped
 public class OturumController implements Serializable {
 
     private Kullanici aktifKullanici;
 
-    /**
-     * XHTML / EL için şifre içermeyen DTO görünümü.
-     */
     public KullaniciDTO getAktifKullanici() {
         return KullaniciMapper.toDto(aktifKullanici);
     }
 
-    /** Facade ve iş kuralları için kalıcı kullanıcı nesnesi. */
     public Kullanici getAktifKullaniciEntity() {
         return aktifKullanici;
     }

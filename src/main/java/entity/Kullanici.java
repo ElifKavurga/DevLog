@@ -22,23 +22,13 @@ public class Kullanici implements Serializable {
     @Enumerated(EnumType.STRING)
     private RolTip rol;
 
-    /**
-     * PostgreSQL: mevcut satırlar varken NOT NULL eklemek için DDL'de DEFAULT şart;
-     * {@code columnDefinition} EclipseLink şema genişletmesinde kullanılır.
-     */
     @Column(name = "yazarlik_talep_etti", nullable = false,
             columnDefinition = "boolean default false not null")
     private boolean yazarlikTalepEtti = false;
 
-    /**
-     * Yazarın blog yazıları; kullanıcı silindiğinde yazıları da kaldırılır (içerik sahibi).
-     */
     @OneToMany(mappedBy = "yazar", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Blog> bloglar = new ArrayList<>();
 
-    /**
-     * Kullanıcının yaptığı puanlamalar; hesap silindiğinde değerlendirmeler de silinir.
-     */
     @OneToMany(mappedBy = "kullanici", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Degerlendirme> degerlendirmeler = new ArrayList<>();
 

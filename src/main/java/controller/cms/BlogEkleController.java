@@ -53,7 +53,6 @@ public class BlogEkleController implements Serializable {
 
     private List<KategoriDTO> kategoriler = new ArrayList<>();
 
-    /** Form alanları (Markdown gövdesi dahil); JSF doğrudan özelliklere bağlanır. */
     private BlogDTO blogDTO = new BlogDTO();
 
     private Long kategoriId;
@@ -69,10 +68,6 @@ public class BlogEkleController implements Serializable {
         kategoriler = KategoriMapper.toDtoList(raw != null ? raw : List.of());
     }
 
-    /**
-     * Sayfa ilk açılışında yetki ve kategori listesi. POST geri gönderiminde tekrar çalışmaz
-     * (model güncellemesi ve Markdown senkronu için).
-     */
     public String hazirla() {
         if (!oturum.isGirisYapildi()) {
             return "/auth/giris?faces-redirect=true";

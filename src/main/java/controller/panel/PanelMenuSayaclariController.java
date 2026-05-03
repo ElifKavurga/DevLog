@@ -9,9 +9,7 @@ import jakarta.inject.Named;
 
 import java.io.Serializable;
 
-/**
- * Yan menüde admin rozetleri için sayımlar (her istekte güncel).
- */
+
 @Named("panelMenuSayaclariController")
 @RequestScoped
 public class PanelMenuSayaclariController implements Serializable {

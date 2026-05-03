@@ -31,7 +31,7 @@ Veri katmanı: **JPA (EclipseLink)** + **PostgreSQL** (`@DataSourceDefinition` i
 
 - **`BlogFacade`**, **`KullaniciFacade`**, **`KategoriFacade`**, **`DegerlendirmeFacade`**: CRUD ve sorgular.
 - **`KesfetController`**, **`BlogDetayController`**: Ana sayfa ve yazı detayı.
-- **`GiriController`**, **`KayitController`**: `giris.xhtml` / `kayit.xhtml` formları.
+- **`GirisController`**, **`KayitController`**: `giris.xhtml` / `kayit.xhtml` formları.
 - **`OturumBean`** (`@SessionScoped`): Giriş sonrası `Kullanici`; üst menüde kullanıcı adı ve çıkış.
 
 ## Derleme (Maven)

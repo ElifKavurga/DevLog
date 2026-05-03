@@ -11,9 +11,6 @@ import jakarta.persistence.criteria.Root;
 
 import java.util.List;
 
-/**
- * Sistem olay kayıtları; projede AbstractFacade olmadığı için doğrudan EntityManager kullanılır.
- */
 @Stateless
 public class SistemLogFacade implements SistemLogFacadeLocal {
 

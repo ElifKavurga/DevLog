@@ -32,7 +32,6 @@ public class KategoriDTO implements Serializable {
         this.slug = slug;
     }
 
-    /** EL / şablon uyumu: entity ile aynı anlamlı isim. */
     public String getKategoriAdi() {
         return isim;
     }

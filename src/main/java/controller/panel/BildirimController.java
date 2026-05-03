@@ -13,9 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Oturum boyunca bildirim listesi önbelleği; zil tıklanınca okundu işaretlenir.
- */
 @Named("bildirimController")
 @SessionScoped
 public class BildirimController implements Serializable {
@@ -40,9 +37,6 @@ public class BildirimController implements Serializable {
         return null;
     }
 
-    /**
-     * Zil: tüm okunmamışları okundu yap, bildirimler sayfasına yönlendir.
-     */
     public String zilTiklaVeListeyeGit() {
         if (!oturum.isGirisYapildi() || oturum.getAktifKullaniciEntity() == null) {
             return null;

@@ -21,7 +21,6 @@ public class Blog implements Serializable {
     @Column(length = 500)
     private String ozet;
 
-    /** Markdown veya düz metin gövde. */
     @Column(columnDefinition = "TEXT")
     private String icerik;
 
@@ -31,7 +30,6 @@ public class Blog implements Serializable {
     @Column(name = "tahmini_okuma_suresi")
     private Integer tahminiOkumaSuresi;
 
-    /** Virgülle ayrılmış etiketler (örn. "jakarta,jsf,postgres"). */
     @Column(length = 2000)
     private String etiketler;
 

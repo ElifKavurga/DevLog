@@ -4,9 +4,6 @@ import enums.RolTip;
 
 import java.io.Serializable;
 
-/**
- * Oturum özeti ve iç içe blog/yorum görünümleri için UI alanları.
- */
 public class KullaniciDTO implements Serializable {
 
     private Long id;

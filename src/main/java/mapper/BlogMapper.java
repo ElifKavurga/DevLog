@@ -18,7 +18,6 @@ public final class BlogMapper {
     private BlogMapper() {
     }
 
-    /** Liste / kart görünümü: yorumlar boş. */
     public static BlogDTO toListItem(Blog b) {
         if (b == null) {
             return null;
@@ -28,7 +27,6 @@ public final class BlogMapper {
         return d;
     }
 
-    /** Blog detay veya admin ön izleme: yorumlar dahil. */
     public static BlogDTO toDetail(Blog b) {
         if (b == null) {
             return null;

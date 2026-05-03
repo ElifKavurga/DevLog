@@ -4,13 +4,14 @@ import entity.Kullanici;
 import enums.RolTip;
 import facadeLocal.KullaniciFacadeLocal;
 import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import jakarta.security.enterprise.identitystore.Pbkdf2PasswordHash;
 
 import java.util.List;
 import java.util.Locale;
@@ -25,12 +26,29 @@ public class KullaniciFacade implements KullaniciFacadeLocal {
     @PersistenceContext(unitName = "default")
     private EntityManager em;
 
+    @Inject
+    private Pbkdf2PasswordHash passwordHash;
+
     public void olustur(Kullanici entity) {
+        if (entity.getSifre() != null && !entity.getSifre().isBlank()) {
+            entity.setSifre(passwordHash.generate(entity.getSifre().toCharArray()));
+        }
         em.persist(entity);
         em.flush();
     }
 
     public Kullanici guncelle(Kullanici entity) {
+        if (entity.getId() != null) {
+            Kullanici existing = em.find(Kullanici.class, entity.getId());
+            if (existing != null) {
+                String incoming = entity.getSifre();
+                String stored = existing.getSifre();
+                if (incoming != null && !incoming.isBlank() && stored != null
+                        && !incoming.equals(stored)) {
+                    entity.setSifre(passwordHash.generate(incoming.toCharArray()));
+                }
+            }
+        }
         Kullanici merged = em.merge(entity);
         em.flush();
         return merged;
@@ -56,7 +74,7 @@ public class KullaniciFacade implements KullaniciFacadeLocal {
 
     @Override
     public Kullanici girisYapEpostaVeyaKullaniciAdi(String epostaVeyaKullaniciAdi, String sifre) {
-        if (epostaVeyaKullaniciAdi == null || epostaVeyaKullaniciAdi.isBlank() || sifre == null) {
+        if (epostaVeyaKullaniciAdi == null || epostaVeyaKullaniciAdi.isBlank() || sifre == null || sifre.isBlank()) {
             return null;
         }
         String login = epostaVeyaKullaniciAdi.trim();
@@ -67,13 +85,23 @@ public class KullaniciFacade implements KullaniciFacadeLocal {
         cq.select(root);
         Predicate epostaEsit = cb.equal(cb.lower(root.get("eposta")), loginLower);
         Predicate kullaniciAdiEsit = cb.equal(cb.lower(root.get("kullaniciAdi")), loginLower);
-        cq.where(cb.and(cb.or(epostaEsit, kullaniciAdiEsit), cb.equal(root.get("sifre"), sifre)));
-        TypedQuery<Kullanici> q = em.createQuery(cq);
-        List<Kullanici> bulunan = q.getResultList();
-        if (bulunan.isEmpty()) {
-            return null;
+        cq.where(cb.or(epostaEsit, kullaniciAdiEsit));
+        List<Kullanici> adaylar = em.createQuery(cq).getResultList();
+        for (Kullanici dbKullanici : adaylar) {
+            if (dbKullanici.getSifre() != null && !dbKullanici.getSifre().isBlank()
+                    && passwordHash.verify(sifre.toCharArray(), dbKullanici.getSifre())) {
+                return dbKullanici;
+            }
         }
-        return bulunan.getFirst();
+        return null;
+    }
+
+    @Override
+    public boolean sifreDogrula(Kullanici kullanici, String duzMetinSifre) {
+        if (kullanici == null || duzMetinSifre == null || kullanici.getSifre() == null || kullanici.getSifre().isBlank()) {
+            return false;
+        }
+        return passwordHash.verify(duzMetinSifre.toCharArray(), kullanici.getSifre());
     }
 
     @Override

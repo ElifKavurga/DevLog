@@ -21,24 +21,19 @@ public interface KullaniciFacadeLocal {
 
     Kullanici girisYapEpostaVeyaKullaniciAdi(String epostaVeyaKullaniciAdi, String sifre);
 
+    boolean sifreDogrula(Kullanici kullanici, String duzMetinSifre);
+
     boolean epostaKullaniliyorMu(String eposta);
 
     boolean kullaniciAdiKullaniliyorMu(String kullaniciAdi);
 
     Kullanici bul(Long id);
 
-    /**
-     * Yazarlık talebi işaretli kullanıcılar (admin kuyruğu).
-     */
     List<Kullanici> yazarlikTalebiBekleyenleriListele();
 
-    /** Bekleyen yazarlık talebi sayısı (menü rozeti). */
     long yazarlikTalebiBekleyenSayisi();
 
     List<Kullanici> rolIleListele(RolTip rol);
 
-    /**
-     * Eski şemalarda {@code yazarlik_talep_etti} yoksa ekler; giriş JPQL'i tüm alanları çektiği için sütun şarttır.
-     */
     void ensureYazarlikTalepColumnExists();
 }

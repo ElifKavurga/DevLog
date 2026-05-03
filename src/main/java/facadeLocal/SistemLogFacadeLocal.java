@@ -12,6 +12,5 @@ public interface SistemLogFacadeLocal {
 
     List<SistemLog> tariheGoreAzalanListele();
 
-    /** Tablo yoksa oluşturur (log sayfası / persist hatalarını önler). */
     void ensureSistemLogTableExists();
 }

@@ -115,7 +115,7 @@ public class ProfilController implements Serializable {
             mesaj(FacesMessage.SEVERITY_WARN, "Mevcut şifreyi girin.");
             return null;
         }
-        if (!mevcutSifre.equals(k.getSifre())) {
+        if (!kullaniciFacade.sifreDogrula(k, mevcutSifre)) {
             mesaj(FacesMessage.SEVERITY_ERROR, "Mevcut şifre hatalı.");
             return null;
         }

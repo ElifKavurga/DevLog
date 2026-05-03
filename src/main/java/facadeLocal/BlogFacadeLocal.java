@@ -21,34 +21,20 @@ public interface BlogFacadeLocal {
 
     List<Blog> yayinlananlariListele();
 
-    /**
-     * Yayında bloglar; isteğe bağlı kategori (IN, OR) ve metin araması (başlık/özet/içerik, büyük/küçük harf yok sayılır).
-     * {@code kategoriIds} null veya boş ise tüm kategoriler; {@code arama} null veya boşsa metin filtresi yok.
-     */
     List<Blog> yayinlananFiltrele(List<Long> kategoriIds, String arama);
 
-    /**
-     * Belirli kategori ve duruma göre bloglar; yazar ve kategori FETCH ile gelir, en yeni önce.
-     */
     List<Blog> kategoriyeGoreListele(Long kategoriId, DurumTip durum);
 
-    /**
-     * Birden fazla kategoriden herhangi birine ait (OR) ve verilen durumdaki bloglar; FETCH ile yazar ve kategori.
-     */
     List<Blog> kategorilereGoreListele(List<Long> kategoriIds, DurumTip durum);
 
     List<Blog> onayBekleyenleriListele();
 
-    /** Onay kuyruğundaki blog sayısı (menü rozeti). */
     long onayBekleyenSayisi();
 
     List<Blog> yazaraGoreListele(Long yazarId);
 
     Blog bul(Long id);
 
-    /**
-     * Blog detay (yorumlar ve yorum yazarları FETCH); değerlendirme satırları ayrı sorgu ile önbelleğe alınır.
-     */
     Blog bulBlogDetayPublic(Long id);
 
     Double ortalamaPuan(Long blogId);

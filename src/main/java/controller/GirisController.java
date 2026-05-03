@@ -6,9 +6,9 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
-@Named("giriController")
+@Named("girisController")
 @RequestScoped
-public class GiriController {
+public class GirisController {
 
     @Inject
     private KullaniciFacadeLocal kullaniciFacade;

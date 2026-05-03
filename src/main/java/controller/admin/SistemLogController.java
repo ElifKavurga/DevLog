@@ -37,9 +37,6 @@ public class SistemLogController implements Serializable {
         return null;
     }
 
-    /**
-     * Her sayfa girişinde ve @PostConstruct sonrası güncel log listesi.
-     */
     private void veritabanindanYenile() {
         loglar = new ArrayList<>();
         if (!oturum.isGirisYapildi() || !oturum.isAdmin()) {

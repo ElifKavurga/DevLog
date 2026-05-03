@@ -6,9 +6,6 @@ import jakarta.inject.Named;
 
 import java.io.Serializable;
 
-/**
- * Panel üst çubuğunda gösterilecek kısa dosya yolu (~/{view}).
- */
 @Named("panelYolController")
 @RequestScoped
 public class PanelYolController implements Serializable {

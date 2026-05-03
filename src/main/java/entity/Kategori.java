@@ -63,9 +63,6 @@ public class Kategori implements Serializable {
         this.slug = slug;
     }
 
-    /**
-     * Eski kodla uyumluluk: kategori görünen adı {@link #isim} ile aynıdır.
-     */
     public String getKategoriAdi() {
         return isim;
     }

@@ -10,10 +10,6 @@ import jakarta.ejb.Singleton;
 
 import java.util.List;
 
-/**
- * Uygulama açılışında varsayılan veriler (admin kullanıcısı, boşsa varsayılan kategori).
- * Tetikleme: {@link DevLogSeedListener} (web bağlamı hazır olduktan sonra; şema uyumu için).
- */
 @Singleton
 public class DataInitializer {
 
@@ -56,7 +52,6 @@ public class DataInitializer {
         kategoriFacade.olustur(genel);
     }
 
-    /** Geliştirme: örnek okur (şifre 1234). */
     private void seedOrnekOkurIfAbsent() {
         if (kullaniciFacade.kullaniciAdiKullaniliyorMu("okur_demo")) {
             return;
@@ -72,7 +67,6 @@ public class DataInitializer {
         kullaniciFacade.olustur(u);
     }
 
-    /** Geliştirme: örnek yazar (şifre 1234). */
     private void seedOrnekYazarIfAbsent() {
         if (kullaniciFacade.kullaniciAdiKullaniliyorMu("yazar_demo")) {
             return;
@@ -88,7 +82,6 @@ public class DataInitializer {
         kullaniciFacade.olustur(u);
     }
 
-    /** Geliştirme: örnek yönetici (şifre 1234). */
     private void seedOrnekYoneticiIfAbsent() {
         if (kullaniciFacade.kullaniciAdiKullaniliyorMu("yonetici_demo")) {
             return;
