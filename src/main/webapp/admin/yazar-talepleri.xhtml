@@ -7,7 +7,7 @@
                 template="/WEB-INF/templates/panelTemplate.xhtml">
 
     <f:metadata>
-        <f:viewAction action="#{yazarTalepController.hazirla}"/>
+        <f:viewAction action="#{yazarTalepBean.hazirla}"/>
     </f:metadata>
 
     <ui:define name="title">DevLog — Yazar talepleri</ui:define>
@@ -36,23 +36,23 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <ui:fragment rendered="#{empty yazarTalepController.talepler}">
+                        <ui:fragment rendered="#{empty yazarTalepBean.talepler}">
                             <tr>
                                 <td colspan="4" class="px-4 py-5 text-center text-secondary font-monospace small">
                                     Bekleyen yazarlık talebi yok.
                                 </td>
                             </tr>
                         </ui:fragment>
-                        <ui:repeat value="#{yazarTalepController.talepler}" var="u">
+                        <ui:repeat value="#{yazarTalepBean.talepler}" var="u">
                             <tr class="devlog-cms-table-row">
                                 <td class="px-4 py-3">
                                     <div class="d-flex align-items-center gap-2">
                                         <div class="rounded d-flex align-items-center justify-content-center font-monospace fw-bold small border border-secondary border-opacity-50"
                                              style="width: 1.75rem; height: 1.75rem; min-width: 1.75rem; background: rgba(74, 142, 255, 0.12); color: var(--dl-ref-primary);">
-                                            #{yazarTalepController.kullaniciHarfi(u)}
+                                            #{yazarTalepBean.kullaniciHarfi(u)}
                                         </div>
                                         <div>
-                                            <div class="fw-semibold text-white font-monospace small">#{yazarTalepController.kullaniciOzeti(u)}</div>
+                                            <div class="fw-semibold text-white font-monospace small">#{yazarTalepBean.kullaniciOzeti(u)}</div>
                                             <div class="text-secondary font-monospace mt-1 d-md-none" style="font-size: 0.65rem;">#{u.eposta}</div>
                                         </div>
                                     </div>
@@ -65,12 +65,12 @@
                                 </td>
                                 <td class="px-4 py-3 text-end align-middle">
                                     <div class="d-inline-flex flex-wrap justify-content-end align-items-center gap-1">
-                                        <h:commandLink action="#{yazarTalepController.onayla(u.id)}"
+                                        <h:commandLink action="#{yazarTalepBean.onayla(u.id)}"
                                                        styleClass="devlog-action-btn border border-success border-opacity-50 text-success bg-transparent text-decoration-none"
                                                        title="Yazar yap">
                                             <span class="material-symbols-outlined" aria-hidden="true">check</span>
                                         </h:commandLink>
-                                        <h:commandLink action="#{yazarTalepController.reddet(u.id)}"
+                                        <h:commandLink action="#{yazarTalepBean.reddet(u.id)}"
                                                        styleClass="devlog-action-btn border border-danger border-opacity-50 text-danger bg-transparent text-decoration-none"
                                                        title="Reddet">
                                             <span class="material-symbols-outlined" aria-hidden="true">close</span>
@@ -85,7 +85,7 @@
             </div>
             <div class="px-4 py-3 border-top border-secondary border-opacity-25 devlog-mono-label text-secondary d-flex flex-wrap justify-content-between gap-2"
                  style="font-size: 0.65rem;">
-                <span>Toplam #{yazarTalepController.talepSayisi} talep</span>
+                <span>Toplam #{yazarTalepBean.talepSayisi} talep</span>
                 <span>DevLog CMS</span>
             </div>
         </div>

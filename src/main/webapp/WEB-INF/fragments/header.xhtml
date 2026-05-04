@@ -19,16 +19,16 @@
                 </div>
                 <div class="d-flex align-items-center gap-3">
                     <div class="d-flex align-items-center gap-2 flex-wrap justify-content-end">
-                        <h:panelGroup rendered="#{not oturumController.girisYapildi}" layout="block" styleClass="d-flex align-items-center gap-2">
+                        <h:panelGroup rendered="#{not oturumBean.girisYapildi}" layout="block" styleClass="d-flex align-items-center gap-2">
                             <h:link outcome="/auth/giris" styleClass="btn devlog-btn-login rounded-0 px-3 py-1 text-decoration-none">Giriş yap</h:link>
                             <h:link outcome="/auth/kayit" styleClass="btn devlog-btn-signup rounded-0 px-3 py-1 text-decoration-none">Kayıt ol</h:link>
                         </h:panelGroup>
-                        <h:panelGroup rendered="#{oturumController.girisYapildi}" layout="block" styleClass="d-flex align-items-center gap-2">
-                            <span class="font-monospace small text-secondary text-truncate" style="max-width: 8rem;" title="#{oturumController.aktifKullanici.kullaniciAdi}">
-                                #{oturumController.aktifKullanici.kullaniciAdi}
+                        <h:panelGroup rendered="#{oturumBean.girisYapildi}" layout="block" styleClass="d-flex align-items-center gap-2">
+                            <span class="font-monospace small text-secondary text-truncate" style="max-width: 8rem;" title="#{oturumBean.aktifKullanici.kullaniciAdi}">
+                                #{oturumBean.aktifKullanici.kullaniciAdi}
                             </span>
                             <h:form styleClass="d-inline mb-0">
-                                <h:commandLink action="#{oturumController.cikisYap}" styleClass="btn devlog-btn-login rounded-0 px-3 py-1 border-0 text-decoration-none d-inline-block">
+                                <h:commandLink action="#{oturumBean.cikisYap}" styleClass="btn devlog-btn-login rounded-0 px-3 py-1 border-0 text-decoration-none d-inline-block">
                                     Çıkış
                                 </h:commandLink>
                             </h:form>

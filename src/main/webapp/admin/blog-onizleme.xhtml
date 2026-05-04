@@ -7,14 +7,14 @@
                 template="/WEB-INF/templates/panelTemplate.xhtml">
 
     <f:metadata>
-        <f:viewParam name="id" value="#{adminBlogOnizlemeController.id}" required="false">
+        <f:viewParam name="id" value="#{adminBlogOnizlemeBean.id}" required="false">
             <f:convertNumber integerOnly="true" groupingUsed="false"/>
         </f:viewParam>
-        <f:viewAction action="#{adminBlogOnizlemeController.hazirla}"/>
+        <f:viewAction action="#{adminBlogOnizlemeBean.hazirla}"/>
     </f:metadata>
 
     <ui:define name="title">
-        #{adminBlogOnizlemeController.blog != null ? adminBlogOnizlemeController.blog.baslik : 'DevLog — Blog ön izleme'}
+        #{adminBlogOnizlemeBean.blog != null ? adminBlogOnizlemeBean.blog.baslik : 'DevLog — Blog ön izleme'}
     </ui:define>
 
     <ui:define name="content">
@@ -24,13 +24,13 @@
                 <h1 class="devlog-headline mb-0" style="font-size: 1.35rem;">Ön izleme</h1>
             </header>
 
-            <ui:fragment rendered="#{adminBlogOnizlemeController.blog != null}">
+            <ui:fragment rendered="#{adminBlogOnizlemeBean.blog != null}">
                 <div class="devlog-admin-onizleme-toolbar border border-secondary border-opacity-25 rounded-0 px-3 py-2 d-flex flex-wrap align-items-center justify-content-between gap-2 mb-4">
-                    <span class="font-monospace small text-secondary">ONAY_BEKLIYOR · ID #{adminBlogOnizlemeController.blog.id}</span>
+                    <span class="font-monospace small text-secondary">ONAY_BEKLIYOR · ID #{adminBlogOnizlemeBean.blog.id}</span>
                     <h:form styleClass="d-flex flex-wrap gap-2 mb-0">
-                        <h:commandButton value="Onayla" action="#{adminOnayController.onaylaVeKuyregeGit(adminBlogOnizlemeController.blog.id)}"
+                        <h:commandButton value="Onayla" action="#{adminOnayBean.onaylaVeKuyregeGit(adminBlogOnizlemeBean.blog.id)}"
                                          styleClass="btn btn-success rounded-0 px-3 py-2 font-monospace small text-uppercase"/>
-                        <h:commandButton value="Reddet" action="#{adminOnayController.reddetVeKuyregeGit(adminBlogOnizlemeController.blog.id)}"
+                        <h:commandButton value="Reddet" action="#{adminOnayBean.reddetVeKuyregeGit(adminBlogOnizlemeBean.blog.id)}"
                                          styleClass="btn btn-outline-danger rounded-0 px-3 py-2 font-monospace small text-uppercase"/>
                     </h:form>
                 </div>
@@ -45,7 +45,7 @@
                     </div>
                 </div>
 
-                <ui:fragment rendered="#{adminBlogOnizlemeController.blog == null}">
+                <ui:fragment rendered="#{adminBlogOnizlemeBean.blog == null}">
                     <div class="row">
                         <div class="col-12">
                             <div class="devlog-read-empty border devlog-read-border p-5 text-center font-monospace small text-secondary">
@@ -55,19 +55,19 @@
                     </div>
                 </ui:fragment>
 
-                <ui:fragment rendered="#{adminBlogOnizlemeController.blog != null}">
+                <ui:fragment rendered="#{adminBlogOnizlemeBean.blog != null}">
                     <div class="row g-4">
                         <div class="col-12">
                             <section class="devlog-read-meta border devlog-read-border font-monospace small" aria-label="Yayın bilgisi">
                                 <div class="devlog-read-meta__gutter px-2 py-1 border-bottom devlog-read-border text-secondary">/**</div>
                                 <div class="p-3 p-md-4 text-secondary">
-                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@title</span> <span class="devlog-read-meta__val text-white">#{adminBlogOnizlemeController.blog.baslik}</span></p>
-                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@author</span> <span class="devlog-read-meta__val">#{adminBlogOnizlemeController.yazarAdi()}</span></p>
-                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@category</span> <span class="devlog-read-meta__val">#{adminBlogOnizlemeController.kategoriEtiket()}</span></p>
-                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@readTime</span> <span class="devlog-read-meta__val">#{adminBlogOnizlemeController.tahminiOkuma()}</span></p>
-                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@version</span> <span class="devlog-read-meta__val">#{adminBlogOnizlemeController.surumEtiketi()}</span></p>
-                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@rating</span> <span class="devlog-read-meta__val">#{adminBlogOnizlemeController.yildizMetin()}</span> <span class="text-secondary">avg</span></p>
-                                    <p class="mb-0 devlog-read-meta__line"><span class="devlog-read-meta__kw">@published</span> <span class="devlog-read-meta__val">#{adminBlogOnizlemeController.yayinTarihiMetni()}</span></p>
+                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@title</span> <span class="devlog-read-meta__val text-white">#{adminBlogOnizlemeBean.blog.baslik}</span></p>
+                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@author</span> <span class="devlog-read-meta__val">#{adminBlogOnizlemeBean.yazarAdi()}</span></p>
+                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@category</span> <span class="devlog-read-meta__val">#{adminBlogOnizlemeBean.kategoriEtiket()}</span></p>
+                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@readTime</span> <span class="devlog-read-meta__val">#{adminBlogOnizlemeBean.tahminiOkuma()}</span></p>
+                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@version</span> <span class="devlog-read-meta__val">#{adminBlogOnizlemeBean.surumEtiketi()}</span></p>
+                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@rating</span> <span class="devlog-read-meta__val">#{adminBlogOnizlemeBean.yildizMetin()}</span> <span class="text-secondary">avg</span></p>
+                                    <p class="mb-0 devlog-read-meta__line"><span class="devlog-read-meta__kw">@published</span> <span class="devlog-read-meta__val">#{adminBlogOnizlemeBean.yayinTarihiMetni()}</span></p>
                                 </div>
                                 <div class="devlog-read-meta__gutter px-2 py-1 border-top devlog-read-border text-secondary">*/</div>
                             </section>
@@ -78,24 +78,24 @@
                         <div class="col-12 col-lg-8">
                             <div class="devlog-read-hero border devlog-read-border mb-4">
                                 <div class="devlog-read-hero-inner">
-                                    <img src="#{not empty adminBlogOnizlemeController.blog.kapakGorseliUrl ? adminBlogOnizlemeController.blog.kapakGorseliUrl : resource['img:Logo_Amblem.png']}"
+                                    <img src="#{not empty adminBlogOnizlemeBean.blog.kapakGorseliUrl ? adminBlogOnizlemeBean.blog.kapakGorseliUrl : resource['img:Logo_Amblem.png']}"
                                          alt="" class="devlog-read-hero-img"/>
                                 </div>
                             </div>
 
-                            <ui:fragment rendered="#{not empty adminBlogOnizlemeController.blog.ozet}">
+                            <ui:fragment rendered="#{not empty adminBlogOnizlemeBean.blog.ozet}">
                                 <p class="font-monospace small text-secondary border-start border-3 devlog-read-accent-border ps-3 mb-4">
-                                    #{adminBlogOnizlemeController.blog.ozet}
+                                    #{adminBlogOnizlemeBean.blog.ozet}
                                 </p>
                             </ui:fragment>
 
                             <section class="devlog-read-editor border devlog-read-border mb-4" aria-label="İçerik">
                                 <div class="devlog-read-editor__toolbar px-3 py-2 border-bottom devlog-read-border d-flex justify-content-between align-items-center flex-wrap gap-2">
                                     <span class="devlog-mono-label text-secondary mb-0">İçerik</span>
-                                    <span class="font-monospace text-secondary" style="font-size: 0.7rem;">#{adminBlogOnizlemeController.blog.id}.md</span>
+                                    <span class="font-monospace text-secondary" style="font-size: 0.7rem;">#{adminBlogOnizlemeBean.blog.id}.md</span>
                                 </div>
                                 <div class="devlog-read-editor__body font-monospace small">
-                                    <ui:repeat value="#{adminBlogOnizlemeController.icerikSatirlari}" var="satir" varStatus="st">
+                                    <ui:repeat value="#{adminBlogOnizlemeBean.icerikSatirlari}" var="satir" varStatus="st">
                                         <div class="devlog-read-line d-flex">
                                             <span class="devlog-read-line__no flex-shrink-0 user-select-none" aria-hidden="true">#{st.index + 1}</span>
                                             <div class="devlog-read-line__code flex-grow-1 min-w-0">
@@ -113,10 +113,10 @@
                                     <span class="material-symbols-outlined" style="font-size: 1rem;">data_object</span> Meta
                                 </h2>
                                 <ul class="list-unstyled font-monospace text-secondary mb-0 devlog-read-meta-list">
-                                    <li class="mb-2"><span class="text-secondary">id</span> <span class="text-white">#{adminBlogOnizlemeController.blog.id}</span></li>
-                                    <li class="mb-2"><span class="text-secondary">durum</span> <span class="text-white">#{adminBlogOnizlemeController.blog.durum}</span></li>
-                                    <li class="mb-2"><span class="text-secondary">kategori</span> <span class="text-white">#{adminBlogOnizlemeController.kategoriEtiket()}</span></li>
-                                    <li class="mb-0"><span class="text-secondary">etiketler</span> <span class="text-white">#{empty adminBlogOnizlemeController.blog.etiketler ? '—' : adminBlogOnizlemeController.blog.etiketler}</span></li>
+                                    <li class="mb-2"><span class="text-secondary">id</span> <span class="text-white">#{adminBlogOnizlemeBean.blog.id}</span></li>
+                                    <li class="mb-2"><span class="text-secondary">durum</span> <span class="text-white">#{adminBlogOnizlemeBean.blog.durum}</span></li>
+                                    <li class="mb-2"><span class="text-secondary">kategori</span> <span class="text-white">#{adminBlogOnizlemeBean.kategoriEtiket()}</span></li>
+                                    <li class="mb-0"><span class="text-secondary">etiketler</span> <span class="text-white">#{empty adminBlogOnizlemeBean.blog.etiketler ? '—' : adminBlogOnizlemeBean.blog.etiketler}</span></li>
                                 </ul>
                             </div>
                         </div>

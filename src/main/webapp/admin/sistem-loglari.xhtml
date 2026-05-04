@@ -7,7 +7,7 @@
                 template="/WEB-INF/templates/panelTemplate.xhtml">
 
     <f:metadata>
-        <f:viewAction action="#{sistemLogController.hazirla}"/>
+        <f:viewAction action="#{sistemLogBean.hazirla}"/>
     </f:metadata>
 
     <ui:define name="title">DevLog — Sistem kayıtları</ui:define>
@@ -22,17 +22,17 @@
         <div class="devlog-syslog-terminal rounded-0 border border-secondary border-opacity-25">
             <div class="devlog-syslog-terminal__titlebar px-3 py-2 d-flex align-items-center justify-content-between flex-wrap gap-2">
                 <span class="devlog-mono-label text-secondary mb-0">OUTPUT</span>
-                <span class="font-monospace small text-secondary">#{sistemLogController.logSayisi} satır</span>
+                <span class="font-monospace small text-secondary">#{sistemLogBean.logSayisi} satır</span>
             </div>
             <div class="devlog-syslog-terminal__body font-monospace small" role="log" aria-live="polite">
-                <ui:fragment rendered="#{empty sistemLogController.loglar}">
+                <ui:fragment rendered="#{empty sistemLogBean.loglar}">
                     <div class="devlog-syslog-terminal__line devlog-syslog-terminal__line--muted">[—] Henüz kayıt yok.</div>
                 </ui:fragment>
-                <ui:repeat value="#{sistemLogController.loglar}" var="log">
+                <ui:repeat value="#{sistemLogBean.loglar}" var="log">
                     <div class="devlog-syslog-terminal__line">
-                        <span class="devlog-syslog-time"><h:outputText value="#{sistemLogController.logTarihParcasi(log)}" escape="true"/></span>
-                        <span class="devlog-syslog-user"><h:outputText value=" #{sistemLogController.logKimParcasi(log)} " escape="true"/></span>
-                        <span class="devlog-syslog-msg"><h:outputText value="#{sistemLogController.logIslemParcasi(log)}" escape="true"/></span>
+                        <span class="devlog-syslog-time"><h:outputText value="#{sistemLogBean.logTarihParcasi(log)}" escape="true"/></span>
+                        <span class="devlog-syslog-user"><h:outputText value=" #{sistemLogBean.logKimParcasi(log)} " escape="true"/></span>
+                        <span class="devlog-syslog-msg"><h:outputText value="#{sistemLogBean.logIslemParcasi(log)}" escape="true"/></span>
                     </div>
                 </ui:repeat>
             </div>

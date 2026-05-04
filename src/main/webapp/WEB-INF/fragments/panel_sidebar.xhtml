@@ -19,50 +19,50 @@
         <div class="offcanvas-body p-0 d-flex flex-column devlog-global-offcanvas__body">
             <h:form id="sidebarNavForm" styleClass="d-flex flex-column flex-grow-1 mb-0">
                 <nav class="flex-grow-1 py-2" aria-label="Ana menü">
-                    <h:commandLink action="#{oturumController.menuGitBloglarim}" rendered="#{oturumController.yazmayaYetkili}"
+                    <h:commandLink action="#{oturumBean.menuGitBloglarim}" rendered="#{oturumBean.yazmayaYetkili}"
                                    styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/panel/bloglarim.xhtml') ? 'active' : ''}">
                         <span class="material-symbols-outlined" aria-hidden="true">article</span>
                         <span>Bloglarım</span>
                     </h:commandLink>
-                    <h:commandLink action="#{oturumController.menuGitYeniBlog}" rendered="#{oturumController.yazmayaYetkili}"
+                    <h:commandLink action="#{oturumBean.menuGitYeniBlog}" rendered="#{oturumBean.yazmayaYetkili}"
                                    styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/panel/yeni-blog.xhtml') ? 'active' : ''}">
                         <span class="material-symbols-outlined" aria-hidden="true">add_box</span>
                         <span>Yeni blog ekle</span>
                     </h:commandLink>
-                    <h:link outcome="/admin/admin-onay" rendered="#{oturumController.admin}"
+                    <h:link outcome="/admin/admin-onay" rendered="#{oturumBean.admin}"
                             styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/admin/admin-onay.xhtml') ? 'active' : ''}">
                         <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
                         <span>Onay bekleyenler</span>
                         <h:panelGroup layout="span" styleClass="ms-auto"
-                                      rendered="#{panelMenuSayaclariController.onayBekleyenSayisi gt 0}">
-                            <span class="badge bg-danger rounded-pill">#{panelMenuSayaclariController.onayBekleyenSayisi}</span>
+                                      rendered="#{panelMenuSayaclariBean.onayBekleyenSayisi gt 0}">
+                            <span class="badge bg-danger rounded-pill">#{panelMenuSayaclariBean.onayBekleyenSayisi}</span>
                         </h:panelGroup>
                     </h:link>
-                    <h:link outcome="/admin/onay-islemlerim" rendered="#{oturumController.admin}"
+                    <h:link outcome="/admin/onay-islemlerim" rendered="#{oturumBean.admin}"
                             styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/admin/onay-islemlerim.xhtml') ? 'active' : ''}">
                         <span class="material-symbols-outlined" aria-hidden="true">history</span>
                         <span>Onay işlemlerim</span>
                     </h:link>
-                    <h:link outcome="/admin/kategoriler" rendered="#{oturumController.admin}"
+                    <h:link outcome="/admin/kategoriler" rendered="#{oturumBean.admin}"
                             styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/admin/kategoriler.xhtml') ? 'active' : ''}">
                         <span class="material-symbols-outlined" aria-hidden="true">category</span>
                         <span>Kategoriler</span>
                     </h:link>
-                    <h:link outcome="/admin/yazar-talepleri" rendered="#{oturumController.admin}"
+                    <h:link outcome="/admin/yazar-talepleri" rendered="#{oturumBean.admin}"
                             styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/admin/yazar-talepleri.xhtml') ? 'active' : ''}">
                         <span class="material-symbols-outlined" aria-hidden="true">group_add</span>
                         <span>Yazar talepleri</span>
                         <h:panelGroup layout="span" styleClass="ms-auto"
-                                      rendered="#{panelMenuSayaclariController.yazarlikTalepSayisi gt 0}">
-                            <span class="badge bg-danger rounded-pill">#{panelMenuSayaclariController.yazarlikTalepSayisi}</span>
+                                      rendered="#{panelMenuSayaclariBean.yazarlikTalepSayisi gt 0}">
+                            <span class="badge bg-danger rounded-pill">#{panelMenuSayaclariBean.yazarlikTalepSayisi}</span>
                         </h:panelGroup>
                     </h:link>
-                    <h:link outcome="/admin/sistem-loglari" rendered="#{oturumController.admin}"
+                    <h:link outcome="/admin/sistem-loglari" rendered="#{oturumBean.admin}"
                             styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/admin/sistem-loglari.xhtml') ? 'active' : ''}">
                         <span class="material-symbols-outlined" aria-hidden="true">terminal</span>
                         <span>Sistem kayıtları</span>
                     </h:link>
-                    <h:link outcome="/panel/bildirimler" rendered="#{oturumController.girisYapildi}"
+                    <h:link outcome="/panel/bildirimler" rendered="#{oturumBean.girisYapildi}"
                             styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/panel/bildirimler.xhtml') ? 'active' : ''}">
                         <span class="material-symbols-outlined" aria-hidden="true">notifications</span>
                         <span>Bildirimler</span>
@@ -74,26 +74,26 @@
                 </nav>
 
                 <div class="border-top devlog-global-offcanvas__border p-3 mt-auto">
-                    <h:panelGroup rendered="#{oturumController.girisYapildi}" layout="block">
+                    <h:panelGroup rendered="#{oturumBean.girisYapildi}" layout="block">
                         <h:link outcome="/panel/profil"
                                 styleClass="devlog-sidebar-profile-card d-block text-decoration-none text-reset mb-3">
                             <div class="d-flex align-items-center gap-2 px-2">
                                 <div class="rounded d-flex align-items-center justify-content-center fw-bold small text-white text-uppercase devlog-global-offcanvas__avatar"
                                      aria-hidden="true">
-                                    #{empty oturumController.aktifKullanici.kullaniciAdi ? '?' : oturumController.aktifKullanici.kullaniciAdi.substring(0,1)}
+                                    #{empty oturumBean.aktifKullanici.kullaniciAdi ? '?' : oturumBean.aktifKullanici.kullaniciAdi.substring(0,1)}
                                 </div>
                                 <div class="d-flex flex-column text-truncate" style="max-width: 10rem;">
-                                    <span class="small fw-bold text-white text-truncate">#{oturumController.aktifKullanici.kullaniciAdi}</span>
-                                    <span class="text-secondary devlog-global-offcanvas__role">#{oturumController.admin ? 'Admin' : 'Yazar'}</span>
+                                    <span class="small fw-bold text-white text-truncate">#{oturumBean.aktifKullanici.kullaniciAdi}</span>
+                                    <span class="text-secondary devlog-global-offcanvas__role">#{oturumBean.rolEtiketi}</span>
                                 </div>
                             </div>
                         </h:link>
-                        <h:commandLink action="#{oturumController.cikisYap}" styleClass="devlog-panel-nav-link border-0 bg-transparent w-100 text-start">
+                        <h:commandLink action="#{oturumBean.cikisYap}" styleClass="devlog-panel-nav-link border-0 bg-transparent w-100 text-start">
                             <span class="material-symbols-outlined" aria-hidden="true">logout</span>
                             <span>Çıkış</span>
                         </h:commandLink>
                     </h:panelGroup>
-                    <h:panelGroup rendered="#{not oturumController.girisYapildi}" layout="block">
+                    <h:panelGroup rendered="#{not oturumBean.girisYapildi}" layout="block">
                         <h:link outcome="/auth/giris" styleClass="devlog-panel-nav-link mb-1 d-block">
                             <span class="material-symbols-outlined" aria-hidden="true">login</span>
                             <span>Giriş yap</span>

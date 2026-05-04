@@ -16,42 +16,42 @@
 
             <section class="devlog-auth-card p-3 p-md-4">
                 <h:form id="kayitForm" styleClass="d-flex flex-column gap-3">
-                    <h:panelGroup rendered="#{not empty kayitController.hataMesaji}" styleClass="alert alert-danger border-0 rounded-0 py-2 small font-monospace mb-0" layout="block">
-                        #{kayitController.hataMesaji}
+                    <h:panelGroup rendered="#{not empty kayitBean.hataMesaji}" styleClass="alert alert-danger border-0 rounded-0 py-2 small font-monospace mb-0" layout="block">
+                        #{kayitBean.hataMesaji}
                     </h:panelGroup>
 
                     <div>
                         <h:outputLabel for="adSoyad" styleClass="form-label devlog-auth-sub d-block">Ad soyad</h:outputLabel>
-                        <h:inputText id="adSoyad" value="#{kayitController.adSoyad}" styleClass="form-control devlog-auth-input"
+                        <h:inputText id="adSoyad" value="#{kayitBean.adSoyad}" styleClass="form-control devlog-auth-input"
                                      required="true" requiredMessage="Ad soyad gerekli."/>
                     </div>
                     <div>
                         <h:outputLabel for="kullaniciAdi" styleClass="form-label devlog-auth-sub d-block">Kullanıcı adı</h:outputLabel>
                         <div class="position-relative">
                             <span class="position-absolute top-50 start-0 translate-middle-y ps-3 fw-bold z-1" style="color: var(--dl-primary);">@</span>
-                            <h:inputText id="kullaniciAdi" value="#{kayitController.kullaniciAdi}" styleClass="form-control devlog-auth-input ps-4"
+                            <h:inputText id="kullaniciAdi" value="#{kayitBean.kullaniciAdi}" styleClass="form-control devlog-auth-input ps-4"
                                          required="true" requiredMessage="Kullanıcı adı gerekli."/>
                         </div>
                     </div>
                     <div>
                         <h:outputLabel for="eposta" styleClass="form-label devlog-auth-sub d-block">E-posta</h:outputLabel>
-                        <h:inputText id="eposta" value="#{kayitController.eposta}" styleClass="form-control devlog-auth-input"
+                        <h:inputText id="eposta" value="#{kayitBean.eposta}" styleClass="form-control devlog-auth-input"
                                      required="true" requiredMessage="E-posta gerekli."/>
                     </div>
                     <div class="row g-2">
                         <div class="col-md-6">
                             <h:outputLabel for="sifre" styleClass="form-label devlog-auth-sub d-block">Şifre</h:outputLabel>
-                            <h:inputSecret id="sifre" value="#{kayitController.sifre}" styleClass="form-control devlog-auth-input"
+                            <h:inputSecret id="sifre" value="#{kayitBean.sifre}" styleClass="form-control devlog-auth-input"
                                            required="true" requiredMessage="Şifre gerekli."/>
                         </div>
                         <div class="col-md-6">
                             <h:outputLabel for="sifreTekrar" styleClass="form-label devlog-auth-sub d-block">Şifre tekrar</h:outputLabel>
-                            <h:inputSecret id="sifreTekrar" value="#{kayitController.sifreTekrar}" styleClass="form-control devlog-auth-input"
+                            <h:inputSecret id="sifreTekrar" value="#{kayitBean.sifreTekrar}" styleClass="form-control devlog-auth-input"
                                            required="true" requiredMessage="Şifre tekrarı gerekli."/>
                         </div>
                     </div>
 
-                    <h:commandButton value="Kayıt ol" action="#{kayitController.kayitOl}"
+                    <h:commandButton value="Kayıt ol" action="#{kayitBean.kayitOl}"
                                      styleClass="btn w-100 devlog-btn-signup rounded-0 text-uppercase fw-bold font-monospace small"/>
                 </h:form>
             </section>

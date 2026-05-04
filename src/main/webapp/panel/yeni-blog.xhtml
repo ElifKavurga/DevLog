@@ -14,7 +14,7 @@
 
     <ui:define name="metadata">
         <f:metadata>
-            <f:viewAction action="#{blogEkleController.hazirla}" onPostback="false"/>
+            <f:viewAction action="#{blogEkleBean.hazirla}" onPostback="false"/>
         </f:metadata>
     </ui:define>
 
@@ -36,24 +36,24 @@
                         <section class="devlog-cms-card p-4">
                             <div class="mb-3">
                                 <label class="form-label devlog-mono-label text-secondary mb-2" for="baslik">Başlık</label>
-                                <h:inputText id="baslik" value="#{blogEkleController.blogDTO.baslik}" maxlength="500"
+                                <h:inputText id="baslik" value="#{blogEkleBean.yeniBlog.baslik}" maxlength="500"
                                              styleClass="form-control devlog-cms-input rounded-0 font-monospace"
                                              pt:placeholder="Örn. Jakarta EE ile güvenli API tasarımı"/>
                             </div>
                             <div class="row g-3">
                                 <div class="col-12 col-md-6">
                                     <label class="form-label devlog-mono-label text-secondary mb-2" for="kategori">Kategori</label>
-                                    <h:selectOneMenu id="kategori" value="#{blogEkleController.kategoriId}"
+                                    <h:selectOneMenu id="kategori" value="#{blogEkleBean.kategoriId}"
                                                      styleClass="form-select devlog-cms-input rounded-0 font-monospace">
                                         <f:selectItem itemLabel="Kategori seçin" itemValue="#{null}" noSelectionOption="true"/>
-                                        <f:selectItems value="#{blogEkleController.kategoriler}" var="kat"
+                                        <f:selectItems value="#{blogEkleBean.kategoriler}" var="kat"
                                                        itemValue="#{kat.id}" itemLabel="#{kat.isim}"/>
                                     </h:selectOneMenu>
                                 </div>
                                 <div class="col-12 col-md-6">
                                     <label class="form-label devlog-mono-label text-secondary mb-2" for="okuma">Okuma süresi (dk)</label>
                                     <div class="input-group">
-                                        <h:inputText id="okuma" value="#{blogEkleController.blogDTO.tahminiOkumaSuresi}"
+                                        <h:inputText id="okuma" value="#{blogEkleBean.yeniBlog.tahminiOkumaSuresi}"
                                                      styleClass="form-control devlog-cms-input rounded-0 font-monospace"
                                                      pt:type="number" pt:min="1" pt:placeholder="5"/>
                                         <span class="input-group-text devlog-cms-input-addon rounded-0 small text-secondary border-start-0">dk</span>
@@ -64,7 +64,7 @@
 
                         <section class="devlog-cms-card p-4">
                             <label class="form-label devlog-mono-label text-secondary mb-2" for="ozet">Özet</label>
-                            <h:inputTextarea id="ozet" value="#{blogEkleController.blogDTO.ozet}" rows="3"
+                            <h:inputTextarea id="ozet" value="#{blogEkleBean.yeniBlog.ozet}" rows="3"
                                              styleClass="form-control devlog-cms-input rounded-0 font-monospace"
                                              pt:placeholder="Arama ve liste görünümleri için kısa özet..."/>
                         </section>
@@ -79,7 +79,7 @@
                                 </div>
                             </div>
                             <div class="devlog-cms-editor-body p-0">
-                                <h:inputTextarea id="icerikAlan" value="#{blogEkleController.blogDTO.icerik}" rows="18"
+                                <h:inputTextarea id="icerikAlan" value="#{blogEkleBean.yeniBlog.icerik}" rows="18"
                                                  styleClass="form-control devlog-cms-textarea border-0 rounded-0 font-monospace small p-4 devlog-blog-icerik-sync-target"
                                                  pt:placeholder="# Blog gövdesini buraya yazın..."/>
                             </div>
@@ -89,7 +89,7 @@
                     <div class="col-12 col-lg-4 d-flex flex-column gap-4">
                         <section class="devlog-cms-card p-4">
                             <label class="form-label devlog-mono-label text-secondary mb-2" for="kapak">Kapak görseli URL</label>
-                            <h:inputText id="kapak" value="#{blogEkleController.blogDTO.kapakGorseliUrl}" maxlength="2048"
+                            <h:inputText id="kapak" value="#{blogEkleBean.yeniBlog.kapakGorseliUrl}" maxlength="2048"
                                          styleClass="form-control devlog-cms-input rounded-0 font-monospace small"
                                          pt:placeholder="https://..."/>
                             <p class="text-secondary font-monospace mt-2 mb-0" style="font-size: 0.65rem;">Önerilen oran 1200×630; boş bırakılabilir.</p>
@@ -97,7 +97,7 @@
 
                         <section class="devlog-cms-card p-4">
                             <label class="form-label devlog-mono-label text-secondary mb-2" for="etiketler">Etiketler (virgülle)</label>
-                            <h:inputText id="etiketler" value="#{blogEkleController.blogDTO.etiketler}" maxlength="2000"
+                            <h:inputText id="etiketler" value="#{blogEkleBean.yeniBlog.etiketler}" maxlength="2000"
                                          styleClass="form-control devlog-cms-input rounded-0 font-monospace small"
                                          pt:placeholder="jakarta, jsf, postgres"/>
                         </section>
@@ -108,14 +108,14 @@
                         </section>
 
                         <div class="d-grid gap-2 pt-2">
-                            <h:commandButton id="gonder" value="Onaya gönder" action="#{blogEkleController.kaydet}"
+                            <h:commandButton id="gonder" value="Onaya gönder" action="#{blogEkleBean.kaydet}"
                                              styleClass="btn btn-primary rounded-0 py-3 font-monospace small fw-bold text-uppercase devlog-cms-submit-btn"
                                              pt:onclick="if (typeof devlogSyncMarkdownToTextarea === 'function') { devlogSyncMarkdownToTextarea(); }"/>
                         </div>
 
-                        <h:panelGroup rendered="#{not empty blogEkleController.hataMesaji}" layout="block"
+                        <h:panelGroup rendered="#{not empty blogEkleBean.hataMesaji}" layout="block"
                                       styleClass="alert alert-danger rounded-0 small font-monospace mb-0">
-                            #{blogEkleController.hataMesaji}
+                            #{blogEkleBean.hataMesaji}
                         </h:panelGroup>
                     </div>
                 </div>

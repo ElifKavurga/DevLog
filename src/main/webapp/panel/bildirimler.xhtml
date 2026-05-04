@@ -7,7 +7,7 @@
                 template="/WEB-INF/templates/panelTemplate.xhtml">
 
     <f:metadata>
-        <f:viewAction action="#{bildirimController.hazirla}"/>
+        <f:viewAction action="#{bildirimBean.hazirla}"/>
     </f:metadata>
 
     <ui:define name="title">DevLog — Bildirimler</ui:define>
@@ -20,31 +20,31 @@
         </header>
 
         <div class="devlog-bildirim-log rounded-0 font-monospace small">
-            <ui:fragment rendered="#{empty bildirimController.bildirimler}">
+            <ui:fragment rendered="#{empty bildirimBean.bildirimler}">
                 <div class="devlog-bildirim-log__line text-secondary px-3 py-4">(boş) — bildirim yok.</div>
             </ui:fragment>
-            <ui:repeat value="#{bildirimController.bildirimler}" var="bn">
+            <ui:repeat value="#{bildirimBean.bildirimler}" var="bn">
                 <div class="devlog-bildirim-log__line">
                     <div class="devlog-bildirim-log__meta d-flex flex-wrap justify-content-between gap-2">
                         <span class="text-success">#<h:outputText value="#{bn.id}"/></span>
-                        <span>[#{bildirimController.tarihMetni(bn)}] · #{bildirimController.okunduEtiketi(bn)}</span>
+                        <span>[#{bildirimBean.tarihMetni(bn)}] · #{bildirimBean.okunduEtiketi(bn)}</span>
                     </div>
                     <div class="devlog-bildirim-log__msg mt-1">
-                        <h:link outcome="/public/blog-detay" rendered="#{bildirimController.bildirimBlogDetayLinkli(bn)}"
+                        <h:link outcome="/public/blog-detay" rendered="#{bildirimBean.bildirimBlogDetayLinkli(bn)}"
                                 styleClass="text-decoration-none devlog-bildirim-log__link d-inline-block">
-                            <f:param name="id" value="#{bildirimController.bildirimBlogDetayId(bn)}"/>
+                            <f:param name="id" value="#{bildirimBean.bildirimBlogDetayId(bn)}"/>
                             <h:outputText value="#{bn.mesaj}" escape="true"/>
                         </h:link>
-                        <h:link outcome="/admin/admin-onay" rendered="#{bildirimController.bildirimAdminOnayLinkli(bn)}"
+                        <h:link outcome="/admin/admin-onay" rendered="#{bildirimBean.bildirimAdminOnayLinkli(bn)}"
                                 styleClass="text-decoration-none devlog-bildirim-log__link">
                             <h:outputText value="#{bn.mesaj}" escape="true"/>
                         </h:link>
-                        <h:link outcome="/admin/yazar-talepleri" rendered="#{bildirimController.bildirimYazarTalepLinkli(bn)}"
+                        <h:link outcome="/admin/yazar-talepleri" rendered="#{bildirimBean.bildirimYazarTalepLinkli(bn)}"
                                 styleClass="text-decoration-none devlog-bildirim-log__link">
                             <h:outputText value="#{bn.mesaj}" escape="true"/>
                         </h:link>
                         <h:outputText value="#{bn.mesaj}" escape="true"
-                                      rendered="#{not bildirimController.bildirimBlogDetayLinkli(bn) and not bildirimController.bildirimAdminOnayLinkli(bn) and not bildirimController.bildirimYazarTalepLinkli(bn)}"
+                                      rendered="#{not bildirimBean.bildirimBlogDetayLinkli(bn) and not bildirimBean.bildirimAdminOnayLinkli(bn) and not bildirimBean.bildirimYazarTalepLinkli(bn)}"
                                       styleClass="text-secondary"/>
                     </div>
                 </div>

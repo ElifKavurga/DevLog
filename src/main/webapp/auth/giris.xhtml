@@ -16,22 +16,22 @@
 
             <section class="devlog-auth-card p-3 p-md-4">
                 <h:form id="girisForm" styleClass="d-flex flex-column gap-3">
-                    <h:panelGroup rendered="#{not empty girisController.hataMesaji}" styleClass="alert alert-danger border-0 rounded-0 py-2 small font-monospace mb-0" layout="block">
-                        #{girisController.hataMesaji}
+                    <h:panelGroup rendered="#{not empty girisBean.hataMesaji}" styleClass="alert alert-danger border-0 rounded-0 py-2 small font-monospace mb-0" layout="block">
+                        #{girisBean.hataMesaji}
                     </h:panelGroup>
 
                     <div>
                         <h:outputLabel for="loginField" styleClass="form-label devlog-auth-sub d-block">E-posta veya kullanıcı adı</h:outputLabel>
-                        <h:inputText id="loginField" value="#{girisController.epostaVeyaKullaniciAdi}" styleClass="form-control devlog-auth-input"
+                        <h:inputText id="loginField" value="#{girisBean.epostaVeyaKullaniciAdi}" styleClass="form-control devlog-auth-input"
                                      required="true" requiredMessage="E-posta veya kullanıcı adı gerekli."/>
                     </div>
                     <div>
                         <h:outputLabel for="sifreField" styleClass="form-label devlog-auth-sub d-block">Şifre</h:outputLabel>
-                        <h:inputSecret id="sifreField" value="#{girisController.sifre}" styleClass="form-control devlog-auth-input"
+                        <h:inputSecret id="sifreField" value="#{girisBean.sifre}" styleClass="form-control devlog-auth-input"
                                        required="true" requiredMessage="Şifre gerekli."/>
                     </div>
 
-                    <h:commandButton value="Giriş yap" action="#{girisController.girisYap}"
+                    <h:commandButton value="Giriş yap" action="#{girisBean.girisYap}"
                                      styleClass="btn w-100 devlog-btn-signup rounded-0 text-uppercase fw-bold font-monospace small"/>
                 </h:form>
             </section>

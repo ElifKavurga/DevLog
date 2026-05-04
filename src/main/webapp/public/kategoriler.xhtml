@@ -16,21 +16,21 @@
                     <p class="devlog-mono-label text-secondary mb-0">Keşfet sayfasında kategoriye göre filtrelemek için bir kutucuğa tıklayın.</p>
                 </header>
 
-                <ui:fragment rendered="#{empty publicKategoriController.kategoriler}">
+                <ui:fragment rendered="#{empty publicKategoriBean.kategoriler}">
                     <div class="devlog-cms-card p-5 text-center font-monospace small text-secondary">
                         Henüz kategori yok.
                     </div>
                 </ui:fragment>
 
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
-                    <ui:repeat value="#{publicKategoriController.kategoriler}" var="kat">
+                    <ui:repeat value="#{publicKategoriBean.kategoriler}" var="kat">
                         <div class="col d-flex">
                             <h:link outcome="/public/index" styleClass="devlog-kategori-card w-100 text-decoration-none">
                                 <f:param name="kategoriId" value="#{kat.id}"/>
                                 <span class="material-symbols-outlined devlog-kategori-card__icon mb-2" aria-hidden="true">folder</span>
                                 <span class="text-white fw-semibold font-monospace devlog-kategori-card__title">#{kat.isim}</span>
                                 <span class="devlog-mono-label text-secondary mt-2 devlog-kategori-card__count">
-                                    #{publicKategoriController.blogSayisi(kat.id)} blog
+                                    #{publicKategoriBean.blogSayisi(kat.id)} blog
                                 </span>
                             </h:link>
                         </div>

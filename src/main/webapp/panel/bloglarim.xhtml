@@ -7,7 +7,7 @@
                 template="/WEB-INF/templates/panelTemplate.xhtml">
 
     <f:metadata>
-        <f:viewAction action="#{yazarPanelController.hazirla}"/>
+        <f:viewAction action="#{yazarPanelBean.hazirla}"/>
     </f:metadata>
 
     <ui:define name="title">DevLog — Bloglarım</ui:define>
@@ -17,10 +17,10 @@
                 <div>
                     <h1 class="devlog-headline mb-2" style="font-size: 2rem;">Bloglarım</h1>
                     <p class="text-secondary small font-monospace mb-0">
-                        Toplam #{yazarPanelController.toplamBlogSayisi} blog kaydı listeleniyor.
+                        Toplam #{yazarPanelBean.toplamBlogSayisi} blog kaydı listeleniyor.
                     </p>
                 </div>
-                <h:link outcome="/panel/yeni-blog" rendered="#{oturumController.yazmayaYetkili}"
+                <h:link outcome="/panel/yeni-blog" rendered="#{oturumBean.yazmayaYetkili}"
                         styleClass="btn btn-primary rounded-0 px-4 py-3 font-monospace small fw-bold text-uppercase text-decoration-none d-inline-flex align-items-center gap-2">
                     <span class="material-symbols-outlined">add</span>
                     Yeni blog ekle
@@ -31,25 +31,25 @@
                 <div class="col-6 col-md-3">
                     <div class="devlog-cms-stat p-4 h-100">
                         <div class="devlog-mono-label text-secondary mb-1" style="font-size: 0.65rem;">Toplam</div>
-                        <div class="fs-4 fw-bold text-primary">#{yazarPanelController.toplamBlogSayisi}</div>
+                        <div class="fs-4 fw-bold text-primary">#{yazarPanelBean.toplamBlogSayisi}</div>
                     </div>
                 </div>
                 <div class="col-6 col-md-3">
                     <div class="devlog-cms-stat p-4 h-100">
                         <div class="devlog-mono-label text-secondary mb-1" style="font-size: 0.65rem;">Yayında</div>
-                        <div class="fs-4 fw-bold text-white">#{yazarPanelController.yayindaBlogSayisi}</div>
+                        <div class="fs-4 fw-bold text-white">#{yazarPanelBean.yayindaBlogSayisi}</div>
                     </div>
                 </div>
                 <div class="col-6 col-md-3">
                     <div class="devlog-cms-stat p-4 h-100">
                         <div class="devlog-mono-label text-secondary mb-1" style="font-size: 0.65rem;">Onay bekliyor</div>
-                        <div class="fs-4 fw-bold text-warning">#{yazarPanelController.onayBekleyenSayisi}</div>
+                        <div class="fs-4 fw-bold text-warning">#{yazarPanelBean.onayBekleyenSayisi}</div>
                     </div>
                 </div>
                 <div class="col-6 col-md-3">
                     <div class="devlog-cms-stat p-4 h-100">
                         <div class="devlog-mono-label text-secondary mb-1" style="font-size: 0.65rem;">Taslak / diğer</div>
-                        <div class="fs-4 fw-bold text-secondary">#{yazarPanelController.digerDurumSayisi}</div>
+                        <div class="fs-4 fw-bold text-secondary">#{yazarPanelBean.digerDurumSayisi}</div>
                     </div>
                 </div>
             </div>
@@ -68,17 +68,17 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <ui:fragment rendered="#{empty yazarPanelController.bloglar}">
+                        <ui:fragment rendered="#{empty yazarPanelBean.bloglar}">
                             <tr>
                                 <td colspan="6" class="px-4 py-5 text-center text-secondary font-monospace small">
                                     Henüz blog kaydınız yok.
-                                    <ui:fragment rendered="#{oturumController.yazmayaYetkili}">
+                                    <ui:fragment rendered="#{oturumBean.yazmayaYetkili}">
                                         <h:link outcome="/panel/yeni-blog" styleClass="text-primary">Yeni blog ekle</h:link> ile başlayın.
                                     </ui:fragment>
                                 </td>
                             </tr>
                         </ui:fragment>
-                        <ui:repeat value="#{yazarPanelController.bloglar}" var="blog">
+                        <ui:repeat value="#{yazarPanelBean.bloglar}" var="blog">
                             <tr class="devlog-cms-table-row">
                                 <td class="px-3 py-3 align-middle d-none d-sm-table-cell">
                                     <img src="#{not empty blog.kapakGorseliUrl ? blog.kapakGorseliUrl : resource['img:Logo_Amblem.png']}"
@@ -87,23 +87,23 @@
                                 <td class="px-4 py-4">
                                     <div class="fw-bold text-white">#{empty blog.baslik ? 'Başlıksız' : blog.baslik}</div>
                                     <div class="text-secondary font-monospace mt-1" style="font-size: 0.65rem;">
-                                        Oluşturulma: #{yazarPanelController.olusturulmaMetni(blog)}
+                                        Oluşturulma: #{yazarPanelBean.olusturulmaMetni(blog)}
                                     </div>
                                 </td>
                                 <td class="px-4 py-4 d-none d-md-table-cell">
                                     <span class="badge devlog-cms-kategori-badge rounded-0 text-uppercase">
-                                        #{yazarPanelController.kategoriBaslik(blog)}
+                                        #{yazarPanelBean.kategoriBaslik(blog)}
                                     </span>
                                 </td>
                                 <td class="px-4 py-4">
-                                    <div class="d-flex align-items-center gap-2 #{yazarPanelController.durumRenkSinifi(blog.durum)}">
-                                        <span class="rounded-circle devlog-cms-status-dot #{yazarPanelController.durumDotSinifi(blog.durum)}" aria-hidden="true"/>
-                                        <span class="small fw-bold">#{yazarPanelController.durumEtiketi(blog.durum)}</span>
+                                    <div class="d-flex align-items-center gap-2 #{yazarPanelBean.durumRenkSinifi(blog.durum)}">
+                                        <span class="rounded-circle devlog-cms-status-dot #{yazarPanelBean.durumDotSinifi(blog.durum)}" aria-hidden="true"/>
+                                        <span class="small fw-bold">#{yazarPanelBean.durumEtiketi(blog.durum)}</span>
                                     </div>
                                 </td>
                                 <td class="px-4 py-4 d-none d-lg-table-cell">
                                     <div class="d-flex align-items-center gap-1 text-warning">
-                                        <span class="fw-bold">#{yazarPanelController.ortalamaMetin(blog.id)}</span>
+                                        <span class="fw-bold">#{yazarPanelBean.ortalamaMetin(blog.id)}</span>
                                         <span class="material-symbols-outlined" style="font-size: 1rem;">star</span>
                                     </div>
                                 </td>

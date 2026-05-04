@@ -7,7 +7,7 @@
                 template="/WEB-INF/templates/panelTemplate.xhtml">
 
     <f:metadata>
-        <f:viewAction action="#{onayIslemlerimController.hazirla}"/>
+        <f:viewAction action="#{onayIslemlerimBean.hazirla}"/>
     </f:metadata>
 
     <ui:define name="title">DevLog — Onay işlemlerim</ui:define>
@@ -37,14 +37,14 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <ui:fragment rendered="#{empty onayIslemlerimController.gecmis}">
+                    <ui:fragment rendered="#{empty onayIslemlerimBean.gecmis}">
                         <tr>
                             <td colspan="5" class="px-4 py-5 text-center text-secondary font-monospace small">
                                 Kayıt yok.
                             </td>
                         </tr>
                     </ui:fragment>
-                    <ui:repeat value="#{onayIslemlerimController.gecmis}" var="blog">
+                    <ui:repeat value="#{onayIslemlerimBean.gecmis}" var="blog">
                         <tr class="devlog-cms-table-row">
                             <td class="px-4 py-3">
                                 <div class="fw-semibold text-white font-monospace small">#{empty blog.baslik ? 'Başlıksız' : blog.baslik}</div>
@@ -54,21 +54,21 @@
                                 <div class="d-flex align-items-center gap-2">
                                     <div class="rounded d-flex align-items-center justify-content-center font-monospace fw-bold small border border-secondary border-opacity-50"
                                          style="width: 1.75rem; height: 1.75rem; min-width: 1.75rem; background: rgba(74, 142, 255, 0.12); color: var(--dl-ref-primary);">
-                                        #{adminOnayController.yazarHarfi(blog)}
+                                        #{adminOnayBean.yazarHarfi(blog)}
                                     </div>
-                                    <span class="font-monospace small">#{adminOnayController.yazarOzeti(blog)}</span>
+                                    <span class="font-monospace small">#{adminOnayBean.yazarOzeti(blog)}</span>
                                 </div>
                             </td>
                             <td class="px-4 py-3 d-none d-md-table-cell">
-                                <span class="badge rounded-0 font-monospace small text-uppercase #{onayIslemlerimController.yayinda(blog) ? 'bg-success' : 'bg-danger'}">
-                                    #{onayIslemlerimController.durumEtiket(blog)}
+                                <span class="badge rounded-0 font-monospace small text-uppercase #{onayIslemlerimBean.yayinda(blog) ? 'bg-success' : 'bg-danger'}">
+                                    #{onayIslemlerimBean.durumEtiket(blog)}
                                 </span>
                             </td>
                             <td class="px-4 py-3 font-monospace small text-secondary d-none d-xl-table-cell">
-                                #{adminOnayController.tarihMetni(blog)}
+                                #{adminOnayBean.tarihMetni(blog)}
                             </td>
                             <td class="px-4 py-3 text-end">
-                                <h:link outcome="/public/blog-detay" rendered="#{onayIslemlerimController.yayinda(blog)}"
+                                <h:link outcome="/public/blog-detay" rendered="#{onayIslemlerimBean.yayinda(blog)}"
                                         styleClass="devlog-action-btn border border-primary border-opacity-50 text-primary bg-transparent text-decoration-none"
                                         title="Görüntüle">
                                     <f:param name="id" value="#{blog.id}"/>
@@ -82,7 +82,7 @@
             </div>
             <div class="px-4 py-3 border-top border-secondary border-opacity-25 devlog-mono-label text-secondary d-flex flex-wrap justify-content-between gap-2"
                  style="font-size: 0.65rem;">
-                <span>Toplam #{onayIslemlerimController.gecmisSayisi}</span>
+                <span>Toplam #{onayIslemlerimBean.gecmisSayisi}</span>
                 <span>DevLog CMS</span>
             </div>
         </div>

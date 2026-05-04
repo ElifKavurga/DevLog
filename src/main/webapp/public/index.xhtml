@@ -8,7 +8,7 @@
                 template="/WEB-INF/templates/publicTemplate.xhtml">
 
     <f:metadata>
-        <f:viewAction action="#{kesfetController.hazirla}"/>
+        <f:viewAction action="#{kesfetBean.hazirla}"/>
     </f:metadata>
 
     <ui:define name="title">DevLog — Keşfet</ui:define>
@@ -20,20 +20,20 @@
                     <div>
                         <h1 class="devlog-headline mb-2" style="font-size: 2rem;">Keşfet</h1>
                         <p class="devlog-mono-label text-secondary mb-0">/dev/log/public/index</p>
-                        <ui:fragment rendered="#{not empty kesfetController.seciliKategoriOzeti}">
+                        <ui:fragment rendered="#{not empty kesfetBean.seciliKategoriOzeti}">
                             <p class="small text-secondary font-monospace mb-0 mt-2">
-                                Kategoriler: <span class="text-white">#{kesfetController.seciliKategoriOzeti}</span>
+                                Kategoriler: <span class="text-white">#{kesfetBean.seciliKategoriOzeti}</span>
                             </p>
                         </ui:fragment>
-                        <ui:fragment rendered="#{kesfetController.aramaAktif}">
+                        <ui:fragment rendered="#{kesfetBean.aramaAktif}">
                             <p class="small text-secondary font-monospace mb-0 mt-2">
-                                Arama: <span class="text-white"><h:outputText value="#{kesfetController.aramaMetni}" escape="true"/></span>
-                                <a href="#{kesfetController.kesfetTemizUrl()}" class="devlog-read-link text-decoration-none ms-2">temizle</a>
+                                Arama: <span class="text-white"><h:outputText value="#{kesfetBean.aramaMetni}" escape="true"/></span>
+                                <a href="#{kesfetBean.kesfetTemizUrl()}" class="devlog-read-link text-decoration-none ms-2">temizle</a>
                             </p>
                         </ui:fragment>
                     </div>
                     <h:form styleClass="mb-0 align-self-md-center">
-                        <h:commandLink action="#{oturumController.menuGitYeniBlog}" rendered="#{oturumController.yazmayaYetkili}"
+                        <h:commandLink action="#{oturumBean.menuGitYeniBlog}" rendered="#{oturumBean.yazmayaYetkili}"
                                        styleClass="btn btn-primary rounded-0 py-2 px-4 font-monospace small fw-bold text-uppercase devlog-cms-submit-btn text-decoration-none">
                             Yeni blog ekle
                         </h:commandLink>
@@ -43,36 +43,36 @@
                 <section class="devlog-cms-card p-4 mb-4" aria-labelledby="devlog-home-kategori-filter-heading">
                     <h2 id="devlog-home-kategori-filter-heading" class="form-label devlog-mono-label text-secondary mb-3">Kategorilere göre</h2>
                     <div class="d-flex flex-wrap gap-2 align-items-center">
-                        <ui:repeat value="#{kesfetController.kategoriler}" var="kat">
-                            <a href="#{kesfetController.kategoriFiltreUrl(kat.id)}"
-                               class="btn btn-sm rounded-0 font-monospace devlog-home-filter-chip text-decoration-none #{kesfetController.kategoriSecili(kat.id) ? 'devlog-home-filter-chip--active' : ''}">
+                        <ui:repeat value="#{kesfetBean.kategoriler}" var="kat">
+                            <a href="#{kesfetBean.kategoriFiltreUrl(kat.id)}"
+                               class="btn btn-sm rounded-0 font-monospace devlog-home-filter-chip text-decoration-none #{kesfetBean.kategoriSecili(kat.id) ? 'devlog-home-filter-chip--active' : ''}">
                                 <h:outputText value="#{kat.isim}" escape="true"/>
                             </a>
                         </ui:repeat>
-                        <ui:fragment rendered="#{kesfetController.filtreAktif}">
-                            <a href="#{kesfetController.kesfetTemizUrl()}"
+                        <ui:fragment rendered="#{kesfetBean.filtreAktif}">
+                            <a href="#{kesfetBean.kesfetTemizUrl()}"
                                class="btn btn-sm rounded-0 font-monospace devlog-home-filter-chip devlog-home-filter-chip--muted text-decoration-none">Tümünü temizle</a>
                         </ui:fragment>
                     </div>
                 </section>
 
-                <ui:fragment rendered="#{empty kesfetController.yayinlananBloglar}">
+                <ui:fragment rendered="#{empty kesfetBean.yayinlananBloglar}">
                     <div class="devlog-cms-card p-5 text-center font-monospace small text-secondary">
-                        <ui:fragment rendered="#{kesfetController.aramaAktif}">
-                            “<h:outputText value="#{kesfetController.aramaMetni}" escape="true"/>” için sonuç bulunamadı. Farklı anahtar kelimeler deneyin veya
-                            <a href="#{kesfetController.kesfetTemizUrl()}" class="devlog-read-link text-decoration-none">filtreyi temizleyin</a>.
+                        <ui:fragment rendered="#{kesfetBean.aramaAktif}">
+                            “<h:outputText value="#{kesfetBean.aramaMetni}" escape="true"/>” için sonuç bulunamadı. Farklı anahtar kelimeler deneyin veya
+                            <a href="#{kesfetBean.kesfetTemizUrl()}" class="devlog-read-link text-decoration-none">filtreyi temizleyin</a>.
                         </ui:fragment>
-                        <ui:fragment rendered="#{not kesfetController.aramaAktif and kesfetController.filtreAktif}">
+                        <ui:fragment rendered="#{not kesfetBean.aramaAktif and kesfetBean.filtreAktif}">
                             Seçilen kategorilerde henüz yayınlanan blog yok.
                         </ui:fragment>
-                        <ui:fragment rendered="#{not kesfetController.aramaAktif and not kesfetController.filtreAktif}">
+                        <ui:fragment rendered="#{not kesfetBean.aramaAktif and not kesfetBean.filtreAktif}">
                             Henüz yayınlanan blog yok. Onaylanmış içerikler burada listelenir.
                         </ui:fragment>
                     </div>
                 </ui:fragment>
 
                 <div class="row">
-                    <ui:repeat value="#{kesfetController.yayinlananBloglar}" var="blog">
+                    <ui:repeat value="#{kesfetBean.yayinlananBloglar}" var="blog">
                         <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4 d-flex">
                             <article class="devlog-cms-card overflow-hidden w-100 d-flex flex-column p-0 position-relative">
                                 <div class="devlog-cms-editor-toolbar d-flex align-items-center justify-content-between px-3 py-2 border-bottom border-secondary border-opacity-25 position-relative z-1">
@@ -93,8 +93,8 @@
                                 </h:link>
                                 <div class="p-4 d-flex flex-column flex-grow-1 position-relative z-1">
                                     <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
-                                        <span class="devlog-home-kategori-pill font-monospace text-truncate">#{kesfetController.kategoriEtiket(blog)}</span>
-                                        <span class="devlog-mono-label text-secondary flex-shrink-0">#{kesfetController.surumEtiketi(blog)}</span>
+                                        <span class="devlog-home-kategori-pill font-monospace text-truncate">#{kesfetBean.kategoriEtiket(blog)}</span>
+                                        <span class="devlog-mono-label text-secondary flex-shrink-0">#{kesfetBean.surumEtiketi(blog)}</span>
                                     </div>
                                     <h2 class="fs-5 mb-2 font-monospace">
                                         <h:link outcome="/public/blog-detay" styleClass="text-white text-decoration-none devlog-home-post-title stretched-link" value="#{empty blog.baslik ? 'Başlıksız' : blog.baslik}">
@@ -106,17 +106,17 @@
                                     </p>
                                     <div class="pt-3 mt-auto border-top border-secondary border-opacity-25 d-flex flex-wrap align-items-center justify-content-between gap-2 position-relative z-2">
                                         <div class="d-flex align-items-center gap-2 min-w-0">
-                                            <span class="devlog-home-post-avatar font-monospace flex-shrink-0" aria-hidden="true">#{kesfetController.yazarHarfi(blog)}</span>
-                                            <span class="devlog-mono-label text-secondary text-truncate text-uppercase" style="color: var(--dl-ref-on-surface);">#{kesfetController.yazarAdi(blog)}</span>
+                                            <span class="devlog-home-post-avatar font-monospace flex-shrink-0" aria-hidden="true">#{kesfetBean.yazarHarfi(blog)}</span>
+                                            <span class="devlog-mono-label text-secondary text-truncate text-uppercase" style="color: var(--dl-ref-on-surface);">#{kesfetBean.yazarAdi(blog)}</span>
                                         </div>
                                         <div class="d-flex align-items-center gap-3 flex-shrink-0 font-monospace small text-secondary">
                                             <span class="d-flex align-items-center gap-1" title="Ortalama puan">
                                                 <span class="material-symbols-outlined devlog-home-post-star" style="font-size: 1rem;">star</span>
-                                                <span class="text-white">#{kesfetController.yildizMetin(blog)}</span>
+                                                <span class="text-white">#{kesfetBean.yildizMetin(blog)}</span>
                                             </span>
                                             <span class="d-flex align-items-center gap-1">
                                                 <span class="material-symbols-outlined" style="font-size: 1rem;">schedule</span>
-                                                #{kesfetController.tahminiOkuma(blog)}
+                                                #{kesfetBean.tahminiOkuma(blog)}
                                             </span>
                                         </div>
                                     </div>

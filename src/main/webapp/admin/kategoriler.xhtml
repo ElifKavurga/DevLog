@@ -8,7 +8,7 @@
                 template="/WEB-INF/templates/panelTemplate.xhtml">
 
     <f:metadata>
-        <f:viewAction action="#{kategoriController.hazirla}"/>
+        <f:viewAction action="#{kategoriBean.hazirla}"/>
     </f:metadata>
 
     <ui:define name="title">DevLog — Kategori yönetimi</ui:define>
@@ -22,37 +22,37 @@
                 <h:form id="ekleForm" styleClass="d-flex flex-column flex-sm-row flex-wrap gap-2 align-items-stretch align-items-sm-end mb-0">
                     <div class="flex-grow-1" style="min-width: 12rem;">
                         <label class="form-label devlog-mono-label text-secondary small mb-1" for="yeniIsim">Yeni kategori</label>
-                        <h:inputText id="yeniIsim" value="#{kategoriController.yeniIsim}" maxlength="200"
+                        <h:inputText id="yeniIsim" value="#{kategoriBean.yeniIsim}" maxlength="200"
                                      styleClass="form-control devlog-cms-input rounded-0 font-monospace"
                                      pt:placeholder="Örn. Frontend"/>
                     </div>
-                    <h:commandButton id="ekleBtn" value="Ekle" action="#{kategoriController.ekle}"
+                    <h:commandButton id="ekleBtn" value="Ekle" action="#{kategoriBean.ekle}"
                                      styleClass="btn btn-primary rounded-0 px-4 py-2 font-monospace small fw-bold text-uppercase"/>
                 </h:form>
             </header>
 
-            <h:panelGroup rendered="#{not empty kategoriController.hataMesaji}" layout="block"
+            <h:panelGroup rendered="#{not empty kategoriBean.hataMesaji}" layout="block"
                           styleClass="alert alert-danger rounded-0 small font-monospace mb-4">
-                #{kategoriController.hataMesaji}
+                #{kategoriBean.hataMesaji}
             </h:panelGroup>
 
-            <h:panelGroup rendered="#{kategoriController.duzenlemeModu}" layout="block" styleClass="devlog-cms-card p-4 mb-4">
+            <h:panelGroup rendered="#{kategoriBean.duzenlemeModu}" layout="block" styleClass="devlog-cms-card p-4 mb-4">
                 <h:form id="duzenleForm" styleClass="mb-0">
                     <div class="row g-3 align-items-end">
                         <div class="col-12 col-md-8">
-                            <label class="form-label devlog-mono-label text-secondary small mb-1" for="duzenIsim">Düzenle (ID #{kategoriController.duzenlemeId})</label>
-                            <h:inputText id="duzenIsim" value="#{kategoriController.duzenlemeIsim}" maxlength="200"
+                            <label class="form-label devlog-mono-label text-secondary small mb-1" for="duzenIsim">Düzenle (ID #{kategoriBean.duzenlemeId})</label>
+                            <h:inputText id="duzenIsim" value="#{kategoriBean.duzenlemeIsim}" maxlength="200"
                                          styleClass="form-control devlog-cms-input rounded-0 font-monospace"/>
                         </div>
                         <div class="col-12 col-md-4 d-flex flex-wrap gap-2">
-                            <h:commandButton value="Kaydet" action="#{kategoriController.kaydetDuzenle}"
+                            <h:commandButton value="Kaydet" action="#{kategoriBean.kaydetDuzenle}"
                                              styleClass="btn btn-primary rounded-0 flex-grow-1 font-monospace small text-uppercase"/>
-                            <h:commandButton value="İptal" action="#{kategoriController.iptalDuzenle}" immediate="true"
+                            <h:commandButton value="İptal" action="#{kategoriBean.iptalDuzenle}" immediate="true"
                                              styleClass="btn btn-outline-secondary rounded-0 flex-grow-1 font-monospace small text-uppercase border-secondary"/>
                         </div>
                     </div>
                     <p class="text-secondary font-monospace mt-2 mb-0" style="font-size: 0.65rem;">
-                        Slug otomatik güncellenir: <span class="text-white">#{kategoriController.slugUret(kategoriController.duzenlemeIsim)}</span>
+                        Slug otomatik güncellenir: <span class="text-white">#{kategoriBean.slugUret(kategoriBean.duzenlemeIsim)}</span>
                     </p>
                 </h:form>
             </h:panelGroup>
@@ -62,7 +62,7 @@
                     <div class="devlog-cms-stat p-4 h-100 d-flex justify-content-between align-items-center">
                         <div>
                             <div class="devlog-mono-label text-secondary mb-1" style="font-size: 0.65rem;">Toplam kategori</div>
-                            <div class="fs-4 fw-bold text-primary font-monospace">#{kategoriController.kategoriler.size()}</div>
+                            <div class="fs-4 fw-bold text-primary font-monospace">#{kategoriBean.kategoriler.size()}</div>
                         </div>
                         <span class="material-symbols-outlined text-secondary opacity-50">data_array</span>
                     </div>
@@ -109,24 +109,24 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <ui:fragment rendered="#{empty kategoriController.kategoriler}">
+                            <ui:fragment rendered="#{empty kategoriBean.kategoriler}">
                                 <tr>
                                     <td colspan="5" class="px-4 py-5 text-center text-secondary font-monospace small">
                                         Henüz kategori yok; yukarıdan ekleyin.
                                     </td>
                                 </tr>
                             </ui:fragment>
-                            <ui:repeat value="#{kategoriController.kategoriler}" var="kat">
+                            <ui:repeat value="#{kategoriBean.kategoriler}" var="kat">
                                 <tr class="devlog-cms-table-row">
                                     <td class="px-4 py-3 font-monospace small text-secondary">#{kat.id}</td>
                                     <td class="px-4 py-3 fw-semibold text-white font-monospace small">#{kat.isim}</td>
                                     <td class="px-4 py-3 font-monospace small text-secondary d-none d-md-table-cell">#{empty kat.slug ? '—' : kat.slug}</td>
-                                    <td class="px-4 py-3 text-end font-monospace small d-none d-lg-table-cell">#{kategoriController.blogSayisi(kat)}</td>
+                                    <td class="px-4 py-3 text-end font-monospace small d-none d-lg-table-cell">#{kategoriBean.blogSayisi(kat)}</td>
                                     <td class="px-4 py-3 text-end">
                                         <div class="d-inline-flex flex-wrap justify-content-end gap-1">
-                                            <h:commandButton value="Düzenle" action="#{kategoriController.duzenlemeyeBasla(kat)}"
+                                            <h:commandButton value="Düzenle" action="#{kategoriBean.duzenlemeyeBasla(kat)}"
                                                              styleClass="btn btn-sm btn-outline-primary rounded-0 font-monospace" style="font-size: 0.65rem;"/>
-                                            <h:commandButton value="Sil" action="#{kategoriController.sil(kat.id)}"
+                                            <h:commandButton value="Sil" action="#{kategoriBean.sil(kat.id)}"
                                                              styleClass="btn btn-sm btn-outline-danger rounded-0 font-monospace"
                                                              style="font-size: 0.65rem;"
                                                              onclick="return confirm('Bu kategoriyi silmek istediğinize emin misiniz?');"/>

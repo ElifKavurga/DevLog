@@ -7,7 +7,7 @@
                 template="/WEB-INF/templates/panelTemplate.xhtml">
 
     <f:metadata>
-        <f:viewAction action="#{profilController.hazirla}"/>
+        <f:viewAction action="#{profilBean.hazirla}"/>
     </f:metadata>
 
     <ui:define name="title">DevLog — Profil</ui:define>
@@ -26,15 +26,15 @@
                     <h:form id="profilBilgiForm" styleClass="mb-0">
                         <div class="mb-3">
                             <label class="form-label devlog-mono-label text-secondary small" for="duzenleKa">Kullanıcı adı</label>
-                            <h:inputText id="duzenleKa" value="#{profilController.duzenleKullaniciAdi}"
+                            <h:inputText id="duzenleKa" value="#{profilBean.duzenleKullaniciAdi}"
                                          styleClass="form-control rounded-0 font-monospace bg-black text-white border-secondary"/>
                         </div>
                         <div class="mb-4">
                             <label class="form-label devlog-mono-label text-secondary small" for="duzenleEp">E-posta</label>
-                            <h:inputText id="duzenleEp" value="#{profilController.duzenleEposta}"
+                            <h:inputText id="duzenleEp" value="#{profilBean.duzenleEposta}"
                                          styleClass="form-control rounded-0 font-monospace bg-black text-white border-secondary"/>
                         </div>
-                        <h:commandButton value="Bilgileri kaydet" action="#{profilController.profilBilgiGuncelle}"
+                        <h:commandButton value="Bilgileri kaydet" action="#{profilBean.profilBilgiGuncelle}"
                                          styleClass="btn btn-outline-primary rounded-0 px-4 py-2 font-monospace small text-uppercase"/>
                     </h:form>
                 </section>
@@ -44,28 +44,28 @@
                     <h:form id="profilSifreForm" styleClass="mb-0">
                         <div class="mb-3">
                             <label class="form-label devlog-mono-label text-secondary small">Mevcut şifre</label>
-                            <h:inputSecret value="#{profilController.mevcutSifre}" styleClass="form-control rounded-0 font-monospace bg-black text-white border-secondary"/>
+                            <h:inputSecret value="#{profilBean.mevcutSifre}" styleClass="form-control rounded-0 font-monospace bg-black text-white border-secondary"/>
                         </div>
                         <div class="mb-3">
                             <label class="form-label devlog-mono-label text-secondary small">Yeni şifre</label>
-                            <h:inputSecret value="#{profilController.yeniSifre}" styleClass="form-control rounded-0 font-monospace bg-black text-white border-secondary"/>
+                            <h:inputSecret value="#{profilBean.yeniSifre}" styleClass="form-control rounded-0 font-monospace bg-black text-white border-secondary"/>
                         </div>
                         <div class="mb-4">
                             <label class="form-label devlog-mono-label text-secondary small">Yeni şifre (tekrar)</label>
-                            <h:inputSecret value="#{profilController.yeniSifreTekrar}" styleClass="form-control rounded-0 font-monospace bg-black text-white border-secondary"/>
+                            <h:inputSecret value="#{profilBean.yeniSifreTekrar}" styleClass="form-control rounded-0 font-monospace bg-black text-white border-secondary"/>
                         </div>
-                        <h:commandButton value="Şifreyi güncelle" action="#{profilController.sifreDegistir}"
+                        <h:commandButton value="Şifreyi güncelle" action="#{profilBean.sifreDegistir}"
                                          styleClass="btn btn-outline-secondary rounded-0 px-4 py-2 font-monospace small text-uppercase"/>
                     </h:form>
                 </section>
 
                 <dl class="row font-monospace small text-secondary mb-0 px-1">
                     <dt class="col-4">Rol</dt>
-                    <dd class="col-8 text-white mb-2">#{oturumController.aktifKullanici.rol}</dd>
+                    <dd class="col-8 text-white mb-2">#{oturumBean.aktifKullanici.rol}</dd>
                     <dt class="col-4">Ad</dt>
-                    <dd class="col-8 text-white mb-2">#{empty oturumController.aktifKullanici.ad ? '—' : oturumController.aktifKullanici.ad}</dd>
+                    <dd class="col-8 text-white mb-2">#{empty oturumBean.aktifKullanici.ad ? '—' : oturumBean.aktifKullanici.ad}</dd>
                     <dt class="col-4">Soyad</dt>
-                    <dd class="col-8 text-white mb-0">#{empty oturumController.aktifKullanici.soyad ? '—' : oturumController.aktifKullanici.soyad}</dd>
+                    <dd class="col-8 text-white mb-0">#{empty oturumBean.aktifKullanici.soyad ? '—' : oturumBean.aktifKullanici.soyad}</dd>
                 </dl>
             </div>
 
@@ -91,20 +91,20 @@
             </div>
         </div>
 
-        <ui:fragment rendered="#{profilController.yazarlikTalebiGosterme}">
+        <ui:fragment rendered="#{profilBean.yazarlikTalebiGosterme}">
             <section class="devlog-cms-card p-4 mt-4 border border-secondary border-opacity-25 rounded-0 devlog-profil-card devlog-profil-yazar-talep">
                 <h2 class="devlog-mono-label text-secondary mb-2">Yazarlık</h2>
                 <p class="text-secondary font-monospace small mb-4">
                     Okur olarak yazılarınızı yayımlamak için yönetici onayı gerekir.
                 </p>
-                <ui:fragment rendered="#{oturumController.aktifKullanici.yazarlikTalepEtti}">
+                <ui:fragment rendered="#{oturumBean.aktifKullanici.yazarlikTalepEtti}">
                     <div class="alert alert-info rounded-0 small font-monospace border border-primary border-opacity-25 mb-0">
                         Yazarlık talebiniz alındı; yönetici onayı bekleniyor.
                     </div>
                 </ui:fragment>
-                <h:form styleClass="mb-0" rendered="#{not oturumController.aktifKullanici.yazarlikTalepEtti}">
+                <h:form styleClass="mb-0" rendered="#{not oturumBean.aktifKullanici.yazarlikTalepEtti}">
                     <h:commandButton value="Yazarlık talebi gönder"
-                                     action="#{profilController.yazarlikTalebiGonder}"
+                                     action="#{profilBean.yazarlikTalebiGonder}"
                                      styleClass="btn btn-primary rounded-0 w-100 py-3 font-monospace fw-bold text-uppercase devlog-profil-yazar-btn"/>
                 </h:form>
             </section>

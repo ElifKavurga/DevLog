@@ -7,7 +7,7 @@
                 template="/WEB-INF/templates/panelTemplate.xhtml">
 
     <f:metadata>
-        <f:viewAction action="#{adminOnayController.hazirla}"/>
+        <f:viewAction action="#{adminOnayBean.hazirla}"/>
     </f:metadata>
 
     <ui:define name="title">DevLog — Admin onay</ui:define>
@@ -19,7 +19,7 @@
                     <h1 class="devlog-headline mb-0" style="font-size: 1.75rem;">Onay bekleyen bloglar</h1>
                 </div>
                 <h:form styleClass="d-flex flex-wrap gap-2 mb-0">
-                    <h:commandButton value="Listeyi yenile" action="#{adminOnayController.yenile}"
+                    <h:commandButton value="Listeyi yenile" action="#{adminOnayBean.yenile}"
                                      styleClass="btn btn-primary rounded-0 px-3 py-2 font-monospace small text-uppercase"/>
                 </h:form>
             </header>
@@ -28,7 +28,7 @@
                 <div class="col-12 col-md-4">
                     <div class="devlog-cms-stat p-4 h-100">
                         <div class="devlog-mono-label text-secondary mb-1" style="font-size: 0.65rem;">Kuyruk</div>
-                        <div class="fs-3 fw-bold text-primary font-monospace">#{adminOnayController.bekleyenSayisi}</div>
+                        <div class="fs-3 fw-bold text-primary font-monospace">#{adminOnayBean.bekleyenSayisi}</div>
                     </div>
                 </div>
                 <div class="col-12 col-md-4">
@@ -62,14 +62,14 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <ui:fragment rendered="#{empty adminOnayController.bekleyenler}">
+                            <ui:fragment rendered="#{empty adminOnayBean.bekleyenler}">
                                 <tr>
                                     <td colspan="5" class="px-4 py-5 text-center text-secondary font-monospace small">
                                         Onay bekleyen blog yok.
                                     </td>
                                 </tr>
                             </ui:fragment>
-                            <ui:repeat value="#{adminOnayController.bekleyenler}" var="blog">
+                            <ui:repeat value="#{adminOnayBean.bekleyenler}" var="blog">
                                 <tr class="devlog-cms-table-row">
                                     <td class="px-4 py-3">
                                         <div class="fw-semibold text-white font-monospace small">#{empty blog.baslik ? 'Başlıksız' : blog.baslik}</div>
@@ -79,18 +79,18 @@
                                         <div class="d-flex align-items-center gap-2">
                                             <div class="rounded d-flex align-items-center justify-content-center font-monospace fw-bold small border border-secondary border-opacity-50"
                                                  style="width: 1.75rem; height: 1.75rem; min-width: 1.75rem; background: rgba(74, 142, 255, 0.12); color: var(--dl-ref-primary);">
-                                                #{adminOnayController.yazarHarfi(blog)}
+                                                #{adminOnayBean.yazarHarfi(blog)}
                                             </div>
-                                            <span class="font-monospace small">#{adminOnayController.yazarOzeti(blog)}</span>
+                                            <span class="font-monospace small">#{adminOnayBean.yazarOzeti(blog)}</span>
                                         </div>
                                     </td>
                                     <td class="px-4 py-3 d-none d-md-table-cell">
                                         <span class="badge devlog-cms-kategori-badge rounded-0 text-uppercase">
-                                            #{adminOnayController.kategoriEtiket(blog)}
+                                            #{adminOnayBean.kategoriEtiket(blog)}
                                         </span>
                                     </td>
                                     <td class="px-4 py-3 font-monospace small text-secondary d-none d-xl-table-cell">
-                                        #{adminOnayController.tarihMetni(blog)}
+                                        #{adminOnayBean.tarihMetni(blog)}
                                     </td>
                                     <td class="px-4 py-3 text-end align-middle">
                                         <div class="d-inline-flex flex-wrap justify-content-end align-items-center gap-1">
@@ -100,12 +100,12 @@
                                                 <f:param name="id" value="#{blog.id}"/>
                                                 <span class="material-symbols-outlined">visibility</span>
                                             </h:link>
-                                            <h:commandLink action="#{adminOnayController.onayla(blog.id)}"
+                                            <h:commandLink action="#{adminOnayBean.onayla(blog.id)}"
                                                            styleClass="devlog-action-btn border border-success border-opacity-50 text-success bg-transparent text-decoration-none"
                                                            title="Onayla">
                                                 <span class="material-symbols-outlined" aria-hidden="true">check</span>
                                             </h:commandLink>
-                                            <h:commandLink action="#{adminOnayController.reddet(blog.id)}"
+                                            <h:commandLink action="#{adminOnayBean.reddet(blog.id)}"
                                                            styleClass="devlog-action-btn border border-danger border-opacity-50 text-danger bg-transparent text-decoration-none"
                                                            title="Reddet">
                                                 <span class="material-symbols-outlined" aria-hidden="true">close</span>
@@ -120,7 +120,7 @@
                 </div>
                 <div class="px-4 py-3 border-top border-secondary border-opacity-25 devlog-mono-label text-secondary d-flex flex-wrap justify-content-between gap-2"
                      style="font-size: 0.65rem;">
-                    <span>Toplam #{adminOnayController.bekleyenSayisi} blog</span>
+                    <span>Toplam #{adminOnayBean.bekleyenSayisi} blog</span>
                     <span>DevLog CMS</span>
                 </div>
             </div>
