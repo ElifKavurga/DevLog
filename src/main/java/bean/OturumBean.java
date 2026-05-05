@@ -53,6 +53,7 @@ public class OturumBean implements Serializable {
 
     public void girisYap(Kullanici kullanici) {
         this.aktifKullanici = kullanici;
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user", aktifKullanici);
     }
 
     public void aktifKullaniciyiGuncelle(Kullanici kullanici) {
@@ -68,7 +69,7 @@ public class OturumBean implements Serializable {
     }
 
     public String cikisYap() {
-        aktifKullanici = null;
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         return "/public/index?faces-redirect=true";
     }
 
