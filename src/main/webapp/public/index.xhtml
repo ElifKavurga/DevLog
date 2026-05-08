@@ -21,9 +21,7 @@
                         <h1 class="devlog-headline mb-2" style="font-size: 2rem;">Keşfet</h1>
                         <p class="devlog-mono-label text-secondary mb-0">/dev/log/public/index</p>
                         <ui:fragment rendered="#{not empty kesfetBean.seciliKategoriOzeti}">
-                            <p class="small text-secondary font-monospace mb-0 mt-2">
-                                Kategoriler: <span class="text-white">#{kesfetBean.seciliKategoriOzeti}</span>
-                            </p>
+                            <p class="small text-secondary font-monospace mb-0 mt-2">Kategoriler: <span class="text-white">#{kesfetBean.seciliKategoriOzeti}</span></p>
                         </ui:fragment>
                         <ui:fragment rendered="#{kesfetBean.aramaAktif}">
                             <p class="small text-secondary font-monospace mb-0 mt-2">
@@ -71,9 +69,9 @@
                     </div>
                 </ui:fragment>
 
-                <div class="row">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
                     <ui:repeat value="#{kesfetBean.yayinlananBloglar}" var="blog">
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4 d-flex">
+                        <div class="col d-flex">
                             <article class="devlog-cms-card overflow-hidden w-100 d-flex flex-column p-0 position-relative">
                                 <div class="devlog-cms-editor-toolbar d-flex align-items-center justify-content-between px-3 py-2 border-bottom border-secondary border-opacity-25 position-relative z-1">
                                     <span class="devlog-mono-label text-secondary mb-0">Kayıt</span>
@@ -104,12 +102,12 @@
                                     <p class="text-secondary small font-monospace devlog-home-post-excerpt flex-grow-1 mb-3">
                                         #{empty blog.ozet ? '—' : blog.ozet}
                                     </p>
-                                    <div class="pt-3 mt-auto border-top border-secondary border-opacity-25 d-flex flex-wrap align-items-center justify-content-between gap-2 position-relative z-2">
-                                        <div class="d-flex align-items-center gap-2 min-w-0">
-                                            <span class="devlog-home-post-avatar font-monospace flex-shrink-0" aria-hidden="true">#{kesfetBean.yazarHarfi(blog)}</span>
-                                            <span class="devlog-mono-label text-secondary text-truncate text-uppercase" style="color: var(--dl-ref-on-surface);">#{kesfetBean.yazarAdi(blog)}</span>
-                                        </div>
-                                        <div class="d-flex align-items-center gap-3 flex-shrink-0 font-monospace small text-secondary">
+                                    <div class="pt-3 mt-auto border-top border-secondary border-opacity-25 d-flex flex-wrap align-items-center justify-content-between gap-2 position-relative z-2 font-monospace small text-secondary">
+                                        <span class="d-flex align-items-center gap-2 min-w-0">
+                                            <span class="devlog-home-post-avatar flex-shrink-0" aria-hidden="true">#{kesfetBean.yazarHarfi(blog)}</span>
+                                            <span class="devlog-mono-label text-truncate text-uppercase" style="color: var(--dl-ref-on-surface);">#{kesfetBean.yazarAdi(blog)}</span>
+                                        </span>
+                                        <span class="d-flex align-items-center gap-3 flex-shrink-0">
                                             <span class="d-flex align-items-center gap-1" title="Ortalama puan">
                                                 <span class="material-symbols-outlined devlog-home-post-star" style="font-size: 1rem;">star</span>
                                                 <span class="text-white">#{kesfetBean.yildizMetin(blog)}</span>
@@ -118,7 +116,7 @@
                                                 <span class="material-symbols-outlined" style="font-size: 1rem;">schedule</span>
                                                 #{kesfetBean.tahminiOkuma(blog)}
                                             </span>
-                                        </div>
+                                        </span>
                                     </div>
                                 </div>
                             </article>

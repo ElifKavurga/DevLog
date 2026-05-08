@@ -284,8 +284,4 @@ public class BlogDetayBean implements Serializable {
         ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Bilgi", "Yorumunuz kaydedildi."));
         return null;
     }
-
-    public String yorumGonder() {
-        return yorumEkle();
-    }
 }

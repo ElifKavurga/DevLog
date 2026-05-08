@@ -5,36 +5,32 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
     <header class="devlog-header border-bottom sticky-top z-3">
-        <div class="devlog-container-max px-3 px-md-4">
-            <div class="d-flex justify-content-between align-items-center py-2 py-md-0" style="min-height: 4rem;">
-                <div class="d-flex align-items-center gap-4">
-                    <h:link outcome="/public/index" styleClass="d-flex align-items-center text-decoration-none" title="Ana sayfa">
-                        <h:graphicImage library="img" name="Logo_Amblem.png" alt="DevLog" styleClass="devlog-logo devlog-logo--emblem"/>
-                    </h:link>
-                    <nav class="d-none d-md-flex align-items-center gap-4">
-                        <h:link outcome="/public/index" styleClass="devlog-nav-link active">Keşfet</h:link>
-                        <a class="devlog-nav-link" href="#">Kategoriler</a>
-                        <a class="devlog-nav-link" href="#">Hakkımızda</a>
-                    </nav>
-                </div>
-                <div class="d-flex align-items-center gap-3">
-                    <div class="d-flex align-items-center gap-2 flex-wrap justify-content-end">
-                        <h:panelGroup rendered="#{not oturumBean.girisYapildi}" layout="block" styleClass="d-flex align-items-center gap-2">
-                            <h:link outcome="/auth/giris" styleClass="btn devlog-btn-login rounded-0 px-3 py-1 text-decoration-none">Giriş yap</h:link>
-                            <h:link outcome="/auth/kayit" styleClass="btn devlog-btn-signup rounded-0 px-3 py-1 text-decoration-none">Kayıt ol</h:link>
-                        </h:panelGroup>
-                        <h:panelGroup rendered="#{oturumBean.girisYapildi}" layout="block" styleClass="d-flex align-items-center gap-2">
-                            <span class="font-monospace small text-secondary text-truncate" style="max-width: 8rem;" title="#{oturumBean.aktifKullanici.kullaniciAdi}">
-                                #{oturumBean.aktifKullanici.kullaniciAdi}
-                            </span>
-                            <h:form styleClass="d-inline mb-0">
-                                <h:commandLink action="#{oturumBean.cikisYap}" styleClass="btn devlog-btn-login rounded-0 px-3 py-1 border-0 text-decoration-none d-inline-block">
-                                    Çıkış
-                                </h:commandLink>
-                            </h:form>
-                        </h:panelGroup>
-                    </div>
-                </div>
+        <div class="devlog-container-max px-3 px-md-4 d-flex justify-content-between align-items-center flex-wrap gap-3 py-2 py-md-0" style="min-height: 4rem;">
+            <div class="d-flex align-items-center gap-4">
+                <h:link outcome="/public/index" styleClass="d-flex align-items-center text-decoration-none" title="Ana sayfa">
+                    <h:graphicImage library="img" name="Logo_Amblem.png" alt="DevLog" styleClass="devlog-logo devlog-logo--emblem"/>
+                </h:link>
+                <nav class="d-none d-md-flex align-items-center gap-4">
+                    <h:link outcome="/public/index" styleClass="devlog-nav-link active">Keşfet</h:link>
+                    <a class="devlog-nav-link" href="#">Kategoriler</a>
+                    <a class="devlog-nav-link" href="#">Hakkımızda</a>
+                </nav>
+            </div>
+            <div class="d-flex align-items-center gap-2 flex-wrap justify-content-end ms-auto">
+                <h:panelGroup rendered="#{not oturumBean.girisYapildi}" layout="block" styleClass="d-flex align-items-center gap-2">
+                    <h:link outcome="/auth/giris" styleClass="btn devlog-btn-login rounded-0 px-3 py-1 text-decoration-none">Giriş yap</h:link>
+                    <h:link outcome="/auth/kayit" styleClass="btn devlog-btn-signup rounded-0 px-3 py-1 text-decoration-none">Kayıt ol</h:link>
+                </h:panelGroup>
+                <h:panelGroup rendered="#{oturumBean.girisYapildi}" layout="block" styleClass="d-flex align-items-center gap-2">
+                    <span class="font-monospace small text-secondary text-truncate" style="max-width: 8rem;" title="#{oturumBean.aktifKullanici.kullaniciAdi}">
+                        #{oturumBean.aktifKullanici.kullaniciAdi}
+                    </span>
+                    <h:form styleClass="d-inline mb-0">
+                        <h:commandLink action="#{oturumBean.cikisYap}" styleClass="btn devlog-btn-login rounded-0 px-3 py-1 border-0 text-decoration-none d-inline-block">
+                            Çıkış
+                        </h:commandLink>
+                    </h:form>
+                </h:panelGroup>
             </div>
         </div>
     </header>

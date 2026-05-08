@@ -24,20 +24,20 @@
                 </h:form>
             </header>
 
-            <div class="row g-3 mb-4">
-                <div class="col-12 col-md-4">
+            <div class="row row-cols-1 row-cols-md-3 g-3 mb-4">
+                <div class="col">
                     <div class="devlog-cms-stat p-4 h-100">
                         <div class="devlog-mono-label text-secondary mb-1" style="font-size: 0.65rem;">Kuyruk</div>
                         <div class="fs-3 fw-bold text-primary font-monospace">#{adminOnayBean.bekleyenSayisi}</div>
                     </div>
                 </div>
-                <div class="col-12 col-md-4">
+                <div class="col">
                     <div class="devlog-cms-stat p-4 h-100">
                         <div class="devlog-mono-label text-secondary mb-1" style="font-size: 0.65rem;">Durum</div>
                         <div class="fs-6 fw-bold text-success font-monospace small text-uppercase">Canlı</div>
                     </div>
                 </div>
-                <div class="col-12 col-md-4">
+                <div class="col">
                     <div class="devlog-cms-stat p-4 h-100">
                         <div class="devlog-mono-label text-secondary mb-1" style="font-size: 0.65rem;">Erişim</div>
                         <div class="fs-6 text-secondary font-monospace small">ADMIN</div>
@@ -46,8 +46,8 @@
             </div>
 
             <div class="devlog-cms-table-wrap border border-secondary border-opacity-25">
-                <div class="devlog-cms-editor-toolbar px-3 py-2 border-bottom border-secondary border-opacity-25">
-                    <span class="font-monospace small text-secondary text-uppercase">Blog sorgusu: ONAY_BEKLIYOR</span>
+                <div class="devlog-cms-editor-toolbar px-3 py-2 border-bottom border-secondary border-opacity-25 font-monospace small text-secondary text-uppercase">
+                    Blog sorgusu: ONAY_BEKLIYOR
                 </div>
                 <div class="table-responsive">
                     <h:form id="onayForm" styleClass="mb-0">
@@ -125,14 +125,12 @@
                 </div>
             </div>
 
-            <section class="devlog-cms-card p-4 mt-4">
+            <section class="devlog-cms-card p-4 mt-4 font-monospace small text-success" style="font-size: 0.7rem; line-height: 1.6;">
                 <h2 class="devlog-mono-label text-secondary mb-3 d-flex align-items-center gap-2">
                     <span class="material-symbols-outlined">terminal</span> Sistem günlüğü
                 </h2>
-                <div class="font-monospace small text-success" style="font-size: 0.7rem; line-height: 1.6;">
-                    <p class="mb-1">[INFO] Onay kuyruğu yüklendi.</p>
-                    <p class="mb-0 text-secondary">[INFO] Reddedilen bloglar yazar panelinde görünür.</p>
-                </div>
+                <p class="mb-1">[INFO] Onay kuyruğu yüklendi.</p>
+                <p class="mb-0 text-secondary">[INFO] Reddedilen bloglar yazar panelinde görünür.</p>
             </section>
     </ui:define>
 </ui:composition>

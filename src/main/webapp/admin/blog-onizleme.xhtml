@@ -18,63 +18,52 @@
     </ui:define>
 
     <ui:define name="content">
-        <div class="devlog-admin-onizleme-wrap mb-4">
-            <header class="mb-3 pb-3 border-bottom border-secondary border-opacity-25">
+        <div class="devlog-admin-onizleme-wrap mb-4 pb-3 border-bottom border-secondary border-opacity-25 d-flex flex-wrap align-items-start justify-content-between gap-3">
+            <div>
                 <span class="devlog-mono-label text-primary mb-1 d-block">/admin/blog-onizleme</span>
                 <h1 class="devlog-headline mb-0" style="font-size: 1.35rem;">Ön izleme</h1>
-            </header>
-
+                <ui:fragment rendered="#{adminBlogOnizlemeBean.blog != null}">
+                    <p class="font-monospace small text-secondary mb-0 mt-2">ONAY_BEKLIYOR · ID #{adminBlogOnizlemeBean.blog.id}</p>
+                </ui:fragment>
+            </div>
             <ui:fragment rendered="#{adminBlogOnizlemeBean.blog != null}">
-                <div class="devlog-admin-onizleme-toolbar border border-secondary border-opacity-25 rounded-0 px-3 py-2 d-flex flex-wrap align-items-center justify-content-between gap-2 mb-4">
-                    <span class="font-monospace small text-secondary">ONAY_BEKLIYOR · ID #{adminBlogOnizlemeBean.blog.id}</span>
-                    <h:form styleClass="d-flex flex-wrap gap-2 mb-0">
-                        <h:commandButton value="Onayla" action="#{adminOnayBean.onaylaVeKuyregeGit(adminBlogOnizlemeBean.blog.id)}"
-                                         styleClass="btn btn-success rounded-0 px-3 py-2 font-monospace small text-uppercase"/>
-                        <h:commandButton value="Reddet" action="#{adminOnayBean.reddetVeKuyregeGit(adminBlogOnizlemeBean.blog.id)}"
-                                         styleClass="btn btn-outline-danger rounded-0 px-3 py-2 font-monospace small text-uppercase"/>
-                    </h:form>
-                </div>
+                <h:form styleClass="d-flex flex-wrap gap-2 mb-0">
+                    <h:commandButton value="Onayla" action="#{adminOnayBean.onaylaVeKuyregeGit(adminBlogOnizlemeBean.blog.id)}"
+                                     styleClass="btn btn-success rounded-0 px-3 py-2 font-monospace small text-uppercase"/>
+                    <h:commandButton value="Reddet" action="#{adminOnayBean.reddetVeKuyregeGit(adminBlogOnizlemeBean.blog.id)}"
+                                     styleClass="btn btn-outline-danger rounded-0 px-3 py-2 font-monospace small text-uppercase"/>
+                </h:form>
             </ui:fragment>
         </div>
 
         <main class="devlog-read devlog-admin-onizleme w-100 flex-grow-1">
             <div class="container py-2 py-md-3 px-0 px-md-2">
-                <div class="row mb-3">
-                    <div class="col-12">
-                        <h:link outcome="/admin/admin-onay" styleClass="devlog-read-back font-monospace small text-decoration-none">← ~/admin/admin-onay</h:link>
-                    </div>
+                <div class="mb-3">
+                    <h:link outcome="/admin/admin-onay" styleClass="devlog-read-back font-monospace small text-decoration-none">← ~/admin/admin-onay</h:link>
                 </div>
 
                 <ui:fragment rendered="#{adminBlogOnizlemeBean.blog == null}">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="devlog-read-empty border devlog-read-border p-5 text-center font-monospace small text-secondary">
-                                Blog bulunamadı veya onay bekliyor durumunda değil.
-                            </div>
-                        </div>
+                    <div class="devlog-read-empty border devlog-read-border p-5 text-center font-monospace small text-secondary">
+                        Blog bulunamadı veya onay bekliyor durumunda değil.
                     </div>
                 </ui:fragment>
 
                 <ui:fragment rendered="#{adminBlogOnizlemeBean.blog != null}">
-                    <div class="row g-4">
-                        <div class="col-12">
-                            <section class="devlog-read-meta border devlog-read-border font-monospace small" aria-label="Yayın bilgisi">
-                                <div class="devlog-read-meta__gutter px-2 py-1 border-bottom devlog-read-border text-secondary">/**</div>
-                                <div class="p-3 p-md-4 text-secondary">
-                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@title</span> <span class="devlog-read-meta__val text-white">#{adminBlogOnizlemeBean.blog.baslik}</span></p>
-                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@author</span> <span class="devlog-read-meta__val">#{adminBlogOnizlemeBean.yazarAdi()}</span></p>
-                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@category</span> <span class="devlog-read-meta__val">#{adminBlogOnizlemeBean.kategoriEtiket()}</span></p>
-                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@readTime</span> <span class="devlog-read-meta__val">#{adminBlogOnizlemeBean.tahminiOkuma()}</span></p>
-                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@version</span> <span class="devlog-read-meta__val">#{adminBlogOnizlemeBean.surumEtiketi()}</span></p>
-                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@rating</span> <span class="devlog-read-meta__val">#{adminBlogOnizlemeBean.yildizMetin()}</span> <span class="text-secondary">avg</span></p>
-                                    <p class="mb-0 devlog-read-meta__line"><span class="devlog-read-meta__kw">@published</span> <span class="devlog-read-meta__val">#{adminBlogOnizlemeBean.yayinTarihiMetni()}</span></p>
-                                </div>
-                                <div class="devlog-read-meta__gutter px-2 py-1 border-top devlog-read-border text-secondary">*/</div>
-                            </section>
+                    <section class="devlog-read-meta border devlog-read-border font-monospace small mb-4" aria-label="Yayın bilgisi">
+                        <div class="devlog-read-meta__gutter px-2 py-1 border-bottom devlog-read-border text-secondary">/**</div>
+                        <div class="p-3 p-md-4 text-secondary">
+                            <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@title</span> <span class="devlog-read-meta__val text-white">#{adminBlogOnizlemeBean.blog.baslik}</span></p>
+                            <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@author</span> <span class="devlog-read-meta__val">#{adminBlogOnizlemeBean.yazarAdi()}</span></p>
+                            <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@category</span> <span class="devlog-read-meta__val">#{adminBlogOnizlemeBean.kategoriEtiket()}</span></p>
+                            <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@readTime</span> <span class="devlog-read-meta__val">#{adminBlogOnizlemeBean.tahminiOkuma()}</span></p>
+                            <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@version</span> <span class="devlog-read-meta__val">#{adminBlogOnizlemeBean.surumEtiketi()}</span></p>
+                            <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@rating</span> <span class="devlog-read-meta__val">#{adminBlogOnizlemeBean.yildizMetin()}</span> <span class="text-secondary">avg</span></p>
+                            <p class="mb-0 devlog-read-meta__line"><span class="devlog-read-meta__kw">@published</span> <span class="devlog-read-meta__val">#{adminBlogOnizlemeBean.yayinTarihiMetni()}</span></p>
                         </div>
-                    </div>
+                        <div class="devlog-read-meta__gutter px-2 py-1 border-top devlog-read-border text-secondary">*/</div>
+                    </section>
 
-                    <div class="row g-4 align-items-start mt-0">
+                    <div class="row g-4 align-items-start">
                         <div class="col-12 col-lg-8">
                             <div class="devlog-read-hero border devlog-read-border mb-4">
                                 <div class="devlog-read-hero-inner">

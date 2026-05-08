@@ -21,42 +21,32 @@
     <ui:define name="content">
         <main class="devlog-read w-100 flex-grow-1">
             <div class="container py-4 py-md-5">
-                <div class="row mb-3">
-                    <div class="col-12">
-                        <h:link outcome="/public/index" styleClass="devlog-read-back font-monospace small text-decoration-none">← ~/public/index</h:link>
-                    </div>
+                <div class="mb-3">
+                    <h:link outcome="/public/index" styleClass="devlog-read-back font-monospace small text-decoration-none">← ~/public/index</h:link>
                 </div>
 
                 <ui:fragment rendered="#{blogDetayBean.blog == null}">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="devlog-read-empty border devlog-read-border p-5 text-center font-monospace small text-secondary">
-                                Blog bulunamadı veya yayında değil.
-                            </div>
-                        </div>
+                    <div class="devlog-read-empty border devlog-read-border p-5 text-center font-monospace small text-secondary">
+                        Blog bulunamadı veya yayında değil.
                     </div>
                 </ui:fragment>
 
                 <ui:fragment rendered="#{blogDetayBean.blog != null}">
-                    <div class="row g-4">
-                        <div class="col-12">
-                            <section class="devlog-read-meta border devlog-read-border font-monospace small" aria-label="Yayın bilgisi">
-                                <div class="devlog-read-meta__gutter px-2 py-1 border-bottom devlog-read-border text-secondary">/**</div>
-                                <div class="p-3 p-md-4 text-secondary">
-                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@title</span> <span class="devlog-read-meta__val text-white">#{blogDetayBean.blog.baslik}</span></p>
-                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@author</span> <span class="devlog-read-meta__val">#{blogDetayBean.yazarAdi()}</span></p>
-                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@category</span> <span class="devlog-read-meta__val">#{blogDetayBean.kategoriEtiket()}</span></p>
-                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@readTime</span> <span class="devlog-read-meta__val">#{blogDetayBean.tahminiOkuma()}</span></p>
-                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@version</span> <span class="devlog-read-meta__val">#{blogDetayBean.surumEtiketi()}</span></p>
-                                    <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@rating</span> <span class="devlog-read-meta__val">#{blogDetayBean.yildizMetin()}</span> <span class="text-secondary">avg</span></p>
-                                    <p class="mb-0 devlog-read-meta__line"><span class="devlog-read-meta__kw">@published</span> <span class="devlog-read-meta__val">#{blogDetayBean.yayinTarihiMetni()}</span></p>
-                                </div>
-                                <div class="devlog-read-meta__gutter px-2 py-1 border-top devlog-read-border text-secondary">*/</div>
-                            </section>
+                    <section class="devlog-read-meta border devlog-read-border font-monospace small mb-4" aria-label="Yayın bilgisi">
+                        <div class="devlog-read-meta__gutter px-2 py-1 border-bottom devlog-read-border text-secondary">/**</div>
+                        <div class="p-3 p-md-4 text-secondary">
+                            <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@title</span> <span class="devlog-read-meta__val text-white">#{blogDetayBean.blog.baslik}</span></p>
+                            <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@author</span> <span class="devlog-read-meta__val">#{blogDetayBean.yazarAdi()}</span></p>
+                            <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@category</span> <span class="devlog-read-meta__val">#{blogDetayBean.kategoriEtiket()}</span></p>
+                            <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@readTime</span> <span class="devlog-read-meta__val">#{blogDetayBean.tahminiOkuma()}</span></p>
+                            <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@version</span> <span class="devlog-read-meta__val">#{blogDetayBean.surumEtiketi()}</span></p>
+                            <p class="mb-1 devlog-read-meta__line"><span class="devlog-read-meta__kw">@rating</span> <span class="devlog-read-meta__val">#{blogDetayBean.yildizMetin()}</span> <span class="text-secondary">avg</span></p>
+                            <p class="mb-0 devlog-read-meta__line"><span class="devlog-read-meta__kw">@published</span> <span class="devlog-read-meta__val">#{blogDetayBean.yayinTarihiMetni()}</span></p>
                         </div>
-                    </div>
+                        <div class="devlog-read-meta__gutter px-2 py-1 border-top devlog-read-border text-secondary">*/</div>
+                    </section>
 
-                    <div class="row g-4 align-items-start mt-0">
+                    <div class="row g-4 align-items-start">
                         <div class="col-12 col-lg-8">
                             <div class="devlog-read-hero border devlog-read-border mb-4">
                                 <div class="devlog-read-hero-inner">
@@ -94,26 +84,23 @@
                                         <span class="devlog-mono-label text-secondary mb-0">Yorumlar — stdout</span>
                                         <span class="font-monospace text-secondary" style="font-size: 0.65rem;">console</span>
                                     </div>
-                                    <div class="p-0">
-                                        <ui:fragment rendered="#{empty blogDetayBean.blog.yorumlar}">
-                                            <div class="px-3 py-3 font-monospace small border-bottom devlog-read-border">
+                                    <ui:fragment rendered="#{empty blogDetayBean.blog.yorumlar}">
+                                        <div class="px-3 py-3 font-monospace small border-bottom devlog-read-border">
+                                            <span class="devlog-read-console-prompt">&gt;</span><span class="text-secondary"> henüz yorum yok.</span>
+                                        </div>
+                                    </ui:fragment>
+                                    <ui:repeat value="#{blogDetayBean.blog.yorumlar}" var="y" varStatus="yst">
+                                        <div class="devlog-read-console-block px-3 py-3 font-monospace small #{yst.last ? '' : 'border-bottom devlog-read-border'}">
+                                            <div class="devlog-read-console-line mb-2">
                                                 <span class="devlog-read-console-prompt">&gt;</span>
-                                                <span class="text-secondary"> henüz yorum yok.</span>
+                                                <span class="devlog-read-console-meta"> [#{blogDetayBean.yorumTarihMetni(y)}] </span>
+                                                <span class="devlog-read-console-user">@#{blogDetayBean.yorumKullaniciAdi(y)}:</span>
                                             </div>
-                                        </ui:fragment>
-                                        <ui:repeat value="#{blogDetayBean.blog.yorumlar}" var="y" varStatus="yst">
-                                            <div class="devlog-read-console-block px-3 py-3 font-monospace small #{yst.last ? '' : 'border-bottom devlog-read-border'}">
-                                                <div class="devlog-read-console-line mb-2">
-                                                    <span class="devlog-read-console-prompt">&gt;</span>
-                                                    <span class="devlog-read-console-meta"> [#{blogDetayBean.yorumTarihMetni(y)}] </span>
-                                                    <span class="devlog-read-console-user">@#{blogDetayBean.yorumKullaniciAdi(y)}:</span>
-                                                </div>
-                                                <div class="devlog-read-console-body text-secondary" style="white-space: pre-wrap;">
-                                                    <h:outputText value="#{y.metin}" escape="true"/>
-                                                </div>
+                                            <div class="devlog-read-console-body text-secondary" style="white-space: pre-wrap;">
+                                                <h:outputText value="#{y.metin}" escape="true"/>
                                             </div>
-                                        </ui:repeat>
-                                    </div>
+                                        </div>
+                                    </ui:repeat>
                                 </section>
                             </h:panelGroup>
 

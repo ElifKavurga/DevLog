@@ -22,17 +22,17 @@
                     <h:commandLink action="#{oturumBean.menuGitBloglarim}" rendered="#{oturumBean.yazmayaYetkili}"
                                    styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/panel/bloglarim.xhtml') ? 'active' : ''}">
                         <span class="material-symbols-outlined" aria-hidden="true">article</span>
-                        <span>Bloglarım</span>
+                        Bloglarım
                     </h:commandLink>
                     <h:commandLink action="#{oturumBean.menuGitYeniBlog}" rendered="#{oturumBean.yazmayaYetkili}"
                                    styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/panel/yeni-blog.xhtml') ? 'active' : ''}">
                         <span class="material-symbols-outlined" aria-hidden="true">add_box</span>
-                        <span>Yeni blog ekle</span>
+                        Yeni blog ekle
                     </h:commandLink>
                     <h:link outcome="/admin/admin-onay" rendered="#{oturumBean.admin}"
                             styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/admin/admin-onay.xhtml') ? 'active' : ''}">
                         <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
-                        <span>Onay bekleyenler</span>
+                        Onay bekleyenler
                         <h:panelGroup layout="span" styleClass="ms-auto"
                                       rendered="#{panelMenuSayaclariBean.onayBekleyenSayisi gt 0}">
                             <span class="badge bg-danger rounded-pill">#{panelMenuSayaclariBean.onayBekleyenSayisi}</span>
@@ -41,17 +41,17 @@
                     <h:link outcome="/admin/onay-islemlerim" rendered="#{oturumBean.admin}"
                             styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/admin/onay-islemlerim.xhtml') ? 'active' : ''}">
                         <span class="material-symbols-outlined" aria-hidden="true">history</span>
-                        <span>Onay işlemlerim</span>
+                        Onay işlemlerim
                     </h:link>
                     <h:link outcome="/admin/kategoriler" rendered="#{oturumBean.admin}"
                             styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/admin/kategoriler.xhtml') ? 'active' : ''}">
                         <span class="material-symbols-outlined" aria-hidden="true">category</span>
-                        <span>Kategoriler</span>
+                        Kategoriler
                     </h:link>
                     <h:link outcome="/admin/yazar-talepleri" rendered="#{oturumBean.admin}"
                             styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/admin/yazar-talepleri.xhtml') ? 'active' : ''}">
                         <span class="material-symbols-outlined" aria-hidden="true">group_add</span>
-                        <span>Yazar talepleri</span>
+                        Yazar talepleri
                         <h:panelGroup layout="span" styleClass="ms-auto"
                                       rendered="#{panelMenuSayaclariBean.yazarlikTalepSayisi gt 0}">
                             <span class="badge bg-danger rounded-pill">#{panelMenuSayaclariBean.yazarlikTalepSayisi}</span>
@@ -60,16 +60,16 @@
                     <h:link outcome="/admin/sistem-loglari" rendered="#{oturumBean.admin}"
                             styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/admin/sistem-loglari.xhtml') ? 'active' : ''}">
                         <span class="material-symbols-outlined" aria-hidden="true">terminal</span>
-                        <span>Sistem kayıtları</span>
+                        Sistem kayıtları
                     </h:link>
                     <h:link outcome="/panel/bildirimler" rendered="#{oturumBean.girisYapildi}"
                             styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/panel/bildirimler.xhtml') ? 'active' : ''}">
                         <span class="material-symbols-outlined" aria-hidden="true">notifications</span>
-                        <span>Bildirimler</span>
+                        Bildirimler
                     </h:link>
                     <h:link outcome="/public/index" styleClass="devlog-panel-nav-link #{view.viewId.endsWith('/public/index.xhtml') ? 'active' : ''}">
                         <span class="material-symbols-outlined" aria-hidden="true">home</span>
-                        <span>Anasayfaya Dön</span>
+                        Anasayfaya Dön
                     </h:link>
                 </nav>
 
@@ -90,17 +90,17 @@
                         </h:link>
                         <h:commandLink action="#{oturumBean.cikisYap}" styleClass="devlog-panel-nav-link border-0 bg-transparent w-100 text-start">
                             <span class="material-symbols-outlined" aria-hidden="true">logout</span>
-                            <span>Çıkış</span>
+                            Çıkış
                         </h:commandLink>
                     </h:panelGroup>
                     <h:panelGroup rendered="#{not oturumBean.girisYapildi}" layout="block">
                         <h:link outcome="/auth/giris" styleClass="devlog-panel-nav-link mb-1 d-block">
                             <span class="material-symbols-outlined" aria-hidden="true">login</span>
-                            <span>Giriş yap</span>
+                            Giriş yap
                         </h:link>
                         <h:link outcome="/auth/kayit" styleClass="devlog-panel-nav-link d-block">
                             <span class="material-symbols-outlined" aria-hidden="true">person_add</span>
-                            <span>Kayıt ol</span>
+                            Kayıt ol
                         </h:link>
                     </h:panelGroup>
                 </div>
