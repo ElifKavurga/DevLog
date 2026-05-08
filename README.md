@@ -46,7 +46,7 @@ Bu belge, temel Java, HTML ve CSS bilgisi olan biri için **DevLog** uygulaması
 
 | Konum | İçerik |
 |--------|--------|
-| `src/main/java/` | Tüm **Java** kaynakları: `entity`, `dto`, `mapper`, `facade`, `facadeLocal`, `controller`, `config`, `enums` paketleri. |
+| `src/main/java/` | **Java** kaynakları: `entity`, `enums`, `facade`, `facadeLocal`, **`bean`** (alt paketler: `bean.admin`, `bean.panel`, `bean.publicweb`, `bean.cms` ve kökte `GirisBean`, `KayitBean`, `OturumBean`, `PanelYolBean`), **`filter`** (`SessionFilter`). Bu depoda **`dto`**, **`mapper`**, **`controller`** veya **`config`** paketi yoktur. |
 | `src/main/resources/META-INF/` | `persistence.xml` (JPA), `beans.xml` (CDI). |
 | `src/main/webapp/` | **Web kökü:** XHTML sayfaları, `WEB-INF` (web.xml, faces-config, şablonlar), `resources` (CSS, görseller). |
 
@@ -54,17 +54,17 @@ Bu belge, temel Java, HTML ve CSS bilgisi olan biri için **DevLog** uygulaması
 
 ---
 
-## 5. Katman sırası: Entity → DTO → Mapper → Facade → Controller — neden bu sıra?
+## 5. Katman sırası: Entity → Facade → JSF bean — bu projede gerçek sıra
 
-**Restoran analojisi:**
+**DevLog** şu an **daha sade bir hat** kullanır: ayrı **DTO** veya **mapper** katmanı yoktur; liste ve detay ekranlarında çoğu zaman **JPA entity** (veya ondan türetilen görünüm verisi) facade üzerinden bean’e gelir.
 
-1. **Entity:** Depodaki **gerçek stok kartı** — veritabanındaki satırlarla eşleşen kalıcı model (JPA).
-2. **DTO:** Müşteriye çıkan **tabakta görünen porsiyon** — ekrana veya dış dünyaya taşınan, alanları bilinçli seçilmiş veri taşıyıcısı.
-3. **Mapper:** Depo kartından tabağa **aktarımı yapan mutfak personeli** — entity ile DTO arasında dönüşüm tek yerde toplanır.
-4. **Facade:** **Mutfak şefi** — birden fazla tablo, kural, transaction ihtiyacını tek kapıdan yönetir; controller doğrudan `EntityManager` ile uğraşmaz.
-5. **Controller (JSF bean):** **Garson** — kullanıcı eylemini alır, facade’e iletir, sonucu sayfaya bağlanabilir özelliklere koyar.
+**Restoran analojisi (bu repo ile uyumlu):**
 
-**Neden öğrenirken bu sıra?** Önce verinin **veritabanı karşılığını** (entity), sonra **dışarı ne çıkacağını** (DTO), sonra **dönüşümü** (mapper), sonra **iş kuralı ve kalıcılık** (facade), en son **ekran ve navigasyon** (controller) netleşir; tersine gidersen sayfa yazsan bile veri modeli dağınık kalır.
+1. **Entity:** Depodaki **stok kartı** — veritabanı tablolarıyla eşleşen JPA modeli (`Blog`, `Kullanici`, …).
+2. **Facade:** **Mutfak şefi** — `EntityManager` ile CRUD ve sorgular; iş kuralları ve transaction sınırları burada toplanır (`@Stateless` EJB).
+3. **JSF bean (`bean/`):** **Garson** — `#{kesfetBean...}` gibi ifadelerle sayfaya bağlanır; **`@Inject`** ile `XxxFacadeLocal` enjekte edilir, kullanıcı eylemini facade’e iletir.
+
+**Genişletme notu:** Daha büyük uygulamalarda entity’yi doğrudan view’e taşımak yerine **DTO + mapper** eklemek yaygındır; bu proje öğrenme ve sınırlı kapsam için tek katmanlı veri akışıyla kalmıştır.
 
 ---
 
@@ -119,7 +119,7 @@ Entity sınıfları (`Blog`, `Kullanici`, `Kategori`, `Yorum`, `Degerlendirme`, 
 
 **Desen:** Her iş alanı için **`XxxFacadeLocal`** adında bir **arayüz** (`@Local`) ve **`XxxFacade`** adında **`@Stateless`** bir **oturumsuz (stateless) EJB** sınıfı bulunur.
 
-**Neden arayüz?** Controller veya başka bir EJB, somut sınıf yerine **arayüz** üzerinden (`@EJB` veya uygun enjeksiyon) bağlanır; test ve gevşek bağlılık kolaylaşır.
+**Neden arayüz?** Bean veya başka bir EJB, somut sınıf yerine **arayüz** üzerinden bağlanır; bu projede çoğunlukla CDI **`@Inject`** ile `XxxFacadeLocal` enjekte edilir (`@EJB` de kullanılabilir; tercih CDI tarafında).
 
 **Facade içinde tipik öğeler:**
 
@@ -131,46 +131,47 @@ Entity sınıfları (`Blog`, `Kullanici`, `Kategori`, `Yorum`, `Degerlendirme`, 
 
 ---
 
-## 9. DTO ve Mapper (`dto/`, `mapper/`)
+## 9. DTO ve Mapper — bu projede yok
 
-**DTO (Data Transfer Object):** `BlogDTO`, `KullaniciDTO` gibi sınıflar, ekrana veya katmanlar arası taşımaya **özel** seçilmiş alanları taşır. Entity’nin tüm ilişki ağını veya iç alanları her yerde dolaştırmak zorunda kalmazsın.
+**`dto/`** ve **`mapper/`** paketleri bu kaynak ağacında **bulunmaz**. Veri, facade’den **`entity`** örnekleri (veya bean içinde üretilen metin/özet alanları) olarak JSF sayfalarına gider.
 
-**Mapper:** Statik veya yardımcı metotlarla `entity ↔ dto` dönüşümü tek yerde toplanır (`BlogMapper`, `KullaniciMapper` vb.). Örneğin `OturumController` içinde aktif kullanıcı entity olarak tutulurken arayüzde `KullaniciMapper.toDto(...)` ile **DTO** sunulabilir.
+İleride API veya kalın view model ihtiyacı doğarsa DTO/mapper eklemek doğal bir sonraki adımdır; README’nin önceki sürümündeki bu katmanlar genel Jakarta EE öğretimi içindi, mevcut kodla birebir örtüşmüyordu.
 
 ---
 
-## 10. Controller katmanı (`controller/`) — JSF ve CDI
+## 10. JSF / CDI bean katmanı (`bean/`) — isimlendirme
 
-Bu paket altında alt paketlerle düzen vardır: **`publicweb`**, **`panel`**, **`cms`**, **`admin`**, kökte **`GirisController`**, **`KayitController`**, **`OturumController`**, **`PanelYolController`** vb.
+Kök ve alt paketlerde **`@Named`** sınıflar bulunur; XHTML’de `#{oturumBean...}`, `#{kesfetBean...}`, `#{blogDetayBean...}` gibi ifadeler bunlara bağlanır.
+
+**Paket düzeni (örnek):**
+
+- **`bean.publicweb`** — `KesfetBean`, `BlogDetayBean`, `PublicKategoriBean`
+- **`bean.panel`** — `ProfilBean`, `BildirimBean`, `YazarPanelBean` (`bloglarim`), `BlogEkleBean`, …
+- **`bean.admin`** — `AdminOnayBean`, `KategoriBean`, `SistemLogBean`, …
+- **`bean.cms`** — yazar tarafı içerik akışı
+- **Kök `bean`** — `OturumBean`, `GirisBean`, `KayitBean`, `PanelYolBean`
 
 **Sık anotasyonlar:**
 
 | Anotasyon | Rolü |
 |-----------|------|
-| `@Named("beanAdi")` | JSF ifadelerinde `#{beanAdi.ozellik}` ile erişilen CDI isimli bean. |
-| `@RequestScoped` | İstek boyunca yaşar; form gönderimi gibi tek round-trip senaryolarına uyar. |
-| `@ViewScoped` | Aynı JSF **view** (sayfa) yaşarken bean yaşar; AJAX veya çok adımlı formlar için uygundur; sınıf **`Serializable`** olmalıdır. |
-| `@SessionScoped` | Tarayıcı oturumu boyunca; örneğin giriş yapmış kullanıcı bilgisi (`OturumController`). Yine **Serializable** gerekir. |
-| `@Inject` | CDI ile başka bir bean veya bağımlılık enjeksiyonu. |
-| `@EJB` | EJB arayüzüne (ör. `KullaniciFacadeLocal`) enjeksiyon. |
+| `@Named("beanAdi")` | JSF’de `#{beanAdi.ozellik}` ile erişim. |
+| `@RequestScoped` | İstek boyunca yaşayan bean. |
+| `@ViewScoped` | Aynı view yaşarken bean; **`Serializable`** olmalıdır. |
+| `@SessionScoped` | Oturum boyunca; örneğin **`OturumBean`** (giriş yapmış kullanıcı). **`Serializable`** gerekir. |
+| `@Inject` | CDI enjeksiyonu; facade yerel arayüzleri (`BlogFacadeLocal` vb.) çoğunlukla **`@Inject`** ile verilir. |
 
-**`@PostConstruct`:** Bean oluşturulduktan sonra bir kez çalışan hazırlık metodu için kullanılır (örnek: sayfa açılışında listeyi yükleme).
+**`f:viewAction` / `hazirla()`:** Birçok sayfada metadata veya view açılışında liste yüklemesi bu kalıpla yapılır.
 
 ---
 
-## 11. `config/` — uygulama açılışı ve örnek veri
+## 11. Şema, güvenlik filtresi — `config/` yok
 
-### 11.1. `DevLogSeedListener`
+Bu depoda **`config/`** paketi, **`DevLogSeedListener`**, **`DataInitializer`** veya **`@WebListener`** ile tohum veri atan **bir başlatıcı sınıf yoktur**.
 
-**`@WebListener`** ile `ServletContextListener` uygulanır: uygulama **context başlarken** (`contextInitialized`) çalışır.
+**Şema:** `persistence.xml` içinde **`eclipselink.ddl-generation`** (`create-or-extend-tables`) ile tabloların oluşturulması/güncellenmesi EclipseLink’e bırakılmıştır. İlk **admin / yazar** kullanıcıları ve kategoriler için uygulama kodunda otomatik seed yoktur; ihtiyaç halinde veritabanına kayıt eklemeniz gerekir.
 
-**Görevi (yüksek seviye):** Veritabanı şema/uyumluluk kontrolleri için facade metotlarını tetiklemek, hata durumunda log yazıp uygulamanın tamamen çökmesini engellemeye çalışmak, ardından **`DataInitializer`** ile varsayılan kullanıcı ve kategori gibi **tohum veriyi** oluşturmak.
-
-### 11.2. `DataInitializer`
-
-**`@Singleton`** EJB: uygulama genelinde **tek** mantıksal örnek (container yönetimli). İçinde **`@EJB`** ile facade’ler kullanılır; `seedDefaults()` admin ve demo kullanıcılar ile boşsa varsayılan kategori ekler.
-
-**Analoji:** Restoran sabah açılırken “varsayılan menü ve deneme hesapları hazır mı?” kontrolü.
+**Korunan yollar:** `filter/SessionFilter` (`@WebFilter`), `panel/*`, `admin/*` ve `auth/giris.xhtml` için oturum kontrolü yapar; oturum yoksa giriş sayfasına yönlendirir. Girişte **`OturumBean.girisYap`** HTTP oturumuna **`user`** özniteliğiyle kullanıcıyı yazar; filtre bu özniteliğe bakar.
 
 ---
 
@@ -181,7 +182,7 @@ Bu paket altında alt paketlerle düzen vardır: **`publicweb`**, **`panel`**, *
 - **Faces Servlet:** `*.xhtml` isteklerini JSF’ye yönlendirir.
 - **`welcome-file`:** Açılışta `public/index.xhtml` hedeflenir.
 - **Hata sayfaları:** 500 ve genel `Throwable` için `public/error.xhtml` yönlendirmesi.
-- **Context parametreleri:** Örneğin `PROJECT_STAGE` Development; `FACELETS_SKIP_COMMENTS` ile Facelets çıktısında yorumların atlanması gibi JSF davranışları.
+- **Context parametreleri:** Örneğin `jakarta.faces.PROJECT_STAGE` = Development; `jakarta.faces.FACELETS_SKIP_COMMENTS` ile Facelets çıktısında yorumların atlanması gibi JSF davranışları.
 
 ### 12.2. `WEB-INF/faces-config.xml`
 
@@ -194,8 +195,8 @@ JSF 4 uyumlu boş veya minimal yapılandırma dosyası; navigasyon veya bean tan
 | **Herkese açık** | `public/index.xhtml`, `public/blog-detay.xhtml`, `public/kategoriler.xhtml` | Ziyaretçi |
 | **Kimlik** | `auth/giris.xhtml`, `auth/kayit.xhtml` | Giriş / kayıt |
 | **Kullanıcı paneli** | `panel/profil.xhtml`, `panel/bloglarim.xhtml`, … | Giriş yapmış kullanıcı |
-| **Yazar CMS** | `panel/yeni-blog.xhtml` ve ilgili controller’lar | Yazma yetkisi |
-| **Yönetim** | `admin/kategoriler.xhtml`, `admin/sistem-loglari.xhtml`, … | Admin / onay süreçleri |
+| **Yazar CMS** | `panel/yeni-blog.xhtml`, `BlogEkleBean` vb. | Yazma yetkisi |
+| **Yönetim** | `admin/admin-onay.xhtml`, `admin/blog-onizleme.xhtml`, `admin/onay-islemlerim.xhtml`, `admin/yazar-talepleri.xhtml`, `admin/kategoriler.xhtml`, `admin/sistem-loglari.xhtml` | Admin / onay süreçleri |
 
 ### 12.4. Şablonlar (`WEB-INF/templates/`, `WEB-INF/fragments/`)
 
@@ -207,12 +208,12 @@ JSF 4 uyumlu boş veya minimal yapılandırma dosyası; navigasyon veya bean tan
 
 1. Tarayıcı bir **URL** ister (ör. `/DevLog/public/index.xhtml`).
 2. GlassFish isteği **Faces Servlet**’e verir; JSF **lifecycle** başlar.
-3. Sayfadaki `#{kesfetController.bloglar}` gibi ifadeler ilgili **`@Named`** bean’in özelliklerine bağlanır.
-4. Bean, gerekirse **`@Inject` / `@EJB`** ile **facade**’i çağırır; facade **EntityManager** ile veritabanından **entity** listesi alır.
-5. Liste **DTO**’ya map edilir veya doğrudan view’de kullanılacak şekilde bean’de tutulur.
+3. Sayfadaki `#{kesfetBean.yayinlananBloglar}` gibi ifadeler ilgili **`@Named`** bean’in özelliklerine bağlanır.
+4. Bean, **`@Inject`** ile **facade** yerel arayüzünü çağırır; facade **EntityManager** ile veritabanından **entity** listesi alır.
+5. Liste (çoğunlukla entity veya basit türetilmiş alanlar) bean’de tutulur ve view’de döngüyle gösterilir.
 6. JSF **render** aşamasında **HTML** üretilir; Bootstrap sınıfları görünümü düzenler.
 
-**Kargo analojisi:** İstek **sipariş**; controller **sipariş masası**; facade **dağıtım merkezi**; veritabanı **depo**; HTML cevap **kapıya gelen paket**; Bootstrap **paketin düzenli sunumu**.
+**Kargo analojisi:** İstek **sipariş**; JSF bean **sipariş masası**; facade **dağıtım merkezi**; veritabanı **depo**; HTML cevap **kapıya gelen paket**; Bootstrap **paketin düzenli sunumu**.
 
 ---
 
@@ -231,11 +232,10 @@ CDI 4.x şeması ile boş bir `beans` kökü, sınıf yolunda CDI taramasının 
 3. **`persistence.xml` + `glassfish-resources.xml`** — JNDI ismi ile veritabanı bağlantı zinciri.
 4. **Bir entity** (ör. `Blog`) — tablo ve ilişkiler.
 5. **Bir facade çifti** (ör. `BlogFacadeLocal` + `BlogFacade`) — `EntityManager` kullanımı.
-6. **Bir DTO + Mapper** — entity ile ekran verisinin ayrılması.
-7. **Bir public controller + bir XHTML** — `#{...}` bağları ve liste/detay.
-8. **`OturumController`** — oturum kapsamı ve rol bayrakları.
-9. **`DevLogSeedListener` + `DataInitializer`** — açılış ve örnek veri.
-10. **Admin ve panel** sayfaları — aynı desenin farklı rollerde tekrarı.
+6. **Bir public bean + bir XHTML** (ör. `KesfetBean` + `public/index.xhtml`) — `#{...}` bağları ve liste.
+7. **`OturumBean`** — oturum kapsamı ve rol bayrakları (`admin`, `yazmayaYetkili`, …).
+8. **`SessionFilter`** — panel ve admin yollarında oturum kontrolü.
+9. **Admin ve panel** sayfaları — aynı facade + bean deseninin farklı rollerde tekrarı.
 
 ---
 
@@ -261,12 +261,10 @@ Projede öğretim açıklamaları **bu README üzerinden** verilir; kaynak kodda
 |-----------------|------------|
 | `entity` | Veritabanı eşlemesi, JPA anotasyonları |
 | `enums` | Sabit liste tipleri (`RolTip`, `DurumTip`) |
-| `dto` | Taşınan veri şekilleri |
-| `mapper` | Entity ↔ DTO dönüşümü |
-| `facadeLocal` | EJB yerel arayüzler |
+| `facadeLocal` | EJB yerel arayüzler (`@Local`) |
 | `facade` | Stateless EJB uygulamaları, JPA erişimi |
-| `controller` | JSF bean’leri, navigasyon, form eylemleri |
-| `config` | Açılış dinleyicisi, singleton tohum veri |
+| `bean` | JSF **`@Named`** bean’leri; alt paketlerle public / panel / admin / cms ayrımı |
+| `filter` | Servlet filtresi (`SessionFilter`) |
 | `webapp/public`, `auth`, `panel`, `admin` | Facelets sayfaları |
 | `WEB-INF/templates`, `fragments` | Ortak düzen ve parçalar |
 
@@ -274,4 +272,4 @@ Bu tablo, projede “dosyayı açınca ne bekleyeceğini” hızlı hatırlatır
 
 ---
 
-*Son güncelleme: README, mevcut DevLog kaynak ağacına göre yazılmıştır; bağımlılık sürümleri veya sunucu sürümü `pom.xml` ve dağıtım ortamınızla birlikte doğrulanmalıdır.*
+*Son güncelleme: README, mevcut DevLog kaynak ağacı ve `pom.xml` ile uyumlu olacak şekilde düzeltilmiştir; bağımlılık sürümleri ve sunucu sürümü dağıtım ortamınızla birlikte doğrulanmalıdır.*
