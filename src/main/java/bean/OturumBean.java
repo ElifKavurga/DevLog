@@ -34,7 +34,6 @@ public class OturumBean implements Serializable {
     public boolean isYazmayaYetkili() {
         return aktifKullanici != null
                 && (aktifKullanici.getRol() == RolTip.YAZAR
-                || aktifKullanici.getRol() == RolTip.YONETICI
                 || aktifKullanici.getRol() == RolTip.ADMIN);
     }
 
@@ -45,7 +44,6 @@ public class OturumBean implements Serializable {
         }
         return switch (aktifKullanici.getRol()) {
             case ADMIN -> "Admin";
-            case YONETICI -> "Yönetici";
             case YAZAR -> "Yazar";
             case OKUR -> "Okuyucu";
         };
@@ -107,7 +105,7 @@ public class OturumBean implements Serializable {
         FacesContext fc = FacesContext.getCurrentInstance();
         fc.addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_WARN,
-                        "Blog yazma yetkiniz yok.", "Bu işlem yalnızca yazar ve yöneticiler içindir."));
+                        "Blog yazma yetkiniz yok.", "Bu işlem yalnızca yazar ve admin kullanıcılar içindir."));
         fc.getExternalContext().getFlash().setKeepMessages(true);
     }
 }

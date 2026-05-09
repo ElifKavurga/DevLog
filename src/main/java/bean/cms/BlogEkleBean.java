@@ -71,7 +71,7 @@ public class BlogEkleBean implements Serializable {
         if (!oturum.isYazmayaYetkili()) {
             FacesContext fc = FacesContext.getCurrentInstance();
             fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    "Yetkisiz erişim", "Blog oluşturma yalnızca yazar ve yöneticiler içindir."));
+                    "Yetkisiz erişim", "Blog oluşturma yalnızca yazar ve admin kullanıcılar içindir."));
             fc.getExternalContext().getFlash().setKeepMessages(true);
             return "/public/index?faces-redirect=true";
         }
@@ -89,7 +89,7 @@ public class BlogEkleBean implements Serializable {
         if (!oturum.isYazmayaYetkili()) {
             FacesContext fc = FacesContext.getCurrentInstance();
             fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    "Yetkisiz erişim", "Blog kaydetme yalnızca yazar ve yöneticiler içindir."));
+                    "Yetkisiz erişim", "Blog kaydetme yalnızca yazar ve admin kullanıcılar içindir."));
             fc.getExternalContext().getFlash().setKeepMessages(true);
             return "/public/index?faces-redirect=true";
         }

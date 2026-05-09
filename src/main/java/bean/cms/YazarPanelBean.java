@@ -36,7 +36,7 @@ public class YazarPanelBean implements Serializable {
         if (!oturum.isYazmayaYetkili()) {
             FacesContext fc = FacesContext.getCurrentInstance();
             fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
-                    "Erişim yok", "Bloglarım yalnızca yazar ve yöneticiler içindir."));
+                    "Erişim yok", "Bloglarım yalnızca yazar ve admin kullanıcılar içindir."));
             fc.getExternalContext().getFlash().setKeepMessages(true);
             return "/public/index?faces-redirect=true";
         }
@@ -59,15 +59,14 @@ public class YazarPanelBean implements Serializable {
 
     public int getOnayBekleyenSayisi() {
         return (int) bloglar.stream()
-                .filter(b -> b.getDurum() == DurumTip.ONAY_BEKLIYOR || b.getDurum() == DurumTip.BEKLIYOR)
+                .filter(b -> b.getDurum() == DurumTip.ONAY_BEKLIYOR)
                 .count();
     }
 
     public int getDigerDurumSayisi() {
         return (int) bloglar.stream()
                 .filter(b -> b.getDurum() != DurumTip.YAYINLANDI
-                        && b.getDurum() != DurumTip.ONAY_BEKLIYOR
-                        && b.getDurum() != DurumTip.BEKLIYOR)
+                        && b.getDurum() != DurumTip.ONAY_BEKLIYOR)
                 .count();
     }
 
@@ -84,7 +83,7 @@ public class YazarPanelBean implements Serializable {
         }
         return switch (durum) {
             case YAYINLANDI -> "bg-success";
-            case ONAY_BEKLIYOR, BEKLIYOR -> "bg-warning";
+            case ONAY_BEKLIYOR -> "bg-warning";
             case REDDEDILDI -> "bg-danger";
             case TASLAK -> "bg-secondary";
         };
@@ -104,7 +103,7 @@ public class YazarPanelBean implements Serializable {
         }
         return switch (durum) {
             case YAYINLANDI -> "Yayında";
-            case ONAY_BEKLIYOR, BEKLIYOR -> "Onay bekliyor";
+            case ONAY_BEKLIYOR -> "Onay bekliyor";
             case REDDEDILDI -> "Reddedildi";
             case TASLAK -> "Taslak";
         };
@@ -116,7 +115,7 @@ public class YazarPanelBean implements Serializable {
         }
         return switch (durum) {
             case YAYINLANDI -> "text-success";
-            case ONAY_BEKLIYOR, BEKLIYOR -> "text-warning";
+            case ONAY_BEKLIYOR -> "text-warning";
             case REDDEDILDI -> "text-danger";
             case TASLAK -> "text-secondary";
         };
