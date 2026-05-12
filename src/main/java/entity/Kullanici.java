@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "kullanici")
 public class Kullanici implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

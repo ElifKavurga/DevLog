@@ -72,6 +72,8 @@ public class KullaniciFacade implements KullaniciFacadeLocal {
         return girisYapEpostaVeyaKullaniciAdi(eposta, sifre);
     }
 
+
+    //Burası find metodu bulamadığı durumlarda kullanılan sorgu kısmı daha detaylı gibimsi
     @Override
     public Kullanici girisYapEpostaVeyaKullaniciAdi(String epostaVeyaKullaniciAdi, String sifre) {
         if (epostaVeyaKullaniciAdi == null || epostaVeyaKullaniciAdi.isBlank() || sifre == null || sifre.isBlank()) {

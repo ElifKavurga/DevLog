@@ -1,0 +1,20 @@
+DevLog — PostgreSQL demo verileri (tablo tablo)
+
+Çalıştırma sırası (pgAdmin Query Tool veya psql):
+
+  1) 01-demo-kullanicilar.sql
+  2) 02-demo-kategoriler.sql
+  3) 03-demo-bloglar.sql
+  4) 04-demo-yorumlar.sql
+  5) 05-demo-bildirimler.sql
+  6) 06-demo-sequence-sifirlama.sql   ← en son; manuel id sonrası SERIAL senkronu
+
+Önce uygulamayı en az bir kez açıp JPA tablolarının oluştuğundan emin olun.
+
+Bir adımda hata alırsanız: aynı oturumda ROLLBACK; çalıştırın, hatayı düzeltin, gerekirse
+yarım kalan satırları temizleyip (veya TRUNCATE yorumunu kullanıp) sadece o adımdan devam edin.
+
+psql ile hepsini sırayla:
+  \i demo-veriler/01-demo-kullanicilar.sql
+  \i demo-veriler/02-demo-kategoriler.sql
+  ...
